@@ -89,15 +89,19 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [isHovered]);
 
-  const handleNextSlide = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleNextSlide = (e?: React.MouseEvent | any) => {
+    if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setActiveSlide((prev) => (prev + 1) % slides.length);
   };
 
-  const handlePrevSlide = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handlePrevSlide = (e?: React.MouseEvent | any) => {
+    if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setActiveSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
@@ -134,7 +138,7 @@ export default function Home() {
         className="relative overflow-hidden w-full group cursor-pointer"
       >
         <Link href={slides[activeSlide].link}>
-          <div className="relative w-full aspect-[3/2] lg:aspect-[16/5] max-w-[1920px] mx-auto bg-slate-200 overflow-hidden shadow-sm border border-slate-200/50 my-2">
+          <div className="relative w-full aspect-[23/15] lg:aspect-[16/5] max-w-[1920px] mx-auto bg-slate-200 overflow-hidden shadow-sm border border-slate-200/50 my-2">
             <AnimatePresence>
               <motion.div
                 key={activeSlide}
@@ -142,7 +146,18 @@ export default function Home() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4 }}
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing select-none"
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(event, info) => {
+                  const swipeThreshold = 50;
+                  if (info.offset.x < -swipeThreshold) {
+                    handleNextSlide();
+                  } else if (info.offset.x > swipeThreshold) {
+                    handlePrevSlide();
+                  }
+                }}
               >
 
                 
