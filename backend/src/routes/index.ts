@@ -6,7 +6,7 @@ import { getProducts, getProductById, createProduct, updateProduct, deleteProduc
 import { placeOrder, getOrders, getOrderById, updateOrderStatus, verifyDeliveryOTP, refundOrder } from '../controllers/orderController';
 import { getDashboardStats, getKycQueue, approveKyc, getAuditLogs, getNotificationLogs, getWalletRequests, approveWalletRequest, rejectWalletRequest } from '../controllers/adminController';
 import { authenticateJWT, requireRole, requireKYC } from '../middleware/auth';
-import { CategoryModel, CouponModel, OrderModel, UserModel, AuditLogModel, TransactionModel } from '../models';
+import { CategoryModel, CouponModel, OrderModel, UserModel, AuditLogModel, TransactionModel, ProductModel } from '../models';
 
 const router = Router();
 

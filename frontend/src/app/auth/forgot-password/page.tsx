@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { KeyRound, AlertCircle, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { api } from '@/services/api';
 
 export default function ForgotPassword() {
   const router = useRouter();
@@ -24,12 +25,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile })
-      });
-      const data = await response.json();
+      const data = await api.post('/auth/forgot-password', { mobile });
       setLoading(false);
 
       if (data.success) {
@@ -51,12 +47,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile, code, newPassword })
-      });
-      const data = await response.json();
+      const data = await api.post('/auth/reset-password', { mobile, code, newPassword });
       setLoading(false);
 
       if (data.success) {

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
-import { api } from '@/services/api';
+import { api, API_BASE_URL } from '@/services/api';
 import { 
   User, 
   MapPin, 
@@ -391,7 +391,7 @@ function Profile() {
                             ₹{order.amounts.finalTotal.toLocaleString('en-IN')}
                           </span>
                           <a
-                            href={`http://localhost:5000/api/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
+                            href={`${API_BASE_URL}/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
                             target="_blank"
                             rel="noreferrer"
                             className="bg-blue-50 hover:bg-blue-100 text-[#2874f0] border border-blue-200 hover:border-blue-300 font-extrabold px-3 py-1 rounded text-[10px] transition flex items-center gap-1 shadow-sm"

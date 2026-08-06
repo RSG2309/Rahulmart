@@ -16,6 +16,7 @@ export interface ICartItem {
   gstPercentage: number;
   moq: number;
   stock: number;
+  unit?: string;
 }
 
 interface CartContextType {
@@ -23,7 +24,7 @@ interface CartContextType {
   couponCode: string;
   couponDiscount: number;
   pincode: string;
-  paymentMethod: 'online' | 'cod';
+  paymentMethod: 'online' | 'cod' | 'wallet';
   shippingAddress: string;
   amounts: {
     subtotal: number;
@@ -39,7 +40,7 @@ interface CartContextType {
   applyCoupon: (code: string) => Promise<{ success: boolean; message?: string }>;
   removeCoupon: () => void;
   setPincode: (pin: string) => void;
-  setPaymentMethod: (method: 'online' | 'cod') => void;
+  setPaymentMethod: (method: 'online' | 'cod' | 'wallet') => void;
   setShippingAddress: (address: string) => void;
   clearCart: () => void;
   isCartOpen: boolean;
@@ -55,7 +56,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [couponCode, setCouponCode] = useState('');
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [pincode, setPincodeState] = useState('845307');
-  const [paymentMethod, setPaymentMethodState] = useState<'online' | 'cod'>('online');
+  const [paymentMethod, setPaymentMethodState] = useState<'online' | 'cod' | 'wallet'>('online');
   const [shippingAddress, setShippingAddress] = useState('');
   const [isCartOpen, setCartOpen] = useState(false);
 
@@ -216,7 +217,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     setPincodeState(pin);
   };
 
-  const setPaymentMethod = async (method: 'online' | 'cod') => {
+  const setPaymentMethod = async (method: 'online' | 'cod' | 'wallet') => {
     setPaymentMethodState(method);
     if (couponCode) {
       const { subtotal } = calculateTotals();

@@ -60,7 +60,7 @@ export default function Checkout() {
     setStep(2);
   };
 
-  const handleSelectPaymentMethod = (method: 'online' | 'cod') => {
+  const handleSelectPaymentMethod = (method: 'online' | 'cod' | 'wallet') => {
     setPaymentMethod(method);
   };
 

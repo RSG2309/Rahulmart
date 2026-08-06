@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { api } from '@/services/api';
+import { api, getImageUrl } from '@/services/api';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { ShoppingCart, ArrowLeft, ShieldCheck, Check, AlertCircle, Sparkles } from 'lucide-react';
@@ -124,7 +124,7 @@ export default function ProductDetails({ params }: PageProps) {
           <div className="space-y-6">
             <div className="relative aspect-square w-full rounded-2xl border border-slate-100 bg-slate-50/50 p-6 flex items-center justify-center overflow-hidden group">
               <img
-                src={product.images?.[0] || 'https://via.placeholder.com/400'}
+                src={getImageUrl(product.images?.[0])}
                 alt={product.name}
                 className="max-h-[350px] w-auto object-contain transition-transform duration-500 group-hover:scale-105"
               />

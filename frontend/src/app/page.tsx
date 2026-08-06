@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { api } from '@/services/api';
+import { api, getImageUrl } from '@/services/api';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { ShoppingCart, AlertCircle, ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Sparkles, Smartphone, Grid, Layers, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const Marquee = 'marquee' as any;
 
 export default function Home() {
   const { user } = useAuth();
@@ -132,7 +134,7 @@ export default function Home() {
         className="relative overflow-hidden w-full group cursor-pointer"
       >
         <Link href={slides[activeSlide].link}>
-          <div className="relative h-[210px] sm:h-[400px] lg:h-[530px] w-full bg-slate-200 overflow-hidden">
+          <div className="relative w-full aspect-[3/1] lg:aspect-[16/5] max-w-[1920px] mx-auto bg-slate-200 overflow-hidden shadow-sm border border-slate-200/50 my-2">
             <AnimatePresence>
               <motion.div
                 key={activeSlide}
@@ -147,7 +149,7 @@ export default function Home() {
                 <img
                   src={slides[activeSlide].image}
                   alt={slides[activeSlide].title}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-cover object-center"
                 />
               </motion.div>
             </AnimatePresence>
@@ -167,7 +169,7 @@ export default function Home() {
             </button>
 
             {/* Slide Navigation Dots */}
-            <div className="absolute bottom-4 sm:bottom-12 lg:bottom-16 left-1/2 transform -translate-x-1/2 z-30 flex gap-2">
+            <div className="absolute bottom-3 sm:bottom-6 left-1/2 transform -translate-x-1/2 z-30 flex gap-2">
               {slides.map((_, i) => (
                 <button
                   key={i}
@@ -267,9 +269,9 @@ export default function Home() {
           <span className="bg-amber-600 text-white font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-sm flex-shrink-0 mr-3 animate-pulse">
             Notice
           </span>
-          <marquee behavior="scroll" direction="left" className="text-amber-800 font-bold text-xs tracking-wide cursor-default">
+          <Marquee behavior="scroll" direction="left" className="text-amber-800 font-bold text-xs tracking-wide cursor-default">
             ⚠️ Rahul Super Mart की वेबसाइट वर्तमान में केवल Demo (Preview) Version में उपलब्ध है। अभी इस वेबसाइट के माध्यम से कोई ऑर्डर स्वीकार नहीं किया जा रहा है। ❌ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ⚠️ Notice: Rahul Super Mart website is currently in Demo (Preview) Version only. No orders are being accepted through the platform at this moment. ❌
-          </marquee>
+          </Marquee>
         </div>
       </section>
 
@@ -325,7 +327,7 @@ export default function Home() {
                       )}
                       <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-40">
                         <img
-                          src={product.images?.[0] || 'https://via.placeholder.com/150'}
+                          src={getImageUrl(product.images?.[0])}
                           alt={product.name}
                           className="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"

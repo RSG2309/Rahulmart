@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://rahulmart.onrender.com/api';
 
 const getHeaders = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : null;
@@ -54,5 +54,14 @@ export const api = {
   getExportUrl() {
     return `${API_BASE_URL}/products/bulk-export`;
   }
+};
+
+export const getImageUrl = (url: string) => {
+  if (!url) return 'https://via.placeholder.com/150';
+  if (url.startsWith('http://localhost:5000')) {
+    const origin = API_BASE_URL.replace('/api', '');
+    return url.replace('http://localhost:5000', origin);
+  }
+  return url;
 };
 

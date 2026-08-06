@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
+import { api } from '@/services/api';
 import { ShoppingCart, LogOut, Wallet, Plus, X, CheckCircle, Trash2, ArrowRight, User, ArrowLeft, Home, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -61,16 +62,7 @@ export default function Navbar() {
     setLoadingWallet(true);
 
     try {
-      const token = localStorage.getItem('b2b_token');
-      const response = await fetch('http://localhost:5000/api/auth/wallet/add-funds', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ amount: walletAmount, utr: walletUtr.trim() })
-      });
-      const data = await response.json();
+      const data = await api.post('/auth/wallet/add-funds', { amount: walletAmount, utr: walletUtr.trim() });
       setLoadingWallet(false);
 
       if (data.success) {

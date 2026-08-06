@@ -18,6 +18,7 @@ export interface IUserProfile {
     documentUrl?: string;
   };
   walletBalance: number;
+  promoWalletBalance?: number;
   savedAddresses?: string[];
   wishlist?: string[];
 }

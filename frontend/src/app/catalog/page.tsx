@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { api } from '@/services/api';
+import { api, getImageUrl } from '@/services/api';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { ShoppingCart, Search, Filter, AlertCircle, CheckCircle2, ShieldAlert, Sparkles, HelpCircle } from 'lucide-react';
 
-export default function Catalog() {
+function CatalogContent() {
   const { user } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -297,7 +297,7 @@ export default function Catalog() {
                         </span>
                         <Link href={`/products/${product.id}`} className="block overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-40">
                           <img
-                            src={product.images?.[0] || 'https://via.placeholder.com/150'}
+                            src={getImageUrl(product.images?.[0])}
                             alt={product.name}
                             className="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
@@ -488,5 +488,17 @@ export default function Catalog() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function Catalog() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#2874f0] border-t-transparent"></div>
+      </div>
+    }>
+      <CatalogContent />
+    </Suspense>
   );
 }

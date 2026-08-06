@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { api } from '@/services/api';
+import { api, API_BASE_URL } from '@/services/api';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { BarChart3, Package, ShoppingCart, ShieldCheck, FileText, Download, Upload, AlertCircle, RefreshCw, Eye, Users } from 'lucide-react';
@@ -394,7 +394,7 @@ export default function AdminDashboard() {
   // Wallet Approvals operations
   const handleApproveWallet = async (requestId: string) => {
     try {
-      const res = await api.post(`/admin/wallet-requests/${requestId}/approve`);
+      const res = await api.post(`/admin/wallet-requests/${requestId}/approve`, {});
       if (res.success) {
         showFeedback('success', 'Wallet deposit approved successfully!');
         loadData();
@@ -408,7 +408,7 @@ export default function AdminDashboard() {
 
   const handleRejectWallet = async (requestId: string) => {
     try {
-      const res = await api.post(`/admin/wallet-requests/${requestId}/reject`);
+      const res = await api.post(`/admin/wallet-requests/${requestId}/reject`, {});
       if (res.success) {
         showFeedback('success', 'Wallet deposit request rejected.');
         loadData();
@@ -606,7 +606,7 @@ export default function AdminDashboard() {
   const handleTriggerRefund = async (orderId: string) => {
     if (!window.confirm("Are you sure you want to trigger a refund for this order? This will instantly credit the refund amount back to the retailer's wallet ledger.")) return;
     try {
-      const res = await api.post(`/orders/${orderId}/refund`);
+      const res = await api.post(`/orders/${orderId}/refund`, {});
       if (res.success) {
         showFeedback('success', 'Order amount successfully refunded to retailer wallet ledger!');
         loadData();
@@ -1027,7 +1027,7 @@ export default function AdminDashboard() {
                       {showAddProductForm ? 'Close Product Form' : '+ Add Single Product'}
                     </button>
                     <a
-                      href="http://localhost:5000/api/products/bulk-export"
+                      href={api.getExportUrl()}
                       className="inline-flex items-center gap-1 bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold px-4 py-2.5 rounded-lg text-xs transition"
                     >
                       <Download size={13} /> Export Products CSV
@@ -1707,7 +1707,7 @@ export default function AdminDashboard() {
                                 </button>
                               )}
                               <a
-                                href={`http://localhost:5000/api/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
+                                  href={`${API_BASE_URL}/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="bg-blue-50 hover:bg-blue-100 text-[#2874f0] border border-blue-200 font-extrabold px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1 shadow-sm transition hover:scale-102"
