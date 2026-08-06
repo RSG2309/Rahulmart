@@ -515,9 +515,13 @@ router.post('/admin/upload', authenticateJWT, requireRole(['admin']), async (req
     const filePath = path.join(uploadDir, uniqueName);
     fs.writeFileSync(filePath, buffer);
     
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const host = req.get('host');
+    const imageUrl = `${protocol}://${host}/api/uploads/${uniqueName}`;
+    
     return res.status(200).json({
       success: true,
-      imageUrl: `http://localhost:5000/api/uploads/${uniqueName}`
+      imageUrl
     });
   } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
