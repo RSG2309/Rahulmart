@@ -23,7 +23,7 @@ export default function Home() {
   // Auto-scrolling slides list (only images and redirection links)
   const slides = [
     {
-      image: '/demo1.jpeg',
+      image: '/Demo1.jpeg',
       title: 'Grocery Supplies',
       link: '/catalog?category=grocery'
     },
