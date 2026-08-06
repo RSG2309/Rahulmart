@@ -134,7 +134,7 @@ export default function Home() {
         className="relative overflow-hidden w-full group cursor-pointer"
       >
         <Link href={slides[activeSlide].link}>
-          <div className="relative w-full aspect-[3/1] lg:aspect-[16/5] max-w-[1920px] mx-auto bg-slate-200 overflow-hidden shadow-sm border border-slate-200/50 my-2">
+          <div className="relative w-full aspect-[3/2] lg:aspect-[16/5] max-w-[1920px] mx-auto bg-slate-200 overflow-hidden shadow-sm border border-slate-200/50 my-2">
             <AnimatePresence>
               <motion.div
                 key={activeSlide}
