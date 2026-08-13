@@ -10,30 +10,6 @@ import { CategoryModel, CouponModel, OrderModel, UserModel, AuditLogModel, Trans
 
 const router = Router();
 
-router.get('/db-status', (req, res) => {
-  const { useJsonDb } = require('../config/db');
-  const mongoose = require('mongoose');
-  const uriVarName = process.env.MONGODB_URI ? 'MONGODB_URI' : (process.env.MONGO_URI ? 'MONGO_URI' : (process.env.MONGO_URL ? 'MONGO_URL' : (process.env.DATABASE_URL ? 'DATABASE_URL' : null)));
-  const uri = uriVarName ? process.env[uriVarName] : null;
-  let uriDetails = 'undefined';
-  let maskedUri = '';
-  if (uri && uriVarName) {
-    const parts = uri.split('@');
-    const hostPart = parts[1] ? parts[1].split('/')[0] : 'no-host';
-    uriDetails = `defined via ${uriVarName} (host: ${hostPart}, len: ${uri.length})`;
-    maskedUri = uri.replace(/\/\/([^:]+):([^@]+)@/, '//$1:******@');
-  }
-  return res.json({
-    success: true,
-    useJsonDb,
-    mongooseState: mongoose.connection.readyState,
-    mongooseHost: mongoose.connection.host,
-    mongooseDbName: mongoose.connection.name,
-    mongodbUriState: uriDetails,
-    configuredUri: maskedUri
-  });
-});
-
 // ==========================================
 // 1. AUTHENTICATION & KYC ROUTES
 // ==========================================
