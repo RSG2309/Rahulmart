@@ -54,7 +54,7 @@ export default function Register() {
             Rahul Super Mart
           </Link>
           <h2 className="mt-4 text-2xl font-extrabold text-slate-900">
-            Create your B2B Shop Account
+            Create your Rahul Super Mart Account
           </h2>
           <p className="mt-1.5 text-xs text-slate-500">
             Submit business details for catalog access

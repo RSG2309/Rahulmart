@@ -7,9 +7,9 @@ import { CartProvider } from '@/context/CartContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'B2B Wholesale Hub | Premium Wholesale Platform',
+  title: 'Rahul Super Mart | Premium B2B Wholesale Platform',
   description: 'Scale your retail shop with direct wholesale prices from leading brands. Complete KYC and order bulk instantly.',
-  keywords: ['B2B', 'Wholesale', 'E-commerce', 'Retailer', 'GST Billing', 'Bulk Ordering'],
+  keywords: ['Rahul Super Mart', 'B2B', 'Wholesale', 'E-commerce', 'Retailer', 'GST Billing', 'Bulk Ordering'],
 };
 
 export default function RootLayout({

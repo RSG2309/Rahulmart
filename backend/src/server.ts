@@ -38,7 +38,7 @@ app.use('/api', router);
 // Root Hello Page
 app.get('/', (req, res) => {
   res.json({
-    name: 'B2B Shop Sourcing Hub API',
+    name: 'Rahul Super Mart API',
     version: '1.0.0',
     status: 'operational',
     documentation: '/api/products, /api/auth/login, etc.'
