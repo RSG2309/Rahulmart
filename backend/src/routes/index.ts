@@ -10,6 +10,18 @@ import { CategoryModel, CouponModel, OrderModel, UserModel, AuditLogModel, Trans
 
 const router = Router();
 
+router.get('/db-status', (req, res) => {
+  const { useJsonDb } = require('../config/db');
+  const mongoose = require('mongoose');
+  return res.json({
+    success: true,
+    useJsonDb,
+    mongooseState: mongoose.connection.readyState,
+    mongooseHost: mongoose.connection.host,
+    mongooseDbName: mongoose.connection.name
+  });
+});
+
 // ==========================================
 // 1. AUTHENTICATION & KYC ROUTES
 // ==========================================
