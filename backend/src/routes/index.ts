@@ -13,12 +13,13 @@ const router = Router();
 router.get('/db-status', (req, res) => {
   const { useJsonDb } = require('../config/db');
   const mongoose = require('mongoose');
-  const uri = process.env.MONGODB_URI;
+  const uriVarName = process.env.MONGODB_URI ? 'MONGODB_URI' : (process.env.MONGO_URI ? 'MONGO_URI' : (process.env.MONGO_URL ? 'MONGO_URL' : (process.env.DATABASE_URL ? 'DATABASE_URL' : null)));
+  const uri = uriVarName ? process.env[uriVarName] : null;
   let uriDetails = 'undefined';
-  if (uri) {
+  if (uri && uriVarName) {
     const parts = uri.split('@');
     const hostPart = parts[1] ? parts[1].split('/')[0] : 'no-host';
-    uriDetails = `defined (host: ${hostPart}, len: ${uri.length})`;
+    uriDetails = `defined via ${uriVarName} (host: ${hostPart}, len: ${uri.length})`;
   }
   return res.json({
     success: true,
