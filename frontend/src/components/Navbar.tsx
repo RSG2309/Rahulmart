@@ -507,7 +507,8 @@ export default function Navbar() {
                     </div>
                   ) : (
                     items.map(item => {
-                      const price = item.quantity >= 20 ? item.wholesalePrice : item.retailerPrice;
+                      const isKycVerified = user?.kycStatus === 'verified';
+                      const price = (item.quantity >= item.moq && isKycVerified) ? item.wholesalePrice : item.retailerPrice;
                       const mrpSimulated = item.mrp || Math.round(price * 1.35);
                       const discountPct = Math.round(((mrpSimulated - price) / mrpSimulated) * 100);
 
@@ -532,7 +533,7 @@ export default function Navbar() {
                               <Link
                                 href={`/products/${item.productId}`}
                                 onClick={() => setCartOpen(false)}
-                                className="hover:text-indigo-600 transition duration-150"
+                                className="hover:text-indigo-650 transition duration-150"
                               >
                                 <h4 className="font-semibold text-slate-800 text-xs line-clamp-2 leading-relaxed hover:underline">{item.name}</h4>
                               </Link>
@@ -545,13 +546,17 @@ export default function Navbar() {
                               </div>
                               
                               {/* Slabs Tag */}
-                              {item.quantity >= 20 ? (
+                              {item.quantity >= item.moq && isKycVerified ? (
                                 <span className="inline-block text-[8px] bg-emerald-50 text-emerald-700 font-extrabold px-1.5 py-0.5 rounded border border-emerald-100 uppercase tracking-wider">
                                   Bulk Rate Applied
                                 </span>
+                              ) : item.quantity >= item.moq && !isKycVerified ? (
+                                <span className="inline-block text-[8px] bg-amber-50 text-amber-700 font-extrabold px-1.5 py-0.5 rounded border border-amber-100 uppercase tracking-wider">
+                                  KYC Verification Required for Bulk Rate
+                                </span>
                               ) : (
                                 <span className="inline-block text-[8px] bg-indigo-50 text-indigo-700 font-extrabold px-1.5 py-0.5 rounded border border-indigo-105 uppercase tracking-wider">
-                                  Buy 20+ for Bulk Discount
+                                  Buy {item.moq}+ for Bulk Discount
                                 </span>
                               )}
                             </div>
