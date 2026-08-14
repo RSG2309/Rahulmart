@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { api } from '@/services/api';
-import { ShoppingCart, LogOut, Wallet, Plus, X, CheckCircle, Trash2, ArrowRight, User, ArrowLeft, Home, ShoppingBag } from 'lucide-react';
+import { ShoppingCart, LogOut, Wallet, Plus, X, CheckCircle, Trash2, ArrowRight, User, ArrowLeft, Home, ShoppingBag, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
@@ -14,6 +14,28 @@ export default function Navbar() {
   const { items, isCartOpen, setCartOpen, updateQuantity, removeFromCart, amounts, shippingAddress, couponCode, applyCoupon, removeCoupon } = useCart();
   const router = useRouter();
   const [couponInput, setCouponInput] = useState('');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme as 'light' | 'dark');
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+    if (nextTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
   const [drawerCouponError, setDrawerCouponError] = useState<string | null>(null);
   const [drawerCouponSuccess, setDrawerCouponSuccess] = useState(false);
 
@@ -135,6 +157,15 @@ export default function Navbar() {
                 </button>
               </div>
             )}
+
+            {/* Theme Toggle Trigger */}
+            <button 
+              onClick={toggleTheme}
+              className="p-2 text-white hover:text-white/80 transition focus:outline-none mr-1"
+              title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+            </button>
 
             {/* Shopping Cart Trigger */}
             <button 
