@@ -85,8 +85,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const isKycVerified = user?.kycStatus === 'verified';
     items.forEach(item => {
-      // Tier pricing slab: quantity >= 20 gets wholesalePrice if KYC verified, else retailerPrice
-      const price = (item.quantity >= 20 && isKycVerified) ? item.wholesalePrice : item.retailerPrice;
+      // Tier pricing slab: quantity >= moq gets wholesalePrice if KYC verified, else retailerPrice
+      const price = (item.quantity >= item.moq && isKycVerified) ? item.wholesalePrice : item.retailerPrice;
       const itemGst = 0;
       
       subtotal += price * item.quantity;
@@ -116,8 +116,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const addToCart = (product: any, quantity: number) => {
-    if (quantity < product.moq) {
-      return { success: false, message: `Minimum order quantity (MOQ) for this product is ${product.moq} units.` };
+    if (quantity < 1) {
+      return { success: false, message: 'Quantity must be at least 1.' };
     }
 
     const existingIdx = items.findIndex(item => item.productId === product.id);
@@ -158,8 +158,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     if (idx === -1) return { success: false, message: 'Item not in cart' };
 
     const item = items[idx];
-    if (quantity < item.moq) {
-      return { success: false, message: `Cannot reduce below MOQ of ${item.moq} units.` };
+    if (quantity < 1) {
+      return { success: false, message: 'Quantity must be at least 1.' };
     }
 
     if (quantity > item.stock) {

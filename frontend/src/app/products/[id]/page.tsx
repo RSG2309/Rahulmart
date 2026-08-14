@@ -71,16 +71,16 @@ export default function ProductDetails({ params }: PageProps) {
 
   // Calculate pricing slab details
   const isKycVerified = user?.kycStatus === 'verified';
-  const isBulkSlab = quantity >= 20 && isKycVerified;
+  const isBulkSlab = quantity >= product.moq && isKycVerified;
   const currentPrice = isBulkSlab ? product.wholesalePrice : product.retailerPrice;
   const totalAmount = currentPrice * quantity;
   
   // Calculate potential savings if not in bulk slab yet
-  const qtyToBulk = 20 - quantity;
-  const potentialSavings = (qtyToBulk > 0 && isKycVerified) ? (product.retailerPrice - product.wholesalePrice) * 20 : 0;
+  const qtyToBulk = product.moq - quantity;
+  const potentialSavings = (qtyToBulk > 0 && isKycVerified) ? (product.retailerPrice - product.wholesalePrice) * product.moq : 0;
 
   const handleQtyChange = (val: number) => {
-    if (val < product.moq) val = product.moq;
+    if (val < 1) val = 1;
     if (val > product.stock) val = product.stock;
     setQuantity(val);
   };
@@ -194,7 +194,7 @@ export default function ProductDetails({ params }: PageProps) {
               <div className="bg-slate-50 p-4.5 rounded-2xl border border-slate-200/80 space-y-3.5">
                 <div className="grid grid-cols-2 gap-4">
                   <div 
-                    onClick={() => handleQtyChange(product.moq)}
+                    onClick={() => handleQtyChange(1)}
                     className={`p-3 rounded-xl border text-center transition cursor-pointer hover:border-[#2874f0]/40 ${
                       !isBulkSlab 
                         ? 'bg-blue-50/90 text-[#2874f0] border-[#2874f0]/80 shadow-sm ring-2 ring-[#2874f0]/10 font-bold' 
@@ -203,7 +203,7 @@ export default function ProductDetails({ params }: PageProps) {
                   >
                     <span className={`block text-[9px] font-bold uppercase ${!isBulkSlab ? 'text-[#2874f0]' : 'text-slate-400'}`}>Retailer Rate</span>
                     <span className="text-lg font-extrabold block mt-0.5">₹{product.retailerPrice}</span>
-                    <span className={`block text-[9px] mt-0.5 ${!isBulkSlab ? 'text-[#2874f0]/80' : 'text-slate-400'}`}>Quantity &lt; 20</span>
+                    <span className={`block text-[9px] mt-0.5 ${!isBulkSlab ? 'text-[#2874f0]/80' : 'text-slate-400'}`}>Quantity &lt; {product.moq}</span>
                   </div>
                   
                   <div 
@@ -213,7 +213,7 @@ export default function ProductDetails({ params }: PageProps) {
                       } else if (!isKycVerified) {
                         router.push('/profile');
                       } else {
-                        handleQtyChange(20);
+                        handleQtyChange(product.moq);
                       }
                     }}
                     className={`p-3 rounded-xl border text-center transition cursor-pointer hover:border-indigo-350/40 ${
