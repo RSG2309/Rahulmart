@@ -304,13 +304,13 @@ export default function Home() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 animate-pulse h-80"></div>
+                <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 animate-pulse h-85"></div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {products.map((product) => (
                 <div key={product.id} className="group bg-white rounded-3xl border border-slate-200/85 hover:border-blue-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
                   <Link href={`/products/${product.id}`} className="block">

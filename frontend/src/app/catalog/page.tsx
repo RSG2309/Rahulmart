@@ -235,7 +235,7 @@ function CatalogContent() {
             </div>
 
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
                 {[...Array(6)].map((_, i) => (
                   <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 animate-pulse h-80"></div>
                 ))}
@@ -247,7 +247,7 @@ function CatalogContent() {
                 <p className="text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">We couldn\'t find any listings matching your search parameters. Try choosing staples or packaging.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
                 {[...products]
                   .sort((a, b) => {
                     if (sortBy === 'priceAsc') return a.retailerPrice - b.retailerPrice;

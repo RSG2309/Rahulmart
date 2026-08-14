@@ -132,8 +132,8 @@ export default function Navbar() {
           </form>
 
           {/* Center/Right Nav links */}
-          <nav className="flex items-center gap-5">
-            <Link href="/catalog" className="text-sm font-semibold text-white/90 hover:text-white transition hover:underline">
+          <nav className="flex items-center gap-2 sm:gap-5">
+            <Link href="/catalog" className="hidden sm:inline text-sm font-semibold text-white/90 hover:text-white transition hover:underline">
               Catalog
             </Link>
 
