@@ -3,6 +3,10 @@ import { useJsonDb } from '../config/db';
 import { JsonDb } from '../utils/jsonDb';
 import { IUser, ICategory, IProduct, IOrder, ICoupon, ITransaction, IAuditLog, IBlockedIp } from './types';
 
+// Enable virtuals globally for all schemas to automatically populate the "id" field in JSON responses
+mongoose.set('toJSON', { virtuals: true });
+mongoose.set('toObject', { virtuals: true });
+
 // ==========================================
 // 1. MONGOOSE SCHEMA DEFINITIONS
 // ==========================================
@@ -416,6 +420,9 @@ export const ProductModel = {
     if (useJsonDb) {
       seedLocalData();
       return localProducts.findOne(item => item.id === id);
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return MongooseProduct.findOne({ sku: id });
     }
     return MongooseProduct.findById(id);
   },

@@ -30,7 +30,7 @@ export default function Home() {
     {
       image: '/demo2.jpeg',
       title: 'Cosmetics Care',
-      link: '/products/t3n16sg2p'
+      link: '/catalog?category=cosmetic'
     },
     {
       image: '/banner1.jpg',
