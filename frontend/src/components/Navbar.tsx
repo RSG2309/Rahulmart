@@ -15,6 +15,14 @@ export default function Navbar() {
   const router = useRouter();
   const [couponInput, setCouponInput] = useState('');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+
+  useEffect(() => {
+    if (!showProfileDropdown) return;
+    const closeDropdown = () => setShowProfileDropdown(false);
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, [showProfileDropdown]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -182,8 +190,16 @@ export default function Navbar() {
 
             {/* Amazon-style Profile/Account Dropdown */}
             {user ? (
-              <div className="relative group/profile flex items-center ml-2 border-l border-blue-400/50 pl-4">
-                <div className="cursor-pointer flex items-center gap-1.5 py-2 text-white hover:opacity-90 transition">
+              <div className="relative flex items-center ml-2 border-l border-blue-400/50 pl-4">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowProfileDropdown(!showProfileDropdown);
+                  }}
+                  className="cursor-pointer flex items-center gap-1.5 py-2 text-white hover:opacity-90 transition focus:outline-none"
+                  aria-expanded={showProfileDropdown}
+                  aria-haspopup="true"
+                >
                   <div className="w-8 h-8 bg-blue-700/60 rounded-full flex items-center justify-center text-white border border-blue-500/30 shadow-sm">
                     <User size={15} />
                   </div>
@@ -196,10 +212,12 @@ export default function Navbar() {
                       </svg>
                     </span>
                   </div>
-                </div>
+                </button>
 
                 {/* Amazon-style Flyout Dropdown Panel */}
-                <div className="absolute right-0 top-full pt-1.5 w-64 opacity-0 invisible group-hover/profile:opacity-100 group-hover/profile:visible transition-all duration-200 z-50">
+                <div className={`absolute right-0 top-full pt-1.5 w-64 transition-all duration-200 z-50 ${
+                  showProfileDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
+                }`}>
                   <div className="bg-white border border-slate-200/80 rounded-2xl shadow-2xl p-4 text-left text-slate-800 relative before:content-[''] before:absolute before:top-[-6px] before:right-6 before:w-3 before:h-3 before:bg-white before:rotate-45 before:border-l before:border-t before:border-slate-200 flex flex-col gap-3.5">
                     
                     {/* User Info Header */}
