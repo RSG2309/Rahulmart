@@ -56,7 +56,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [couponCode, setCouponCode] = useState('');
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [pincode, setPincodeState] = useState('845307');
-  const [paymentMethod, setPaymentMethodState] = useState<'online' | 'cod' | 'wallet'>('online');
+  const [paymentMethod, setPaymentMethodState] = useState<'online' | 'cod' | 'wallet'>('cod');
   const [shippingAddress, setShippingAddress] = useState('');
   const [isCartOpen, setCartOpen] = useState(false);
 
@@ -252,7 +252,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     saveCart([]);
     removeCoupon();
     setPincodeState('845307');
-    setPaymentMethodState('online');
+    setPaymentMethodState('cod');
   };
 
   const placeOrder = async () => {

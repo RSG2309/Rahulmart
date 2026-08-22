@@ -230,22 +230,8 @@ export default function Checkout() {
 
                 {step === 2 && (
                   <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       
-                      {/* Mode 1: Online Payments */}
-                      <button
-                        onClick={() => handleSelectPaymentMethod('online')}
-                        className={`p-4 rounded-xl border text-left transition flex flex-col justify-between h-28 ${
-                          paymentMethod === 'online'
-                            ? 'border-[#2874f0] bg-blue-50/10 ring-2 ring-blue-500/10'
-                            : 'border-slate-200 hover:bg-slate-50'
-                        }`}
-                      >
-                        <span className="font-bold text-slate-800 text-xs">Simulated Online Gateways</span>
-                        <span className="text-[10px] text-slate-500 leading-tight">Pay via simulated Credit Card, UPI QR, or Netbanking.</span>
-                        <span className="text-[10px] text-[#2874f0] font-extrabold uppercase mt-1">Instant Activation</span>
-                      </button>
-
                       {/* Mode 2: Cash On Collect Order */}
                       <button
                         onClick={() => handleSelectPaymentMethod('cod')}
