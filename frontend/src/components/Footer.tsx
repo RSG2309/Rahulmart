@@ -47,10 +47,10 @@ export default function Footer() {
             
             <div className="space-y-4">
               <span className="text-lg font-extrabold text-white tracking-wider uppercase">
-                Vishal <span className="text-indigo-400">Store</span>
+                Rahul <span className="text-indigo-400">Super Mart</span>
               </span>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Premium B2B market connecting local grocers, supermarkets, and electronics retailers directly with top manufacturing brands.
+                हर तरह का सामान एक ही जगह — अच्छे दाम, भरोसेमंद सामान और बेहतरीन ब्रांड। किराना दुकानदारों, सुपरमार्केट और दूसरे कारोबारियों के लिए आसान और भरोसेमंद खरीदारी।
               </p>
               <div className="flex gap-3">
                 <a
