@@ -1228,10 +1228,9 @@ export default function AdminDashboard() {
                               </select>
                             </div>
                             <div>
-                              <label className="block text-[10px] font-bold text-slate-500 uppercase">Weight (Kg)</label>
+                              <label className="block text-[10px] font-bold text-slate-500 uppercase">Weight (Kg) <span className="text-slate-400 text-[8px] font-normal lowercase">(optional)</span></label>
                               <input
                                 type="number"
-                                required
                                 min="0.1"
                                 step="0.1"
                                 value={newProductData.weight}
@@ -1302,10 +1301,9 @@ export default function AdminDashboard() {
                               />
                             </div>
                             <div>
-                              <label className="block text-[10px] font-bold text-slate-500 uppercase">Sort Order (Priority)</label>
+                              <label className="block text-[10px] font-bold text-slate-500 uppercase">Sort Order (Priority) <span className="text-slate-400 text-[8px] font-normal lowercase">(optional)</span></label>
                               <input
                                 type="number"
-                                required
                                 value={newProductData.sortOrder}
                                 onChange={(e) => setNewProductData({...newProductData, sortOrder: e.target.value})}
                                 placeholder="1000"
@@ -1457,10 +1455,9 @@ export default function AdminDashboard() {
                               />
                             </div>
                             <div>
-                              <label className="block text-[9px] font-bold text-slate-500 uppercase">Weight (kg)</label>
+                              <label className="block text-[9px] font-bold text-slate-500 uppercase">Weight (kg) <span className="text-slate-400 text-[8px] font-normal lowercase">(optional)</span></label>
                               <input
                                 type="number"
-                                required
                                 value={editProductData.weight}
                                 onChange={(e) => setEditProductData({...editProductData, weight: e.target.value})}
                                 className="w-full bg-white border border-slate-200 text-slate-900 rounded-lg px-2 py-1.5 text-xs focus:outline-none"
@@ -1502,10 +1499,9 @@ export default function AdminDashboard() {
                               />
                             </div>
                             <div>
-                              <label className="block text-[9px] font-bold text-slate-500 uppercase">Priority Order</label>
+                              <label className="block text-[9px] font-bold text-slate-500 uppercase">Priority Order <span className="text-slate-400 text-[8px] font-normal lowercase">(optional)</span></label>
                               <input
                                 type="number"
-                                required
                                 value={editProductData.sortOrder}
                                 onChange={(e) => setEditProductData({...editProductData, sortOrder: e.target.value})}
                                 className="w-full bg-white border border-slate-200 text-slate-900 rounded-lg px-2 py-1.5 text-xs focus:outline-none"

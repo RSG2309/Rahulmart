@@ -53,7 +53,7 @@ const ProductSchema = new Schema<IProduct>({
   gstPercentage: { type: Number, required: true },
   moq: { type: Number, default: 1 },
   stock: { type: Number, default: 0 },
-  weight: { type: Number, required: true },
+  weight: { type: Number, default: 1 },
   unit: { type: String, enum: ['Piece', 'Box', 'Carton'], default: 'Piece' },
   specifications: [{ key: String, value: String }],
   isActive: { type: Boolean, default: true },

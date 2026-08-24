@@ -87,7 +87,7 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
   try {
     const { name, sku, brand, category, description, mrp, wholesalePrice, retailerPrice, discount, gstPercentage, moq, stock, weight, unit, specifications, sortOrder } = req.body;
 
-    if (!name || !sku || !brand || !category || !mrp || !wholesalePrice || !retailerPrice || !gstPercentage || !weight) {
+    if (!name || !sku || !brand || !category || !mrp || !wholesalePrice || !retailerPrice || !gstPercentage) {
       return res.status(400).json({ success: false, message: 'Please provide all mandatory product parameters' });
     }
 
@@ -110,7 +110,7 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
       gstPercentage,
       moq: moq || 1,
       stock: stock || 0,
-      weight,
+      weight: weight !== undefined && weight !== null ? Number(weight) : 1,
       unit: unit || 'Piece',
       specifications: specifications || [],
       isActive: req.body.isActive !== undefined ? req.body.isActive : true,
