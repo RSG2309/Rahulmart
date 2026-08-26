@@ -196,8 +196,8 @@ router.post('/coupons/validate', authenticateJWT, async (req, res) => {
         )) {
           hasCategoryItems = true;
           // Calculate item price excluding tax
-          const itemPrice = item.quantity >= 20 ? item.wholesalePrice : item.retailerPrice;
-          const itemExcludingTax = (itemPrice * item.quantity) / (1 + (item.gstPercentage || 18) / 100);
+          const itemPrice = item.quantity >= (product.moq !== undefined ? product.moq : 1) ? product.wholesalePrice : product.retailerPrice;
+          const itemExcludingTax = (itemPrice * item.quantity) / (1 + (product.gstPercentage || 18) / 100);
           targetCategoryExcludingTax += itemExcludingTax;
         }
       }
@@ -225,10 +225,13 @@ router.post('/coupons/validate', authenticateJWT, async (req, res) => {
       for (const item of items) {
         if (item.productId === coupon.restrictedProductId) {
           hasProductItems = true;
-          // Calculate item price excluding tax
-          const itemPrice = item.quantity >= 20 ? item.wholesalePrice : item.retailerPrice;
-          const itemExcludingTax = (itemPrice * item.quantity) / (1 + (item.gstPercentage || 18) / 100);
-          targetProductExcludingTax += itemExcludingTax;
+          const product = await ProductModel.findById(item.productId);
+          if (product) {
+            // Calculate item price excluding tax
+            const itemPrice = item.quantity >= (product.moq !== undefined ? product.moq : 1) ? product.wholesalePrice : product.retailerPrice;
+            const itemExcludingTax = (itemPrice * item.quantity) / (1 + (product.gstPercentage || 18) / 100);
+            targetProductExcludingTax += itemExcludingTax;
+          }
         }
       }
 

@@ -78,6 +78,37 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('b2b_cart', JSON.stringify(newItems));
   };
 
+  // Re-validate coupon whenever items or paymentMethod changes
+  useEffect(() => {
+    if (!couponCode) return;
+    const revalidate = async () => {
+      let subtotal = 0;
+      const isKycVerified = user?.kycStatus === 'verified';
+      items.forEach(item => {
+        const price = (item.quantity >= item.moq && isKycVerified) ? item.wholesalePrice : item.retailerPrice;
+        subtotal += price * item.quantity;
+      });
+
+      try {
+        const res = await api.post('/coupons/validate', { 
+          code: couponCode, 
+          subtotal, 
+          paymentMethod, 
+          items: items.map(item => ({ productId: item.productId, quantity: item.quantity })) 
+        });
+        if (res.success) {
+          setCouponDiscount(res.discountAmount || 0);
+        } else {
+          setCouponCode('');
+          setCouponDiscount(0);
+        }
+      } catch (e) {
+        console.error('Error revalidating coupon:', e);
+      }
+    };
+    revalidate();
+  }, [items, paymentMethod]);
+
   // Re-calculate totals whenever items, paymentMethod, or couponCode changes
   const calculateTotals = () => {
     let subtotal = 0;
@@ -98,7 +129,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     
     // Recalculate discount based on new subtotal
     let finalDiscount = couponDiscount;
-    if (couponCode && subtotal < 5000) {
+    if (couponCode && couponCode.toUpperCase() === 'WELCOMEB2B' && subtotal < 5000) {
       // Auto revoke welcome coupon if order drops below threshold
       finalDiscount = 0;
     }
