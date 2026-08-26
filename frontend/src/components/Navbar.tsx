@@ -637,7 +637,7 @@ export default function Navbar() {
                             type="text"
                             value={couponInput}
                             onChange={(e) => setCouponInput(e.target.value)}
-                            placeholder="WELCOMEB2B"
+                            placeholder="Enter coupon code"
                             className="flex-grow bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 uppercase transition"
                           />
                           <button type="submit" className="bg-slate-900 text-white hover:bg-slate-800 px-4 py-1.5 rounded-lg text-xs font-bold transition">

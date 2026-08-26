@@ -99,7 +99,7 @@ export default function Register() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="owner@store.com"
+                  placeholder="Enter your email address"
                   className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                 />
               </div>
@@ -159,7 +159,7 @@ export default function Register() {
                 rows={2}
                 value={formData.businessAddress}
                 onChange={handleChange}
-                placeholder="5th Cross, Indiranagar, Bengaluru, Karnataka"
+                placeholder="Enter full physical business/shop address"
                 className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               />
             </div>
