@@ -133,7 +133,7 @@ export default function Register() {
                   name="businessName"
                   value={formData.businessName}
                   onChange={handleChange}
-                  placeholder="Vikas General Store"
+                  placeholder="Enter your shop name"
                   className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                 />
               </div>
@@ -145,7 +145,7 @@ export default function Register() {
                   name="ownerName"
                   value={formData.ownerName}
                   onChange={handleChange}
-                  placeholder="Vikas Kumar"
+                  placeholder="Enter owner's full name"
                   className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                 />
               </div>

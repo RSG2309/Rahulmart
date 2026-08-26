@@ -149,7 +149,7 @@ export default function KYCProfile() {
                   name="businessName"
                   value={formData.businessName}
                   onChange={handleChange}
-                  placeholder="Vikas General Store"
+                  placeholder="Enter your shop name"
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition"
                 />
               </div>
@@ -161,7 +161,7 @@ export default function KYCProfile() {
                   name="ownerName"
                   value={formData.ownerName}
                   onChange={handleChange}
-                  placeholder="Vikas Kumar"
+                  placeholder="Enter owner's full name"
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition"
                 />
               </div>
@@ -175,7 +175,7 @@ export default function KYCProfile() {
                 rows={2}
                 value={formData.businessAddress}
                 onChange={handleChange}
-                placeholder="Indiranagar, Bengaluru, Karnataka"
+                placeholder="Enter full physical business address"
                 className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition"
               />
             </div>
@@ -188,7 +188,7 @@ export default function KYCProfile() {
                   name="gstNumber"
                   value={formData.gstNumber}
                   onChange={handleChange}
-                  placeholder="e.g. 22AAAAA0000A1Z5"
+                  placeholder="Enter 15-digit GSTIN number"
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition uppercase"
                 />
               </div>
@@ -200,7 +200,7 @@ export default function KYCProfile() {
                   name="panNumber"
                   value={formData.panNumber}
                   onChange={handleChange}
-                  placeholder="e.g. ABCDE1234F"
+                  placeholder="Enter 10-digit PAN number"
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition uppercase"
                 />
               </div>
