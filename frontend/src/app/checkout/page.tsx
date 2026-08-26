@@ -243,7 +243,7 @@ export default function Checkout() {
                       >
                         <span className="font-bold text-slate-800 text-xs">Cash On Collect Order</span>
                         <span className="text-[10px] text-slate-500 leading-tight">Verify delivery with OTP code. Pay cash to agent upon arrival.</span>
-                        <span className="text-[10px] text-[#2874f0] font-extrabold uppercase mt-1">Product Pick By V.Store</span>
+                        <span className="text-[10px] text-[#2874f0] font-extrabold uppercase mt-1">Product Pick By R.S. Mart</span>
                       </button>
 
                       {/* Mode 3: Wallet Ledger */}
