@@ -63,7 +63,8 @@ export default function AdminDashboard() {
     gstPercentage: '',
     sortOrder: '1000',
     expiryDate: '',
-    isOfferZone: false
+    isOfferZone: false,
+    imageUrl: ''
   });
 
   // Verify Delivery OTP state
@@ -360,7 +361,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: 'new' | 'edit' = 'new') => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -375,7 +376,11 @@ export default function AdminDashboard() {
             fileName: file.name
           });
           if (res.success && res.imageUrl) {
-            setNewProductData((prev) => ({ ...prev, imageUrl: res.imageUrl }));
+            if (target === 'edit') {
+              setEditProductData((prev) => ({ ...prev, imageUrl: res.imageUrl }));
+            } else {
+              setNewProductData((prev) => ({ ...prev, imageUrl: res.imageUrl }));
+            }
             showFeedback('success', 'Image uploaded successfully!');
           } else {
             showFeedback('error', res.message || 'Upload failed.');
@@ -443,6 +448,7 @@ export default function AdminDashboard() {
         gstPercentage: Number(editProductData.gstPercentage),
         sortOrder: Number(editProductData.sortOrder || 1000),
         isOfferZone: !!editProductData.isOfferZone,
+        images: editProductData.imageUrl ? [editProductData.imageUrl] : [],
         specifications: editProductData.expiryDate 
           ? [{ key: 'Expiry Date', value: editProductData.expiryDate }] 
           : []
@@ -1112,7 +1118,8 @@ export default function AdminDashboard() {
                                       gstPercentage: String(p.gstPercentage || 18),
                                       sortOrder: String(p.sortOrder !== undefined ? p.sortOrder : 1000),
                                       expiryDate: p.specifications?.find((s: any) => s.key === 'Expiry Date')?.value || '',
-                                      isOfferZone: !!p.isOfferZone
+                                      isOfferZone: !!p.isOfferZone,
+                                      imageUrl: p.images?.[0] || ''
                                     });
                                   }}
                                   className="text-indigo-650 hover:underline font-bold text-xs"
@@ -1432,6 +1439,27 @@ export default function AdminDashboard() {
                               onChange={(e) => setEditProductData({...editProductData, description: e.target.value})}
                               className="w-full bg-white border border-slate-200 text-slate-900 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 h-16 resize-none"
                             />
+                          </div>
+
+                          <div>
+                            <label className="block text-[9px] font-bold text-slate-500 uppercase">
+                              Product Image {imageUploading ? '(Uploading...)' : ''}
+                            </label>
+                            <div className="space-y-1.5 mt-1">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleImageUpload(e, 'edit')}
+                                className="w-full text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[9px] file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
+                              />
+                              <input
+                                type="text"
+                                value={editProductData.imageUrl}
+                                onChange={(e) => setEditProductData({...editProductData, imageUrl: e.target.value})}
+                                placeholder="Or paste image URL here"
+                                className="w-full bg-white border border-slate-200 text-slate-900 rounded-lg px-2 py-1.5 text-xs focus:outline-none"
+                              />
+                            </div>
                           </div>
 
                           <div className="grid grid-cols-3 gap-1.5">
