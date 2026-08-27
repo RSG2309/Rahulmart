@@ -5,11 +5,11 @@ import { AuthRequest } from '../middleware/auth';
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const { category, brand, search } = req.query;
+    const { category, brand, search, isOfferZone } = req.query;
     
     // Check cache first for simple listings
     const includeInactive = req.query.includeInactive === 'true';
-    const cacheKey = `products:cat_${category || ''}:br_${brand || ''}:s_${search || ''}:inc_${includeInactive}`;
+    const cacheKey = `products:cat_${category || ''}:br_${brand || ''}:s_${search || ''}:inc_${includeInactive}:oz_${isOfferZone || ''}`;
     const cachedData = await cacheService.get(cacheKey);
     
     if (cachedData) {
@@ -32,6 +32,10 @@ export const getProducts = async (req: Request, res: Response) => {
     }
     if (brand) {
       products = products.filter(p => p.brand.toLowerCase() === (brand as string).toLowerCase());
+    }
+    if (isOfferZone !== undefined) {
+      const showOffers = isOfferZone === 'true';
+      products = products.filter(p => p.isOfferZone === showOffers);
     }
     if (search) {
       const s = (search as string).toLowerCase();
@@ -85,7 +89,7 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: AuthRequest, res: Response) => {
   try {
-    const { name, sku, brand, category, description, mrp, wholesalePrice, retailerPrice, discount, gstPercentage, moq, stock, weight, unit, specifications, sortOrder } = req.body;
+    const { name, sku, brand, category, description, mrp, wholesalePrice, retailerPrice, discount, gstPercentage, moq, stock, weight, unit, specifications, sortOrder, isOfferZone } = req.body;
 
     if (!name || !sku || !brand || !category || !mrp || !wholesalePrice || !retailerPrice || !gstPercentage) {
       return res.status(400).json({ success: false, message: 'Please provide all mandatory product parameters' });
@@ -114,7 +118,8 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
       unit: unit || 'Piece',
       specifications: specifications || [],
       isActive: req.body.isActive !== undefined ? req.body.isActive : true,
-      sortOrder: sortOrder !== undefined ? Number(sortOrder) : 1000
+      sortOrder: sortOrder !== undefined ? Number(sortOrder) : 1000,
+      isOfferZone: isOfferZone === true || isOfferZone === 'true' || false
     });
 
     await AuditLogModel.create({

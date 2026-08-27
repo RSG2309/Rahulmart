@@ -49,6 +49,7 @@ function CatalogContent() {
         let endpoint = '/products?';
         if (selectedCategory) endpoint += `category=${selectedCategory}&`;
         if (searchQuery) endpoint += `search=${searchQuery}&`;
+        if (searchParams.get('offerZone') === 'true') endpoint += `isOfferZone=true&`;
 
         const prodRes = await api.get(endpoint);
         if (prodRes.success) {
@@ -233,6 +234,24 @@ function CatalogContent() {
                 Clear Filters
               </button>
             </div>
+
+            {searchParams.get('offerZone') === 'true' && (
+              <div className="mb-6 p-4 bg-amber-500/10 border border-amber-250/70 rounded-2xl flex items-center justify-between text-left">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="text-amber-600 animate-pulse flex-shrink-0" size={16} />
+                  <div>
+                    <h4 className="font-bold text-amber-800 text-xs">Offer Zone Active</h4>
+                    <p className="text-[10px] text-amber-700 font-semibold mt-0.5">Showing exclusive homepage hot deals with special discounted pricing.</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => { setSelectedCategory(''); setSearchQuery(''); setSortBy('default'); router.push('/catalog'); }}
+                  className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] px-3.5 py-1.5 rounded-lg shadow-sm transition whitespace-nowrap"
+                >
+                  Show All Products
+                </button>
+              </div>
+            )}
 
             {loading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">

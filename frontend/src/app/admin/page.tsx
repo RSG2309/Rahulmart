@@ -62,7 +62,8 @@ export default function AdminDashboard() {
     unit: 'Piece',
     gstPercentage: '',
     sortOrder: '1000',
-    expiryDate: ''
+    expiryDate: '',
+    isOfferZone: false
   });
 
   // Verify Delivery OTP state
@@ -89,7 +90,8 @@ export default function AdminDashboard() {
     gstPercentage: '18',
     weight: '1',
     sortOrder: '1000',
-    expiryDate: ''
+    expiryDate: '',
+    isOfferZone: false
   });
 
   const handleCreateCoupon = async (e: React.FormEvent) => {
@@ -440,6 +442,7 @@ export default function AdminDashboard() {
         unit: editProductData.unit,
         gstPercentage: Number(editProductData.gstPercentage),
         sortOrder: Number(editProductData.sortOrder || 1000),
+        isOfferZone: !!editProductData.isOfferZone,
         specifications: editProductData.expiryDate 
           ? [{ key: 'Expiry Date', value: editProductData.expiryDate }] 
           : []
@@ -478,6 +481,7 @@ export default function AdminDashboard() {
           ? [newProductData.imageUrl] 
           : ['https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80'],
         sortOrder: Number(newProductData.sortOrder || 1000),
+        isOfferZone: !!newProductData.isOfferZone,
         specifications: newProductData.expiryDate 
           ? [{ key: 'Expiry Date', value: newProductData.expiryDate }] 
           : []
@@ -501,7 +505,8 @@ export default function AdminDashboard() {
           gstPercentage: '18',
           weight: '1',
           sortOrder: '1000',
-          expiryDate: ''
+          expiryDate: '',
+          isOfferZone: false
         });
         setShowAddProductForm(false);
         loadData();
@@ -1061,6 +1066,11 @@ export default function AdminDashboard() {
                                       Hidden
                                     </span>
                                   )}
+                                  {p.isOfferZone === true && (
+                                    <span className="bg-indigo-100 text-indigo-800 text-[9px] font-bold px-1.5 py-0.5 rounded border border-indigo-200 uppercase">
+                                      Offer Zone
+                                    </span>
+                                  )}
                                 </div>
                                 <span className="text-[10px] text-slate-400 block mt-0.5">
                                   SKU: {p.sku} | MOQ: {p.moq} | {p.weight || 1}kg | {p.gstPercentage || 18}% GST
@@ -1101,7 +1111,8 @@ export default function AdminDashboard() {
                                       unit: p.unit || 'Piece',
                                       gstPercentage: String(p.gstPercentage || 18),
                                       sortOrder: String(p.sortOrder !== undefined ? p.sortOrder : 1000),
-                                      expiryDate: p.specifications?.find((s: any) => s.key === 'Expiry Date')?.value || ''
+                                      expiryDate: p.specifications?.find((s: any) => s.key === 'Expiry Date')?.value || '',
+                                      isOfferZone: !!p.isOfferZone
                                     });
                                   }}
                                   className="text-indigo-650 hover:underline font-bold text-xs"
@@ -1323,6 +1334,19 @@ export default function AdminDashboard() {
                             />
                           </div>
 
+                          <div className="flex items-center gap-2 pt-1">
+                            <input
+                              type="checkbox"
+                              id="addIsOfferZone"
+                              checked={!!newProductData.isOfferZone}
+                              onChange={(e) => setNewProductData({...newProductData, isOfferZone: e.target.checked})}
+                              className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5"
+                            />
+                            <label htmlFor="addIsOfferZone" className="text-[11px] font-bold text-slate-700 select-none">
+                              Showcase in Offer Zone on Homepage
+                            </label>
+                          </div>
+
                           <div className="flex gap-2 justify-end pt-2">
                             <button
                               type="button"
@@ -1518,6 +1542,19 @@ export default function AdminDashboard() {
                               placeholder="e.g. Dec 2026, 31/12/2026, or Best Before 12 Months"
                               className="w-full bg-white border border-slate-200 text-slate-900 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none"
                             />
+                          </div>
+
+                          <div className="flex items-center gap-2 pt-1">
+                            <input
+                              type="checkbox"
+                              id="editIsOfferZone"
+                              checked={!!editProductData.isOfferZone}
+                              onChange={(e) => setEditProductData({...editProductData, isOfferZone: e.target.checked})}
+                              className="rounded border-slate-350 text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5"
+                            />
+                            <label htmlFor="editIsOfferZone" className="text-[10px] font-bold text-slate-700 select-none">
+                              Showcase in Offer Zone on Homepage
+                            </label>
                           </div>
                         </div>
 

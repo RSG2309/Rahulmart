@@ -66,7 +66,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const prodRes = await api.get('/products');
-        if (prodRes.success) setProducts(prodRes.products.slice(0, 4));
+        if (prodRes.success) setProducts(prodRes.products);
         
         const catRes = await api.get('/categories');
         if (catRes.success) setCategories(catRes.categories);
@@ -290,6 +290,123 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 2.9 Offer Zone */}
+      {!loading && products.filter(p => p.isOfferZone === true).length > 0 && (
+        <section className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+          <div className="bg-amber-500/5 p-6 rounded-2xl border border-amber-200/65 shadow-sm">
+            <div className="flex justify-between items-end mb-8 text-left">
+              <div>
+                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <Sparkles className="text-amber-500 fill-amber-500 stroke-[2.5]" size={20} />
+                  Offer Zone
+                </h2>
+                <p className="text-xs text-slate-500 mt-1">Super discounted prices on hot wholesale deals.</p>
+              </div>
+              <Link href="/catalog?offerZone=true" className="text-sm font-bold text-amber-600 hover:text-amber-700 inline-flex items-center gap-1 transition">
+                View All Offers <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+              {products.filter(p => p.isOfferZone === true).slice(0, 4).map((product) => (
+                <div key={product.id} className="group bg-white rounded-3xl border border-slate-200/85 hover:border-amber-300 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
+                  <Link href={`/products/${product.id}`} className="block">
+                    <div className="p-4 relative bg-slate-50/50">
+                      {(() => {
+                        const mrp = Number(product.mrp || 0);
+                        if (mrp <= 0) return null;
+                        
+                        const isVerifiedRetailer = user && user.kycStatus === 'verified';
+                        const targetPrice = isVerifiedRetailer 
+                          ? Number(product.wholesalePrice || 0) 
+                          : Number(product.retailerPrice || 0);
+                          
+                        if (targetPrice <= 0 || targetPrice >= mrp) return null;
+                        
+                        const calculatedDiscount = Math.round(((mrp - targetPrice) / mrp) * 100);
+                        if (calculatedDiscount <= 0) return null;
+                        
+                        return (
+                          <span className="absolute top-4 left-4 z-10 bg-amber-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
+                            {calculatedDiscount}% OFF
+                          </span>
+                        );
+                      })()}
+                      {product.stock <= 0 && (
+                        <span className="absolute top-4 right-4 z-10 bg-rose-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                          Out of Stock
+                        </span>
+                      )}
+                      <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-40">
+                        <img
+                          src={getImageUrl(product.images?.[0])}
+                          alt={product.name}
+                          className="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                  
+                  <div className="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                      <span className="text-[10px] text-amber-600 font-extrabold uppercase tracking-widest block">{product.brand}</span>
+                      <Link href={`/products/${product.id}`} className="font-extrabold text-slate-800 text-sm mt-1 line-clamp-2 h-10 hover:text-amber-600 transition-colors block">
+                        {product.name}
+                      </Link>
+                      <p className="text-slate-400 text-[10px] mt-1 font-semibold">MOQ: {product.moq} {product.unit}s</p>
+                      
+                      <div className="mt-4 bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center justify-between text-[11px] gap-2 flex-wrap">
+                        <div className="text-left">
+                          <span className="text-[8px] text-slate-400 uppercase font-bold block">MRP</span>
+                          <span className="text-slate-400 line-through font-semibold">₹{product.mrp}</span>
+                        </div>
+                        <div className="text-left">
+                          <span className="text-[8px] text-slate-400 uppercase font-bold block">Retail</span>
+                          <span className="font-bold text-slate-700">₹{product.retailerPrice}</span>
+                        </div>
+                        <div className="text-right bg-amber-50/55 px-3 py-1.5 rounded-xl border border-amber-100/50">
+                          <span className="text-[9px] text-amber-600 uppercase font-black block">Bulk Rate</span>
+                          {user ? (
+                            user.kycStatus === 'verified' ? (
+                              <span className="font-black text-amber-600 text-sm">₹{product.wholesalePrice}</span>
+                            ) : (
+                              <Link href="/profile" className="text-[9px] font-bold text-amber-600 hover:underline block mt-0.5 whitespace-nowrap leading-none">
+                                🔒 KYC Pending
+                              </Link>
+                            )
+                          ) : (
+                            <Link href="/auth/login" className="text-[10px] font-bold text-[#fb641b] hover:underline block mt-0.5 whitespace-nowrap">
+                              🔒 Login to see
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {product.stock <= 0 ? (
+                      <button
+                        disabled
+                        className="w-full mt-5 bg-slate-100 border border-slate-300 text-slate-400 font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
+                      >
+                        ⚠️ Out of Stock
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleQuickAdd(product)}
+                        className="w-full mt-5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md shadow-amber-500/10 hover:shadow-amber-500/20 flex items-center justify-center gap-1.5"
+                      >
+                        <ShoppingCart size={13} /> Add Product
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 3. Featured Deals */}
       <section className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
@@ -304,14 +421,14 @@ export default function Home() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-              {[...Array(4)].map((_, i) => (
+            <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-6">
+              {[...Array(6)].map((_, i) => (
                 <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 animate-pulse h-85"></div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-              {products.map((product) => (
+            <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-6">
+              {products.slice(0, 6).map((product) => (
                 <div key={product.id} className="group bg-white rounded-3xl border border-slate-200/85 hover:border-blue-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
                   <Link href={`/products/${product.id}`} className="block">
                     <div className="p-4 relative bg-slate-50/50">

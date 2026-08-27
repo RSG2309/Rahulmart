@@ -57,7 +57,8 @@ const ProductSchema = new Schema<IProduct>({
   unit: { type: String, enum: ['Piece', 'Box', 'Carton'], default: 'Piece' },
   specifications: [{ key: String, value: String }],
   isActive: { type: Boolean, default: true },
-  sortOrder: { type: Number, default: 1000 }
+  sortOrder: { type: Number, default: 1000 },
+  isOfferZone: { type: Boolean, default: false }
 }, { timestamps: true });
 
 const OrderSchema = new Schema<IOrder>({
