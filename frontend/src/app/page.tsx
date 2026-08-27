@@ -527,34 +527,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Why Choose Us */}
-      <section className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm text-left">
-          <div className="text-center max-w-xl mx-auto mb-12">
-            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Structured Shop Sourcing</h2>
-            <p className="text-xs text-slate-500 mt-2">Engineered strictly for retail merchants, shop owners, and bulk store buyers.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="p-6 rounded-xl border border-slate-100 bg-slate-50/50">
-              <h4 className="font-bold text-slate-800">Priority Delivery</h4>
-              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed font-semibold">Get quick delivery of your bulk groceries, cosmetics, and shop essentials across Sikta Bazar.</p>
-            </div>
-            <div className="p-6 rounded-xl border border-slate-100 bg-slate-50/50">
-              <h4 className="font-bold text-slate-800">Moq Pricing Slab</h4>
-              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">Trigger bulk pricing discounts automatically inside the cart when order quantity exceeds 20 units.</p>
-            </div>
-            <div className="p-6 rounded-xl border border-slate-100 bg-slate-50/50">
-              <h4 className="font-bold text-slate-800">Digital Wallet Ledger</h4>
-              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">Instantly fund order returns back into your wallet, enabling frictionless reordering capabilities.</p>
-            </div>
-            <div className="p-6 rounded-xl border border-slate-100 bg-slate-50/50">
-              <h4 className="font-bold text-slate-800">Simulated Gateways</h4>
-              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">Execute online transactions via simulated UPI QR codes with quick sandbox verification.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 5. Demo Welcome Notice Modal Overlay */}
       {showNoticeModal && (
