@@ -337,7 +337,7 @@ export default function Home() {
                           Out of Stock
                         </span>
                       )}
-                      <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-40">
+                      <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-28 md:h-40">
                         <img
                           src={getImageUrl(product.images?.[0])}
                           alt={product.name}
@@ -457,7 +457,7 @@ export default function Home() {
                           Out of Stock
                         </span>
                       )}
-                      <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-40">
+                      <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-28 md:h-40">
                         <img
                           src={getImageUrl(product.images?.[0])}
                           alt={product.name}

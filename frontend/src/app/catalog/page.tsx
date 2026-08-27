@@ -314,7 +314,7 @@ function CatalogContent() {
                         <span className="absolute top-4 right-4 z-10 bg-[#2874f0] text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
                           {product.unit} Unit
                         </span>
-                        <Link href={`/products/${product.id}`} className="block overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-40">
+                        <Link href={`/products/${product.id}`} className="block overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-28 md:h-40">
                           <img
                             src={getImageUrl(product.images?.[0])}
                             alt={product.name}
