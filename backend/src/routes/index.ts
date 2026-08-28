@@ -1,17 +1,6 @@
 import { Router } from 'express';
 import path from 'path';
 import fs from 'fs';
-import { v2 as cloudinary } from 'cloudinary';
-
-// Configure Cloudinary if credentials are provided in env vars
-if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-  });
-}
-
 import { register, login, sendOTP, verifyOTP, getProfile, submitKYC, forgotPassword, resetPassword, addWalletFunds, changePassword } from '../controllers/authController';
 import { getProducts, getProductById, createProduct, updateProduct, deleteProduct, bulkUpload, bulkExport } from '../controllers/productController';
 import { placeOrder, getOrders, getOrderById, updateOrderStatus, verifyDeliveryOTP, refundOrder } from '../controllers/orderController';
@@ -517,23 +506,9 @@ router.post('/admin/upload', authenticateJWT, requireRole(['admin']), async (req
     if (!image) {
       return res.status(400).json({ success: false, message: 'Image base64 data is required' });
     }
-
     const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
-
-    // 1. If Cloudinary environment variables are available, upload directly to Cloudinary
-    if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
-      const uploadStr = image.startsWith('data:image/') ? image : `data:image/png;base64,${base64Data}`;
-      const uploadRes = await cloudinary.uploader.upload(uploadStr, {
-        folder: 'products'
-      });
-      return res.status(200).json({
-        success: true,
-        imageUrl: uploadRes.secure_url
-      });
-    }
-
-    // 2. Otherwise, fallback to saving on local disk
     const buffer = Buffer.from(base64Data, 'base64');
+    
     const ext = fileName ? path.extname(fileName) : '.png';
     const uniqueName = `product_${Date.now()}${ext || '.png'}`;
     const uploadDir = path.resolve(path.join(__dirname, '../../.data/uploads'));
