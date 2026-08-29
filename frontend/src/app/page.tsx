@@ -65,10 +65,11 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const prodRes = await api.get('/products');
+        const [prodRes, catRes] = await Promise.all([
+          api.get('/products'),
+          api.get('/categories')
+        ]);
         if (prodRes.success) setProducts(prodRes.products);
-        
-        const catRes = await api.get('/categories');
         if (catRes.success) setCategories(catRes.categories);
       } catch (e) {
         console.error(e);
@@ -206,74 +207,89 @@ export default function Home() {
             <Layers size={16} className="text-indigo-650" /> Browse Sourcing Categories
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {categories.map((cat: any) => {
-              // Define professional icon based on slug
-              let CatIcon = Grid;
-              if (cat.slug === 'grocery') {
-                CatIcon = ShoppingBag;
-              } else if (cat.slug === 'cosmetic') {
-                CatIcon = Sparkles;
-              } else if (cat.slug === 'electronics') {
-                CatIcon = Smartphone;
-              }
-
-              // Color themes matching the vertical
-              let theme = {
-                bg: 'bg-gradient-to-br from-slate-50 to-slate-100/50 hover:from-slate-100 hover:to-slate-200/50 border-slate-200/60 hover:border-slate-350 hover:shadow-md',
-                iconBg: 'bg-slate-150 text-slate-700',
-                btnBg: 'bg-white text-slate-500 group-hover:bg-slate-900 group-hover:text-white',
-                textColor: 'text-slate-900'
-              };
-
-              if (cat.slug === 'grocery') {
-                theme = {
-                  bg: 'bg-gradient-to-br from-emerald-50/50 to-teal-50/10 hover:from-emerald-50 hover:to-teal-50 border-emerald-100/70 hover:border-emerald-250 hover:shadow-emerald-100/30 hover:shadow-lg',
-                  iconBg: 'bg-emerald-500 text-white shadow-sm shadow-emerald-550/20',
-                  btnBg: 'bg-white text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-emerald-100',
-                  textColor: 'text-emerald-950'
-                };
-              } else if (cat.slug === 'cosmetic') {
-                theme = {
-                  bg: 'bg-gradient-to-br from-rose-50/50 to-pink-50/10 hover:from-rose-50 hover:to-pink-50 border-rose-100/70 hover:border-rose-250 hover:shadow-rose-100/30 hover:shadow-lg',
-                  iconBg: 'bg-rose-500 text-white shadow-sm shadow-rose-550/20',
-                  btnBg: 'bg-white text-rose-600 group-hover:bg-rose-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-rose-100',
-                  textColor: 'text-rose-950'
-                };
-              } else if (cat.slug === 'electronics') {
-                theme = {
-                  bg: 'bg-gradient-to-br from-blue-50/50 to-indigo-50/10 hover:from-blue-50 hover:to-indigo-50 border-blue-100/70 hover:border-blue-250 hover:shadow-blue-100/30 hover:shadow-lg',
-                  iconBg: 'bg-blue-500 text-white shadow-sm shadow-blue-550/20',
-                  btnBg: 'bg-white text-blue-600 group-hover:bg-blue-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-blue-100',
-                  textColor: 'text-blue-950'
-                };
-              }
-
-              return (
-                <Link
-                  key={cat.id}
-                  href={`/catalog?category=${cat.slug}`}
-                  className={`group p-6 rounded-2xl border transition-all duration-300 text-left flex items-center justify-between ${theme.bg}`}
-                >
+            {loading ? (
+              [...Array(3)].map((_, i) => (
+                <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 animate-pulse h-24 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    {/* Visual icon badge */}
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold transition duration-300 ${theme.iconBg}`}>
-                      <CatIcon size={20} />
-                    </div>
-                    <div>
-                      <h4 className={`font-extrabold text-sm capitalize transition duration-300 ${theme.textColor}`}>
-                        {cat.name}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 mt-1 leading-normal max-w-[200px]">
-                        {cat.description || 'Premium retail catalogue Slabs'}
-                      </p>
+                    <div className="w-12 h-12 rounded-xl bg-slate-200"></div>
+                    <div className="space-y-2">
+                      <div className="h-4 w-20 bg-slate-200 rounded"></div>
+                      <div className="h-3 w-36 bg-slate-200 rounded"></div>
                     </div>
                   </div>
-                  <span className={`w-8 h-8 rounded-full flex items-center justify-center transition duration-300 font-bold ${theme.btnBg}`}>
-                    →
-                  </span>
-                </Link>
-              );
-            })}
+                  <div className="w-8 h-8 rounded-full bg-slate-200"></div>
+                </div>
+              ))
+            ) : (
+              categories.map((cat: any) => {
+                // Define professional icon based on slug
+                let CatIcon = Grid;
+                if (cat.slug === 'grocery') {
+                  CatIcon = ShoppingBag;
+                } else if (cat.slug === 'cosmetic') {
+                  CatIcon = Sparkles;
+                } else if (cat.slug === 'electronics') {
+                  CatIcon = Smartphone;
+                }
+
+                // Color themes matching the vertical
+                let theme = {
+                  bg: 'bg-gradient-to-br from-slate-50 to-slate-100/50 hover:from-slate-100 hover:to-slate-200/50 border-slate-200/60 hover:border-slate-350 hover:shadow-md',
+                  iconBg: 'bg-slate-150 text-slate-700',
+                  btnBg: 'bg-white text-slate-500 group-hover:bg-slate-900 group-hover:text-white',
+                  textColor: 'text-slate-900'
+                };
+
+                if (cat.slug === 'grocery') {
+                  theme = {
+                    bg: 'bg-gradient-to-br from-emerald-50/50 to-teal-50/10 hover:from-emerald-50 hover:to-teal-50 border-emerald-100/70 hover:border-emerald-250 hover:shadow-emerald-100/30 hover:shadow-lg',
+                    iconBg: 'bg-emerald-500 text-white shadow-sm shadow-emerald-550/20',
+                    btnBg: 'bg-white text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-emerald-100',
+                    textColor: 'text-emerald-950'
+                  };
+                } else if (cat.slug === 'cosmetic') {
+                  theme = {
+                    bg: 'bg-gradient-to-br from-rose-50/50 to-pink-50/10 hover:from-rose-50 hover:to-pink-50 border-rose-100/70 hover:border-rose-250 hover:shadow-rose-100/30 hover:shadow-lg',
+                    iconBg: 'bg-rose-500 text-white shadow-sm shadow-rose-550/20',
+                    btnBg: 'bg-white text-rose-600 group-hover:bg-rose-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-rose-100',
+                    textColor: 'text-rose-950'
+                  };
+                } else if (cat.slug === 'electronics') {
+                  theme = {
+                    bg: 'bg-gradient-to-br from-blue-50/50 to-indigo-50/10 hover:from-blue-50 hover:to-indigo-50 border-blue-100/70 hover:border-blue-250 hover:shadow-blue-100/30 hover:shadow-lg',
+                    iconBg: 'bg-blue-500 text-white shadow-sm shadow-blue-550/20',
+                    btnBg: 'bg-white text-blue-600 group-hover:bg-blue-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-blue-100',
+                    textColor: 'text-blue-950'
+                  };
+                }
+
+                return (
+                  <Link
+                    key={cat.id}
+                    href={`/catalog?category=${cat.slug}`}
+                    className={`group p-6 rounded-2xl border transition-all duration-300 text-left flex items-center justify-between ${theme.bg}`}
+                  >
+                    <div className="flex items-center gap-4">
+                      {/* Visual icon badge */}
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold transition duration-300 ${theme.iconBg}`}>
+                        <CatIcon size={20} />
+                      </div>
+                      <div>
+                        <h4 className={`font-extrabold text-sm capitalize transition duration-300 ${theme.textColor}`}>
+                          {cat.name}
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-1 leading-normal max-w-[200px]">
+                          {cat.description || 'Premium retail catalogue Slabs'}
+                        </p>
+                      </div>
+                    </div>
+                    <span className={`w-8 h-8 rounded-full flex items-center justify-center transition duration-300 font-bold ${theme.btnBg}`}>
+                      →
+                    </span>
+                  </Link>
+                );
+              })
+            )}
           </div>
         </div>
       </section>
@@ -291,7 +307,7 @@ export default function Home() {
       </section>
 
       {/* 2.9 Offer Zone */}
-      {!loading && products.filter(p => p.isOfferZone === true).length > 0 && (
+      {(loading || products.some(p => p.isOfferZone === true)) && (
         <section className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
           <div className="bg-amber-500/5 p-6 rounded-2xl border border-amber-200/65 shadow-sm">
             <div className="flex justify-between items-end mb-8 text-left">
@@ -307,102 +323,110 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-              {products.filter(p => p.isOfferZone === true).slice(0, 4).map((product) => (
-                <div key={product.id} className="group bg-white rounded-3xl border border-slate-200/85 hover:border-amber-300 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
-                  <Link href={`/products/${product.id}`} className="block">
-                    <div className="p-4 relative bg-slate-50/50">
-                      {(() => {
-                        const mrp = Number(product.mrp || 0);
-                        if (mrp <= 0) return null;
-                        
-                        const isVerifiedRetailer = user && user.kycStatus === 'verified';
-                        const targetPrice = isVerifiedRetailer 
-                          ? Number(product.wholesalePrice || 0) 
-                          : Number(product.retailerPrice || 0);
+            {loading ? (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="bg-slate-55 p-6 rounded-3xl border border-slate-200/80 animate-pulse h-85"></div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                {products.filter(p => p.isOfferZone === true).slice(0, 4).map((product) => (
+                  <div key={product.id} className="group bg-white rounded-3xl border border-slate-200/85 hover:border-amber-300 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
+                    <Link href={`/products/${product.id}`} className="block">
+                      <div className="p-4 relative bg-slate-50/50">
+                        {(() => {
+                          const mrp = Number(product.mrp || 0);
+                          if (mrp <= 0) return null;
                           
-                        if (targetPrice <= 0 || targetPrice >= mrp) return null;
-                        
-                        const calculatedDiscount = Math.round(((mrp - targetPrice) / mrp) * 100);
-                        if (calculatedDiscount <= 0) return null;
-                        
-                        return (
-                          <span className="absolute top-4 left-4 z-10 bg-amber-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
-                            {calculatedDiscount}% OFF
+                          const isVerifiedRetailer = user && user.kycStatus === 'verified';
+                          const targetPrice = isVerifiedRetailer 
+                            ? Number(product.wholesalePrice || 0) 
+                            : Number(product.retailerPrice || 0);
+                            
+                          if (targetPrice <= 0 || targetPrice >= mrp) return null;
+                          
+                          const calculatedDiscount = Math.round(((mrp - targetPrice) / mrp) * 100);
+                          if (calculatedDiscount <= 0) return null;
+                          
+                          return (
+                            <span className="absolute top-4 left-4 z-10 bg-amber-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
+                              {calculatedDiscount}% OFF
+                            </span>
+                          );
+                        })()}
+                        {product.stock <= 0 && (
+                          <span className="absolute top-4 right-4 z-10 bg-rose-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                            Out of Stock
                           </span>
-                        );
-                      })()}
-                      {product.stock <= 0 && (
-                        <span className="absolute top-4 right-4 z-10 bg-rose-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-                          Out of Stock
-                        </span>
-                      )}
-                      <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-28 md:h-40">
-                        <img
-                          src={getImageUrl(product.images?.[0])}
-                          alt={product.name}
-                          className="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                        />
+                        )}
+                        <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-28 md:h-40">
+                          <img
+                            src={getImageUrl(product.images?.[0])}
+                            alt={product.name}
+                            className="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                  
-                  <div className="p-5 flex-grow flex flex-col justify-between">
-                    <div>
-                      <span className="text-[10px] text-amber-600 font-extrabold uppercase tracking-widest block">{product.brand}</span>
-                      <Link href={`/products/${product.id}`} className="font-extrabold text-slate-800 text-sm mt-1 line-clamp-2 h-10 hover:text-amber-600 transition-colors block">
-                        {product.name}
-                      </Link>
-                      <p className="text-slate-400 text-[10px] mt-1 font-semibold">MOQ: {product.moq} {product.unit}s</p>
-                      
-                      <div className="mt-4 bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center justify-between text-[11px] gap-2 flex-wrap">
-                        <div className="text-left">
-                          <span className="text-[8px] text-slate-400 uppercase font-bold block">MRP</span>
-                          <span className="text-slate-400 line-through font-semibold">₹{product.mrp}</span>
-                        </div>
-                        <div className="text-left">
-                          <span className="text-[8px] text-slate-400 uppercase font-bold block">Retail</span>
-                          <span className="font-bold text-slate-700">₹{product.retailerPrice}</span>
-                        </div>
-                        <div className="text-right bg-amber-50/55 px-3 py-1.5 rounded-xl border border-amber-100/50">
-                          <span className="text-[9px] text-amber-600 uppercase font-black block">Bulk Rate</span>
-                          {user ? (
-                            user.kycStatus === 'verified' ? (
-                              <span className="font-black text-amber-600 text-sm">₹{product.wholesalePrice}</span>
+                    </Link>
+                    
+                    <div className="p-5 flex-grow flex flex-col justify-between">
+                      <div>
+                        <span className="text-[10px] text-amber-600 font-extrabold uppercase tracking-widest block">{product.brand}</span>
+                        <Link href={`/products/${product.id}`} className="font-extrabold text-slate-800 text-sm mt-1 line-clamp-2 h-10 hover:text-amber-600 transition-colors block">
+                          {product.name}
+                        </Link>
+                        <p className="text-slate-400 text-[10px] mt-1 font-semibold">MOQ: {product.moq} {product.unit}s</p>
+                        
+                        <div className="mt-4 bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center justify-between text-[11px] gap-2 flex-wrap">
+                          <div className="text-left">
+                            <span className="text-[8px] text-slate-400 uppercase font-bold block">MRP</span>
+                            <span className="text-slate-400 line-through font-semibold">₹{product.mrp}</span>
+                          </div>
+                          <div className="text-left">
+                            <span className="text-[8px] text-slate-400 uppercase font-bold block">Retail</span>
+                            <span className="font-bold text-slate-700">₹{product.retailerPrice}</span>
+                          </div>
+                          <div className="text-right bg-amber-50/55 px-3 py-1.5 rounded-xl border border-amber-100/50">
+                            <span className="text-[9px] text-amber-600 uppercase font-black block">Bulk Rate</span>
+                            {user ? (
+                              user.kycStatus === 'verified' ? (
+                                <span className="font-black text-amber-600 text-sm">₹{product.wholesalePrice}</span>
+                              ) : (
+                                <Link href="/profile" className="text-[9px] font-bold text-amber-600 hover:underline block mt-0.5 whitespace-nowrap leading-none">
+                                  🔒 KYC Pending
+                                </Link>
+                              )
                             ) : (
-                              <Link href="/profile" className="text-[9px] font-bold text-amber-600 hover:underline block mt-0.5 whitespace-nowrap leading-none">
-                                🔒 KYC Pending
+                              <Link href="/auth/login" className="text-[10px] font-bold text-[#fb641b] hover:underline block mt-0.5 whitespace-nowrap">
+                                🔒 Login to see
                               </Link>
-                            )
-                          ) : (
-                            <Link href="/auth/login" className="text-[10px] font-bold text-[#fb641b] hover:underline block mt-0.5 whitespace-nowrap">
-                              🔒 Login to see
-                            </Link>
-                          )}
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {product.stock <= 0 ? (
-                      <button
-                        disabled
-                        className="w-full mt-5 bg-slate-100 border border-slate-300 text-slate-400 font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
-                      >
-                        ⚠️ Out of Stock
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleQuickAdd(product)}
-                        className="w-full mt-5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md shadow-amber-500/10 hover:shadow-amber-500/20 flex items-center justify-center gap-1.5"
-                      >
-                        <ShoppingCart size={13} /> Add Product
-                      </button>
-                    )}
+                      {product.stock <= 0 ? (
+                        <button
+                          disabled
+                          className="w-full mt-5 bg-slate-100 border border-slate-300 text-slate-400 font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
+                        >
+                          ⚠️ Out of Stock
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleQuickAdd(product)}
+                          className="w-full mt-5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md shadow-amber-500/10 hover:shadow-amber-500/20 flex items-center justify-center gap-1.5"
+                        >
+                          <ShoppingCart size={13} /> Add Product
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}
