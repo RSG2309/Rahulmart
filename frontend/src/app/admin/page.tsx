@@ -168,35 +168,41 @@ export default function AdminDashboard() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const statsRes = await api.get('/admin/stats');
+      const [
+        statsRes,
+        kycRes,
+        walletRes,
+        prodRes,
+        orderRes,
+        auditRes,
+        notifRes,
+        couponRes,
+        retailersRes
+      ] = await Promise.all([
+        api.get('/admin/stats'),
+        api.get('/admin/kyc-queue'),
+        api.get('/admin/wallet-requests'),
+        api.get('/products?includeInactive=true'),
+        api.get('/orders'),
+        api.get('/admin/audit-logs'),
+        api.get('/admin/notif-logs'),
+        api.get('/admin/coupons'),
+        api.get('/admin/retailers')
+      ]);
+
       if (statsRes.success) {
         setStats(statsRes.stats);
         setCharts(statsRes.charts);
         setLowStock(statsRes.lowStockProducts);
       }
 
-      const kycRes = await api.get('/admin/kyc-queue');
       if (kycRes.success) setKycRequests(kycRes.queue);
-
-      const walletRes = await api.get('/admin/wallet-requests');
       if (walletRes.success) setWalletRequests(walletRes.requests);
-
-      const prodRes = await api.get('/products?includeInactive=true');
       if (prodRes.success) setProducts(prodRes.products);
-
-      const orderRes = await api.get('/orders');
       if (orderRes.success) setOrders(orderRes.orders);
-
-      const auditRes = await api.get('/admin/audit-logs');
       if (auditRes.success) setAuditLogs(auditRes.logs);
-
-      const notifRes = await api.get('/admin/notif-logs');
       if (notifRes.success) setNotifLogs(notifRes.logs);
-
-      const couponRes = await api.get('/admin/coupons');
       if (couponRes.success) setCoupons(couponRes.coupons);
-
-      const retailersRes = await api.get('/admin/retailers');
       if (retailersRes.success) setRetailers(retailersRes.retailers);
 
     } catch (e) {
