@@ -1,6 +1,13 @@
 import { Router } from 'express';
 import path from 'path';
 import fs from 'fs';
+import { createClient } from '@supabase/supabase-js';
+
+// Configure Supabase Client if environment variables are provided
+const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_KEY || '';
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
+
 import { register, login, sendOTP, verifyOTP, getProfile, submitKYC, forgotPassword, resetPassword, addWalletFunds, changePassword } from '../controllers/authController';
 import { getProducts, getProductById, createProduct, updateProduct, deleteProduct, bulkUpload, bulkExport } from '../controllers/productController';
 import { placeOrder, getOrders, getOrderById, updateOrderStatus, verifyDeliveryOTP, refundOrder } from '../controllers/orderController';
@@ -508,9 +515,51 @@ router.post('/admin/upload', authenticateJWT, requireRole(['admin']), async (req
     }
     const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
     const buffer = Buffer.from(base64Data, 'base64');
-    
     const ext = fileName ? path.extname(fileName) : '.png';
     const uniqueName = `product_${Date.now()}${ext || '.png'}`;
+    
+    // 1. If Supabase is configured, upload directly to Supabase storage bucket 'products'
+    if (supabase) {
+      const contentType = image.match(/[^:]\w+\/[\w-+\d.]+(?=\;)/)?.[0] || 'image/png';
+      
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('products')
+        .upload(uniqueName, buffer, {
+          contentType,
+          upsert: true
+        });
+
+      if (uploadError) {
+        // If the bucket doesn't exist, create it dynamically and retry the upload
+        if (uploadError.message.includes('not found') || uploadError.message.includes('does not exist')) {
+          await supabase.storage.createBucket('products', {
+            public: true
+          });
+          const { error: retryError } = await supabase.storage
+            .from('products')
+            .upload(uniqueName, buffer, {
+              contentType,
+              upsert: true
+            });
+          if (retryError) {
+            throw retryError;
+          }
+        } else {
+          throw uploadError;
+        }
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('products')
+        .getPublicUrl(uniqueName);
+
+      return res.status(200).json({
+        success: true,
+        imageUrl: urlData.publicUrl
+      });
+    }
+
+    // 2. Fallback to local storage
     const uploadDir = path.resolve(path.join(__dirname, '../../.data/uploads'));
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
