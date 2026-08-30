@@ -105,7 +105,7 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
         let hasCategoryItems = false;
 
         if (coupon.restrictedCategory) {
-          for (const item of items) {
+          for (const item of orderItems) {
             const product = await ProductModel.findById(item.productId);
             if (product && product.category && (
               product.category.toLowerCase() === coupon.restrictedCategory.toLowerCase()
@@ -129,7 +129,7 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
         let hasProductItems = false;
 
         if (coupon.restrictedProductId) {
-          for (const item of items) {
+          for (const item of orderItems) {
             if (item.productId === coupon.restrictedProductId) {
               hasProductItems = true;
               const itemExcludingTax = (item.price * item.quantity) / (1 + (item.gstPercentage || 18) / 100);
