@@ -68,6 +68,28 @@ const seedAccounts = async () => {
       console.log('✅ Default Admin account seeded (admin@b2b.com / adminpassword)');
     }
 
+    // Clean up existing databases by migrating old shop names
+    const allUsers = await UserModel.find();
+    for (const u of allUsers) {
+      if (u.kycDetails && u.kycDetails.businessName === "Vikas General Store") {
+        await UserModel.findByIdAndUpdate(u.id, {
+          kycDetails: {
+            ...u.kycDetails,
+            businessName: "RS Mart Partner 1",
+            ownerName: "RS Partner 1"
+          }
+        });
+      } else if (u.kycDetails && u.kycDetails.businessName === "Pooja Supermarket") {
+        await UserModel.findByIdAndUpdate(u.id, {
+          kycDetails: {
+            ...u.kycDetails,
+            businessName: "RS Mart Shop",
+            ownerName: "RS Partner 2"
+          }
+        });
+      }
+    }
+
     // 2. Verified Retailer
     const retailerExists = await UserModel.findOne({ email: 'retailer@b2b.com' });
     if (!retailerExists) {
@@ -79,8 +101,8 @@ const seedAccounts = async () => {
         role: 'retailer',
         kycStatus: 'verified',
         kycDetails: {
-          businessName: 'Vikas General Store',
-          ownerName: 'Vikas Kumar',
+          businessName: 'RS Mart Partner 1',
+          ownerName: 'RS Partner 1',
           businessAddress: '5th Main, Koramangala, Bengaluru'
         },
         walletBalance: 50000 // loaded wallet to test checkout!
@@ -99,8 +121,8 @@ const seedAccounts = async () => {
         role: 'retailer',
         kycStatus: 'pending',
         kycDetails: {
-          businessName: 'Pooja Supermarket',
-          ownerName: 'Pooja Sharma',
+          businessName: 'RS Mart Shop',
+          ownerName: 'RS Partner 2',
           businessAddress: 'Sector 1, HSR Layout, Bengaluru'
         },
         walletBalance: 0
