@@ -74,7 +74,7 @@ export interface IOrder {
   businessName: string;
   items: IOrderItem[];
   deliveryAddress: string;
-  paymentMethod: 'online' | 'cod';
+  paymentMethod: 'online' | 'cod' | 'wallet';
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'received' | 'accepted' | 'dispatched' | 'delivered' | 'cancelled' | 'returned';
   amounts: {

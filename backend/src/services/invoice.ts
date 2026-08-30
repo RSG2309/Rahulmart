@@ -96,6 +96,12 @@ export const generateInvoicePDF = async (order: IOrder): Promise<string> => {
       doc.text(`-${order.amounts.discount.toFixed(2)}`, 470, currentY, { width: 80, align: 'right' });
     }
 
+    if (order.amounts.promoDeduction && order.amounts.promoDeduction > 0) {
+      currentY += 15;
+      doc.text('Promo Wallet Deduction:', 330, currentY, { width: 110, align: 'right' });
+      doc.text(`-${order.amounts.promoDeduction.toFixed(2)}`, 470, currentY, { width: 80, align: 'right' });
+    }
+
     currentY += 15;
     doc.text('Shipping Charge:', 330, currentY, { width: 110, align: 'right' });
     doc.text(order.amounts.shipping.toFixed(2), 470, currentY, { width: 80, align: 'right' });
@@ -104,6 +110,18 @@ export const generateInvoicePDF = async (order: IOrder): Promise<string> => {
     doc.fontSize(11).fillColor('#1F2937');
     doc.text('Grand Total:', 330, currentY, { width: 110, align: 'right' });
     doc.text(`INR ${order.amounts.finalTotal.toFixed(2)}`, 470, currentY, { width: 80, align: 'right' });
+
+    if (order.paymentMethod === 'wallet') {
+      currentY += 15;
+      doc.fontSize(9).fillColor('#10B981');
+      doc.text('Paid via B2B Wallet Ledger:', 330, currentY, { width: 115, align: 'right' });
+      doc.text(`-${order.amounts.finalTotal.toFixed(2)}`, 470, currentY, { width: 80, align: 'right' });
+
+      currentY += 20;
+      doc.fontSize(11).fillColor('#1F2937');
+      doc.text('Balance Due:', 330, currentY, { width: 110, align: 'right' });
+      doc.text('INR 0.00', 470, currentY, { width: 80, align: 'right' });
+    }
 
     // Terms
     doc.fontSize(8).fillColor('#9CA3AF').text('Terms & Conditions:\n1. Goods once sold will not be returned unless damaged or incorrect.\n2. All disputes are subject to Bengaluru jurisdiction.\n3. This is a computer-generated invoice and requires no physical signature.', 50, 720);

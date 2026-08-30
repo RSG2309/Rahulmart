@@ -57,8 +57,9 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
         });
       }
 
-      // Tier pricing (Wholesale price for bulk order quantity >= 20 units, else retailer price)
-      const selectedPrice = item.quantity >= 20 ? product.wholesalePrice : product.retailerPrice;
+      // Tier pricing slab: quantity >= moq gets wholesalePrice if KYC verified, else retailerPrice
+      const isKycVerified = retailer.kycStatus === 'verified';
+      const selectedPrice = (item.quantity >= product.moq && isKycVerified) ? product.wholesalePrice : product.retailerPrice;
       
       const itemGstAmount = 0;
       const itemSubtotal = selectedPrice * item.quantity;

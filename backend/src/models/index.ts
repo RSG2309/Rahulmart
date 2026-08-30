@@ -75,7 +75,7 @@ const OrderSchema = new Schema<IOrder>({
     subtotal: { type: Number, required: true }
   }],
   deliveryAddress: { type: String, required: true },
-  paymentMethod: { type: String, enum: ['online', 'cod'], required: true },
+  paymentMethod: { type: String, enum: ['online', 'cod', 'wallet'], required: true },
   paymentStatus: { type: String, enum: ['pending', 'paid', 'failed', 'refunded'], default: 'pending' },
   orderStatus: { type: String, enum: ['received', 'accepted', 'dispatched', 'delivered', 'cancelled', 'returned'], default: 'received' },
   amounts: {
@@ -84,7 +84,8 @@ const OrderSchema = new Schema<IOrder>({
     shipping: Number,
     codCharge: Number,
     discount: Number,
-    finalTotal: Number
+    finalTotal: Number,
+    promoDeduction: Number
   },
   couponCode: String,
   otpVerification: {
