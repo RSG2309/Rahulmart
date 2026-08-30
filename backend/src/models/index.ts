@@ -478,6 +478,14 @@ export const OrderModel = {
       return localOrders.update(id, updates);
     }
     return MongooseOrder.findByIdAndUpdate(id, updates, { new: true });
+  },
+  deleteMany: async () => {
+    if (useJsonDb) {
+      localOrders.saveAll([]);
+      return true;
+    }
+    await MongooseOrder.deleteMany({});
+    return true;
   }
 };
 
@@ -563,6 +571,14 @@ export const TransactionModel = {
       return localTransactions.update(id, updates);
     }
     return MongooseTransaction.findByIdAndUpdate(id, updates, { new: true });
+  },
+  deleteMany: async () => {
+    if (useJsonDb) {
+      localTransactions.saveAll([]);
+      return true;
+    }
+    await MongooseTransaction.deleteMany({});
+    return true;
   }
 };
 

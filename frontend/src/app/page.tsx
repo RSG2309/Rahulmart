@@ -23,12 +23,12 @@ export default function Home() {
   // Auto-scrolling slides list (only images and redirection links)
   const slides = [
     {
-      image: '/Demo1.jpeg',
+      image: '/Demo1.jpeg.jpg',
       title: 'Grocery Supplies',
       link: '/catalog?category=grocery'
     },
     {
-      image: '/demo2.jpeg',
+      image: '/demo2.jpg',
       title: 'Cosmetics Care',
       link: '/catalog?category=cosmetic'
     },
@@ -572,7 +572,7 @@ export default function Home() {
             {/* Aspect box containing notice image */}
             <div className="relative w-full aspect-square overflow-hidden rounded-2xl border border-slate-100/80 bg-slate-50 flex items-center justify-center">
               <img 
-                src="/demo-notice.jpg" 
+                src="/demo-notice.jpg.jpg" 
                 alt="Demo Notice" 
                 className="w-full h-full object-contain hover:scale-101 transition duration-300" 
               />

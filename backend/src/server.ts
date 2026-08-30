@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import { connectDB } from './config/db';
 import router from './routes';
-import { UserModel, CategoryModel, ProductModel } from './models';
+import { UserModel, CategoryModel, ProductModel, OrderModel, TransactionModel } from './models';
 
 dotenv.config();
 
@@ -48,6 +48,11 @@ app.get('/', (req, res) => {
 // Seed default accounts
 const seedAccounts = async () => {
   try {
+    // Clear all old orders and transactions from the database
+    await OrderModel.deleteMany();
+    await TransactionModel.deleteMany();
+    console.log('🧹 Cleared all old orders and transactions from the database');
+
     // 1. Admin
     const adminExists = await UserModel.findOne({ email: 'admin@b2b.com' });
     if (!adminExists) {
