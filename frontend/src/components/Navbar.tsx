@@ -44,6 +44,38 @@ export default function Navbar() {
       document.documentElement.classList.remove('dark');
     }
   };
+
+  // Synchronize cart drawer with browser / hardware back button and Esc key
+  useEffect(() => {
+    if (isCartOpen) {
+      window.history.pushState({ cartOpen: true }, '', window.location.pathname + window.location.search + '#cart');
+
+      const handlePopState = () => {
+        setCartOpen(false);
+      };
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          handleCloseCart();
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isCartOpen, setCartOpen]);
+
+  const handleCloseCart = () => {
+    setCartOpen(false);
+    if (typeof window !== 'undefined' && window.location.hash === '#cart') {
+      window.history.back();
+    }
+  };
+
   const [drawerCouponError, setDrawerCouponError] = useState<string | null>(null);
   const [drawerCouponSuccess, setDrawerCouponSuccess] = useState(false);
 
@@ -458,7 +490,7 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
-              onClick={() => setCartOpen(false)}
+              onClick={handleCloseCart}
               className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             />
 
@@ -470,14 +502,26 @@ export default function Navbar() {
               transition={{ type: 'tween', duration: 0.25 }}
               className="fixed right-0 top-0 bottom-0 z-50 w-full sm:max-w-md bg-[#f8fafc] shadow-2xl flex flex-col h-full border-l border-slate-200"
             >
-              {/* Website Dark Header */}
+              {/* Website Dark Header with Back Button */}
               <div className="p-4 flex items-center justify-between bg-slate-900 text-white shadow-sm">
-                <div className="flex items-center gap-2">
-                  <ShoppingCart size={18} className="text-indigo-400" />
-                  <h3 className="font-bold text-sm tracking-wide">My Cart ({items.length})</h3>
+                <div className="flex items-center gap-2.5">
+                  <button
+                    onClick={handleCloseCart}
+                    className="p-1.5 -ml-1 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition flex items-center gap-1 text-xs font-bold"
+                    title="Back"
+                    aria-label="Back"
+                  >
+                    <ArrowLeft size={18} />
+                    <span className="hidden xs:inline">Back</span>
+                  </button>
+                  <div className="h-4 w-[1px] bg-slate-700 mx-0.5" />
+                  <div className="flex items-center gap-2">
+                    <ShoppingCart size={18} className="text-indigo-400" />
+                    <h3 className="font-bold text-sm tracking-wide">My Cart ({items.length})</h3>
+                  </div>
                 </div>
                 <button
-                  onClick={() => setCartOpen(false)}
+                  onClick={handleCloseCart}
                   className="p-1.5 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition"
                   title="Close Cart"
                 >
@@ -494,7 +538,13 @@ export default function Navbar() {
                   </span>
                 </span>
                 <button 
-                  onClick={() => { setCartOpen(false); router.push('/checkout'); }} 
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && window.location.hash === '#cart') {
+                      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                    }
+                    setCartOpen(false);
+                    router.push('/checkout');
+                  }} 
                   className="text-indigo-600 font-extrabold border border-slate-200/60 px-3 py-1 rounded shadow-sm hover:bg-slate-50 transition uppercase text-[10px] flex-shrink-0"
                 >
                   Change
@@ -515,7 +565,7 @@ export default function Navbar() {
                       </div>
                       <button
                         onClick={() => {
-                          setCartOpen(false);
+                          handleCloseCart();
                           router.push('/catalog');
                         }}
                         className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md transition"
@@ -666,6 +716,9 @@ export default function Navbar() {
 
                   <button
                     onClick={() => {
+                      if (typeof window !== 'undefined' && window.location.hash === '#cart') {
+                        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                      }
                       setCartOpen(false);
                       router.push('/checkout');
                     }}

@@ -2,12 +2,14 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
-import { ShoppingBag, Trash2, ArrowRight, Ticket, AlertCircle } from 'lucide-react';
+import { ShoppingBag, Trash2, ArrowRight, ArrowLeft, Ticket, AlertCircle } from 'lucide-react';
 
 export default function Cart() {
+  const router = useRouter();
   const { items, couponCode, couponDiscount, amounts, updateQuantity, removeFromCart, applyCoupon, removeCoupon } = useCart();
   const [couponInput, setCouponInput] = useState('');
   const [couponError, setCouponError] = useState<string | null>(null);
@@ -39,8 +41,25 @@ export default function Cart() {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        <h1 className="text-2xl font-extrabold text-slate-900 mb-8 tracking-tight">Shopping Cart</h1>
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 w-full">
+        {/* Back navigation button */}
+        <div className="mb-4 flex items-center justify-between">
+          <button
+            onClick={() => router.back()}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-[#2874f0] bg-white border border-slate-200 px-3.5 py-1.5 rounded-lg shadow-xs transition hover:bg-slate-50"
+            title="Go Back"
+          >
+            <ArrowLeft size={15} /> Back
+          </button>
+          <Link
+            href="/catalog"
+            className="text-xs font-semibold text-[#2874f0] hover:underline"
+          >
+            Continue Sourcing →
+          </Link>
+        </div>
+
+        <h1 className="text-2xl font-extrabold text-slate-900 mb-6 tracking-tight">Shopping Cart</h1>
 
         {items.length === 0 ? (
           <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4 max-w-lg mx-auto">

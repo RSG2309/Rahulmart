@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import { api, getImageUrl } from '@/services/api';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { ShoppingCart, AlertCircle, ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Sparkles, Smartphone, Grid, Layers, X } from 'lucide-react';
+import { ShoppingCart, AlertCircle, CheckCircle, ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Sparkles, Smartphone, Grid, Layers, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Marquee = 'marquee' as any;
@@ -109,25 +109,29 @@ export default function Home() {
   const handleQuickAdd = (product: any) => {
     const result = addToCart(product, product.moq);
     if (result.success) {
-      setNotifMessage({ type: 'success', text: `Added MOQ of ${product.moq} ${product.unit}s for ${product.name} to cart!` });
+      setNotifMessage({ type: 'success', text: `Added to cart (${product.moq})` });
     } else {
       setNotifMessage({ type: 'error', text: result.message || 'Failed to add item' });
     }
-    setTimeout(() => setNotifMessage(null), 3000);
+    setTimeout(() => setNotifMessage(null), 2000);
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-100">
       <Navbar />
 
-      {/* Floating Notification */}
+      {/* Floating Notification - Compact Pill */}
       {notifMessage && (
-        <div className={`fixed bottom-4 right-4 z-50 px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 text-sm border font-medium transition-all duration-300 ${
+        <div className={`fixed bottom-20 left-1/2 -translate-x-1/2 md:bottom-6 md:right-6 md:left-auto md:translate-x-0 z-50 px-3.5 py-1.5 rounded-full shadow-lg flex items-center gap-2 text-xs font-bold border transition-all duration-300 pointer-events-none animate-in fade-in zoom-in-95 ${
           notifMessage.type === 'success' 
-            ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
-            : 'bg-rose-50 text-rose-800 border-rose-200'
+            ? 'bg-slate-900/95 text-white border-slate-700/60 backdrop-blur-md' 
+            : 'bg-rose-900/95 text-white border-rose-700/60 backdrop-blur-md'
         }`}>
-          <AlertCircle size={16} />
+          {notifMessage.type === 'success' ? (
+            <CheckCircle size={14} className="text-emerald-400 shrink-0" />
+          ) : (
+            <AlertCircle size={14} className="text-rose-400 shrink-0" />
+          )}
           <span>{notifMessage.text}</span>
         </div>
       )}
