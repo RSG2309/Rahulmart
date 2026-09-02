@@ -8,10 +8,10 @@ const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_KEY || '';
 const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
 
-import { register, login, sendOTP, verifyOTP, getProfile, submitKYC, forgotPassword, resetPassword, addWalletFunds, changePassword } from '../controllers/authController';
+import { register, login, sendOTP, verifyOTP, getProfile, submitKYC, forgotPassword, resetPassword, addWalletFunds, changePassword, requestPasswordReset, checkPasswordResetStatus } from '../controllers/authController';
 import { getProducts, getProductById, createProduct, updateProduct, deleteProduct, bulkUpload, bulkExport } from '../controllers/productController';
 import { placeOrder, getOrders, getOrderById, updateOrderStatus, verifyDeliveryOTP, refundOrder } from '../controllers/orderController';
-import { getDashboardStats, getKycQueue, approveKyc, getAuditLogs, getNotificationLogs, getWalletRequests, approveWalletRequest, rejectWalletRequest } from '../controllers/adminController';
+import { getDashboardStats, getKycQueue, approveKyc, getAuditLogs, getNotificationLogs, getWalletRequests, approveWalletRequest, rejectWalletRequest, getPasswordResetRequests, approvePasswordReset, rejectPasswordReset } from '../controllers/adminController';
 import { authenticateJWT, requireRole, requireKYC } from '../middleware/auth';
 import { CategoryModel, CouponModel, OrderModel, UserModel, AuditLogModel, TransactionModel, ProductModel } from '../models';
 
@@ -26,6 +26,8 @@ router.post('/auth/send-otp', sendOTP);
 router.post('/auth/verify-otp', verifyOTP);
 router.post('/auth/forgot-password', forgotPassword);
 router.post('/auth/reset-password', resetPassword);
+router.post('/auth/forgot-password-request', requestPasswordReset);
+router.get('/auth/forgot-password-status', checkPasswordResetStatus);
 router.post('/auth/wallet/add-funds', authenticateJWT, addWalletFunds);
 router.get('/auth/profile', authenticateJWT, getProfile);
 router.post('/auth/change-password', authenticateJWT, changePassword);
@@ -475,6 +477,9 @@ router.get('/admin/notif-logs', authenticateJWT, requireRole(['admin']), getNoti
 router.get('/admin/wallet-requests', authenticateJWT, requireRole(['admin', 'staff']), getWalletRequests);
 router.post('/admin/wallet-requests/:id/approve', authenticateJWT, requireRole(['admin']), approveWalletRequest);
 router.post('/admin/wallet-requests/:id/reject', authenticateJWT, requireRole(['admin']), rejectWalletRequest);
+router.get('/admin/password-resets', authenticateJWT, requireRole(['admin', 'staff']), getPasswordResetRequests);
+router.post('/admin/password-resets/:id/approve', authenticateJWT, requireRole(['admin']), approvePasswordReset);
+router.post('/admin/password-resets/:id/reject', authenticateJWT, requireRole(['admin']), rejectPasswordReset);
 
 // Serving generated PDFs statically
 router.get('/invoices/:filename', (req, res) => {

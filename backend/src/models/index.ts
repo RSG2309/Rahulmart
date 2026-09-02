@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { useJsonDb } from '../config/db';
 import { JsonDb } from '../utils/jsonDb';
-import { IUser, ICategory, IProduct, IOrder, ICoupon, ITransaction, IAuditLog, IBlockedIp } from './types';
+import { IUser, ICategory, IProduct, IOrder, ICoupon, ITransaction, IAuditLog, IBlockedIp, IPasswordResetRequest } from './types';
 
 // Enable virtuals globally for all schemas to automatically populate the "id" field in JSON responses
 mongoose.set('toJSON', { virtuals: true });
@@ -133,6 +133,16 @@ const BlockedIpSchema = new Schema<IBlockedIp>({
   reason: String
 }, { timestamps: true });
 
+const PasswordResetRequestSchema = new Schema<IPasswordResetRequest>({
+  userId: { type: String, required: true },
+  mobile: { type: String, required: true },
+  email: String,
+  businessName: String,
+  newPasswordHash: { type: String, required: true },
+  status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+  adminNotes: String
+}, { timestamps: true });
+
 // Create models internally
 const MongooseUser = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 const MongooseCategory = mongoose.models.Category || mongoose.model<ICategory>('Category', CategorySchema);
@@ -142,6 +152,7 @@ const MongooseCoupon = mongoose.models.Coupon || mongoose.model<ICoupon>('Coupon
 const MongooseTransaction = mongoose.models.Transaction || mongoose.model<ITransaction>('Transaction', TransactionSchema);
 const MongooseAuditLog = mongoose.models.AuditLog || mongoose.model<IAuditLog>('AuditLog', AuditLogSchema);
 const MongooseBlockedIp = mongoose.models.BlockedIp || mongoose.model<IBlockedIp>('BlockedIp', BlockedIpSchema);
+const MongoosePasswordReset = mongoose.models.PasswordReset || mongoose.model<IPasswordResetRequest>('PasswordReset', PasswordResetRequestSchema);
 
 // ==========================================
 // 2. LOCAL JSON DATABASES
@@ -155,6 +166,7 @@ const localCoupons = new JsonDb<ICoupon>('coupons');
 const localTransactions = new JsonDb<ITransaction>('transactions');
 const localAuditLogs = new JsonDb<IAuditLog>('audit_logs');
 const localBlockedIps = new JsonDb<IBlockedIp>('blocked_ips');
+const localPasswordResets = new JsonDb<IPasswordResetRequest>('password_resets');
 
 // Seed Categories & Products if they are empty
 const seedLocalData = () => {
@@ -639,3 +651,54 @@ export const BlockedIpModel = {
     return MongooseBlockedIp.findOne(query);
   }
 };
+
+export const PasswordResetModel = {
+  find: async (query: any = {}) => {
+    if (useJsonDb) {
+      return localPasswordResets.find(item => {
+        for (const key in query) {
+          if (item[key as keyof IPasswordResetRequest] !== query[key]) return false;
+        }
+        return true;
+      });
+    }
+    return MongoosePasswordReset.find(query).sort({ createdAt: -1 });
+  },
+  findOne: async (query: any) => {
+    if (useJsonDb) {
+      return localPasswordResets.findOne(item => {
+        for (const key in query) {
+          if (item[key as keyof IPasswordResetRequest] !== query[key]) return false;
+        }
+        return true;
+      });
+    }
+    return MongoosePasswordReset.findOne(query);
+  },
+  findById: async (id: string) => {
+    if (useJsonDb) {
+      return localPasswordResets.findOne(item => item.id === id);
+    }
+    return MongoosePasswordReset.findById(id);
+  },
+  create: async (data: Omit<IPasswordResetRequest, 'id' | 'createdAt' | 'updatedAt'>) => {
+    if (useJsonDb) {
+      return localPasswordResets.insert(data);
+    }
+    return MongoosePasswordReset.create(data);
+  },
+  findByIdAndUpdate: async (id: string, updates: Partial<IPasswordResetRequest>) => {
+    if (useJsonDb) {
+      return localPasswordResets.update(id, updates);
+    }
+    return MongoosePasswordReset.findByIdAndUpdate(id, updates, { new: true });
+  },
+  findByIdAndDelete: async (id: string) => {
+    if (useJsonDb) {
+      return localPasswordResets.delete(id);
+    }
+    await MongoosePasswordReset.findByIdAndDelete(id);
+    return true;
+  }
+};
+

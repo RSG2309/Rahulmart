@@ -3,35 +3,53 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { KeyRound, AlertCircle, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { KeyRound, AlertCircle, CheckCircle2, ArrowRight, ShieldCheck, Clock, Eye, EyeOff, RefreshCw, XCircle } from 'lucide-react';
 import { api } from '@/services/api';
 
 export default function ForgotPassword() {
   const router = useRouter();
   
   const [mobile, setMobile] = useState('');
-  const [step, setStep] = useState(1); // 1: Request code, 2: Reset password
-  const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [devCode, setDevCode] = useState<string | null>(null);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // States
+  const [submitted, setSubmitted] = useState(false);
+  const [requestStatus, setRequestStatus] = useState<'pending' | 'approved' | 'rejected' | null>(null);
+  const [adminNotes, setAdminNotes] = useState<string | null>(null);
   
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [checkingStatus, setCheckingStatus] = useState(false);
 
-  const handleRequestCode = async (e: React.FormEvent) => {
+  const handleSubmitRequest = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
+    setSuccessMsg(null);
+
+    if (newPassword !== confirmPassword) {
+      setErrorMsg('New password and confirm password do not match.');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setErrorMsg('Password must be at least 6 characters long.');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const data = await api.post('/auth/forgot-password', { mobile });
+      const data = await api.post('/auth/forgot-password-request', { mobile, newPassword });
       setLoading(false);
 
       if (data.success) {
-        setDevCode(data.devCode);
-        setStep(2);
-        setSuccessMsg('Reset code generated successfully! Enter the code below.');
+        setSubmitted(true);
+        setRequestStatus('pending');
+        setSuccessMsg(data.message || 'Password reset request submitted. Awaiting Admin Approval.');
       } else {
         setErrorMsg(data.message || 'Mobile number is not registered.');
       }
@@ -41,34 +59,45 @@ export default function ForgotPassword() {
     }
   };
 
-  const handleResetPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCheckStatus = async () => {
+    if (!mobile.trim()) {
+      setErrorMsg('Please enter your mobile number first.');
+      return;
+    }
+
+    setCheckingStatus(true);
     setErrorMsg(null);
-    setLoading(true);
 
     try {
-      const data = await api.post('/auth/reset-password', { mobile, code, newPassword });
-      setLoading(false);
+      const data = await api.get(`/auth/forgot-password-status?mobile=${encodeURIComponent(mobile.trim())}`);
+      setCheckingStatus(false);
 
-      if (data.success) {
-        setSuccessMsg('Password changed successfully! Redirecting to login...');
-        setTimeout(() => {
-          router.push('/auth/login');
-        }, 2000);
+      if (data.success && data.hasRequest) {
+        setSubmitted(true);
+        setRequestStatus(data.request.status);
+        setAdminNotes(data.request.adminNotes || null);
+
+        if (data.request.status === 'approved') {
+          setSuccessMsg('Your password reset request has been APPROVED by Admin! You can now log in with your new password.');
+        } else if (data.request.status === 'rejected') {
+          setErrorMsg(`Your request was rejected by Admin: ${data.request.adminNotes || 'Contact support'}`);
+        } else {
+          setSuccessMsg('Your request is currently PENDING approval from Admin.');
+        }
       } else {
-        setErrorMsg(data.message || 'Incorrect recovery code.');
+        setErrorMsg('No password reset request found for this mobile number.');
       }
     } catch (err: any) {
-      setLoading(false);
-      setErrorMsg('Failed to connect to backend.');
+      setCheckingStatus(false);
+      setErrorMsg('Failed to check request status.');
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 glassmorphism p-8 rounded-3xl shadow-xl border border-white relative overflow-hidden">
+      <div className="max-w-md w-full space-y-6 glassmorphism p-8 rounded-3xl shadow-xl border border-white relative overflow-hidden">
         
-        {/* Title */}
+        {/* Header Title */}
         <div className="text-center">
           <Link href="/" className="text-2xl font-black gradient-text tracking-wide">
             Rahul Super Mart
@@ -77,40 +106,107 @@ export default function ForgotPassword() {
             Recover Password
           </h2>
           <p className="mt-1.5 text-xs text-slate-500">
-            Reset password using your registered mobile number
+            Admin Approval required for account security & wallet safety
           </p>
         </div>
 
         {/* Message Banner */}
         {errorMsg && (
-          <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
-            <AlertCircle size={16} className="flex-shrink-0" />
+          <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 rounded-xl text-xs font-medium flex items-center gap-2">
+            <AlertCircle size={16} className="flex-shrink-0 text-rose-600" />
             <span>{errorMsg}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
-            <CheckCircle2 size={16} className="flex-shrink-0" />
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3.5 rounded-xl text-xs font-medium flex items-center gap-2">
+            <CheckCircle2 size={16} className="flex-shrink-0 text-emerald-600" />
             <span>{successMsg}</span>
           </div>
         )}
 
-        {/* Simulated SMS Logger Overlay (Developer Sandbox) */}
-        {devCode && (
-          <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl border border-emerald-500/20 text-left font-mono text-[10px] space-y-1">
-            <div className="flex justify-between items-center text-slate-500 border-b border-slate-900 pb-1 mb-1 font-sans">
-              <span>💬 SIMULATED SMS NOTIFICATION</span>
-              <span className="bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded text-[8px]">DELIVERED</span>
+        {/* Status Card (When Request is Submitted or Found) */}
+        {submitted && (
+          <div className="space-y-4">
+            <div className={`p-5 rounded-2xl border text-left space-y-3 ${
+              requestStatus === 'approved'
+                ? 'bg-emerald-50/80 border-emerald-200 text-emerald-950'
+                : requestStatus === 'rejected'
+                ? 'bg-rose-50/80 border-rose-200 text-rose-950'
+                : 'bg-amber-50/80 border-amber-200 text-amber-950'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {requestStatus === 'approved' ? (
+                    <CheckCircle2 size={18} className="text-emerald-600" />
+                  ) : requestStatus === 'rejected' ? (
+                    <XCircle size={18} className="text-rose-600" />
+                  ) : (
+                    <Clock size={18} className="text-amber-600 animate-pulse" />
+                  )}
+                  <span className="text-xs font-bold uppercase tracking-wider">
+                    {requestStatus === 'approved' ? 'Request Approved' : requestStatus === 'rejected' ? 'Request Rejected' : 'Awaiting Admin Approval'}
+                  </span>
+                </div>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase ${
+                  requestStatus === 'approved'
+                    ? 'bg-emerald-200 text-emerald-800'
+                    : requestStatus === 'rejected'
+                    ? 'bg-rose-200 text-rose-800'
+                    : 'bg-amber-200 text-amber-800'
+                }`}>
+                  {requestStatus}
+                </span>
+              </div>
+
+              <p className="text-xs leading-relaxed text-slate-600">
+                {requestStatus === 'approved' ? (
+                  <>Admin has approved your password reset. Your new password is now active!</>
+                ) : requestStatus === 'rejected' ? (
+                  <>Admin rejected this password reset request. {adminNotes && `Reason: ${adminNotes}`}</>
+                ) : (
+                  <>Aapka password reset request admin portal par approval ke liye bhej diya gaya hai. Admin approve karega tabhi password change hoga.</>
+                )}
+              </p>
+
+              <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-200/50 flex justify-between items-center">
+                <span>Mobile: <strong className="text-slate-800">{mobile}</strong></span>
+                <button
+                  type="button"
+                  onClick={handleCheckStatus}
+                  disabled={checkingStatus}
+                  className="inline-flex items-center gap-1 text-[#2874f0] hover:underline font-bold"
+                >
+                  <RefreshCw size={12} className={checkingStatus ? "animate-spin" : ""} /> Check Status
+                </button>
+              </div>
             </div>
-            <p className="text-slate-200">From: Rahul Super Mart SMS Gateway</p>
-            <p className="text-white mt-1">Your password recovery reset code is: <strong className="text-amber-400 text-xs">{devCode}</strong>. Valid for 10 minutes.</p>
+
+            {requestStatus === 'approved' ? (
+              <Link
+                href="/auth/login"
+                className="w-full bg-[#2874f0] hover:bg-blue-600 text-white py-2.5 rounded-xl font-bold text-sm shadow-md transition flex items-center justify-center gap-1.5 text-center"
+              >
+                Sign In With New Password <ArrowRight size={14} />
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setSubmitted(false);
+                  setRequestStatus(null);
+                }}
+                className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 rounded-xl font-semibold text-xs transition"
+              >
+                Modify or Submit Another Request
+              </button>
+            )}
           </div>
         )}
 
-        {/* Step 1 Form: Mobile request */}
-        {step === 1 && (
-          <form className="mt-6 space-y-6" onSubmit={handleRequestCode}>
+        {/* Request Form (Visible when not submitted) */}
+        {!submitted && (
+          <form className="mt-4 space-y-4 text-left" onSubmit={handleSubmitRequest}>
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase">Registered Mobile Number</label>
               <input
@@ -124,59 +220,78 @@ export default function ForgotPassword() {
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg font-bold text-sm shadow-md hover:shadow-indigo-500/25 transition flex items-center justify-center gap-1"
-            >
-              {loading ? 'Sending Code...' : 'Request Reset Code'} <ArrowRight size={14} />
-            </button>
-          </form>
-        )}
-
-        {/* Step 2 Form: Reset password details */}
-        {step === 2 && (
-          <form className="mt-6 space-y-6" onSubmit={handleResetPassword}>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase">Verification Recovery Code</label>
+            {/* New Password with Eye visibility toggle */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase">New Password</label>
+              <div className="relative mt-1">
                 <input
-                  type="text"
-                  required
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  placeholder="Enter 6-digit code"
-                  className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase">New Password</label>
-                <input
-                  type="password"
+                  type={showNewPassword ? "text" : "password"}
                   required
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Enter new password"
-                  className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                  placeholder="Enter new password (min 6 characters)"
+                  className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg pl-3.5 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition"
+                  aria-label={showNewPassword ? "Hide password" : "Show password"}
+                >
+                  {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg font-bold text-sm shadow-md hover:shadow-emerald-500/25 transition flex items-center justify-center gap-1"
-            >
-              {loading ? 'Resetting Password...' : 'Save & Change Password'} <ShieldCheck size={14} />
-            </button>
+            {/* Confirm New Password with Eye visibility toggle */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase">Confirm New Password</label>
+              <div className="relative mt-1">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter new password"
+                  className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg pl-3.5 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition"
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="pt-2 space-y-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-[#2874f0] hover:bg-blue-600 text-white py-2.5 rounded-xl font-bold text-sm shadow-md transition flex items-center justify-center gap-1.5"
+              >
+                {loading ? 'Submitting Request...' : 'Submit For Admin Approval'} <ShieldCheck size={16} />
+              </button>
+
+              <button
+                type="button"
+                onClick={handleCheckStatus}
+                disabled={checkingStatus}
+                className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 py-2 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1.5"
+              >
+                <RefreshCw size={13} className={checkingStatus ? "animate-spin" : ""} /> Check Previous Request Status
+              </button>
+            </div>
           </form>
         )}
 
+        {/* Footer redirection */}
         <div className="text-center pt-2">
           <p className="text-xs text-slate-500">
             Remembered password?{' '}
-            <Link href="/auth/login" className="font-bold text-indigo-600 hover:underline">
+            <Link href="/auth/login" className="font-bold text-[#2874f0] hover:underline">
               Back to Login
             </Link>
           </p>

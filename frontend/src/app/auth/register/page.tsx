@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { Building2, AlertCircle, ArrowRight } from 'lucide-react';
+import { Building2, AlertCircle, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
 export default function Register() {
   const router = useRouter();
@@ -19,6 +19,7 @@ export default function Register() {
     businessAddress: ''
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -106,15 +107,25 @@ export default function Register() {
             </div>
             <div className="mt-4">
               <label className="block text-xs font-bold text-slate-700 uppercase">Password</label>
-              <input
-                type="password"
-                required
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Choose a password"
-                className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg px-3.5 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-              />
+              <div className="relative mt-1">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Choose a password"
+                  className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-lg pl-3.5 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
           </div>
 

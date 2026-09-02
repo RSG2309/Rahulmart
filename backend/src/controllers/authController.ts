@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { UserModel, AuditLogModel, TransactionModel } from '../models';
+import { UserModel, AuditLogModel, TransactionModel, PasswordResetModel } from '../models';
 import { NotificationService } from '../services/notification';
 import { cacheService } from '../services/redis';
 import { AuthRequest } from '../middleware/auth';
@@ -329,6 +329,93 @@ export const resetPassword = async (req: Request, res: Response) => {
     await NotificationService.sendSMS(mobile, 'Security Alert: Your account password was successfully reset.');
 
     return res.status(200).json({ success: true, message: 'Your password was reset successfully. Please log in.' });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const requestPasswordReset = async (req: Request, res: Response) => {
+  try {
+    const { mobile, newPassword } = req.body;
+    if (!mobile || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Mobile number and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 6 characters long' });
+    }
+
+    const user = await UserModel.findOne({ mobile });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'No registered account found with this mobile number' });
+    }
+
+    // Hash the requested new password
+    const newPasswordHash = await bcrypt.hash(newPassword, 10);
+
+    // Check if there is already a pending request for this user
+    const existing = await PasswordResetModel.findOne({ userId: user.id, status: 'pending' });
+    if (existing) {
+      await PasswordResetModel.findByIdAndUpdate(existing.id, {
+        newPasswordHash,
+        updatedAt: new Date().toISOString()
+      });
+    } else {
+      await PasswordResetModel.create({
+        userId: user.id,
+        mobile: user.mobile,
+        email: user.email,
+        businessName: user.kycDetails?.businessName || user.email,
+        newPasswordHash,
+        status: 'pending'
+      });
+    }
+
+    await AuditLogModel.create({
+      userId: user.id,
+      userEmail: user.email,
+      userRole: user.role,
+      action: 'PASSWORD_RESET_REQUESTED',
+      details: `User submitted password reset request for mobile ${mobile}. Awaiting Admin Approval.`
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Password reset request submitted successfully. Awaiting Admin Approval.',
+      status: 'pending'
+    });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const checkPasswordResetStatus = async (req: Request, res: Response) => {
+  try {
+    const mobile = req.query.mobile as string;
+    if (!mobile) {
+      return res.status(400).json({ success: false, message: 'Mobile number is required' });
+    }
+
+    const requests = await PasswordResetModel.find({ mobile });
+    if (!requests || requests.length === 0) {
+      return res.status(200).json({ success: true, hasRequest: false });
+    }
+
+    // Get latest request
+    const sorted = [...requests].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+    const latest = sorted[0];
+
+    return res.status(200).json({
+      success: true,
+      hasRequest: true,
+      request: {
+        id: latest.id,
+        status: latest.status,
+        createdAt: latest.createdAt,
+        businessName: latest.businessName,
+        adminNotes: latest.adminNotes
+      }
+    });
   } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
   }

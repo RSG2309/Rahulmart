@@ -144,3 +144,17 @@ export interface IBlockedIp {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IPasswordResetRequest {
+  id: string;
+  userId: string;
+  mobile: string;
+  email?: string;
+  businessName?: string;
+  newPasswordHash: string;
+  status: 'pending' | 'approved' | 'rejected';
+  adminNotes?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+

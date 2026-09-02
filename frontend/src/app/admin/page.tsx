@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { api, API_BASE_URL } from '@/services/api';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { BarChart3, Package, ShoppingCart, ShieldCheck, FileText, Download, Upload, AlertCircle, RefreshCw, Eye, Users } from 'lucide-react';
+import { BarChart3, Package, ShoppingCart, ShieldCheck, FileText, Download, Upload, AlertCircle, RefreshCw, Eye, Users, KeyRound, Check, X } from 'lucide-react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 export default function AdminDashboard() {
@@ -14,7 +14,8 @@ export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth();
 
   // State
-  const [activeTab, setActiveTab] = useState<'overview' | 'retailers' | 'kyc' | 'wallet' | 'inventory' | 'orders' | 'logs' | 'coupons'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'retailers' | 'kyc' | 'wallet' | 'inventory' | 'orders' | 'logs' | 'coupons' | 'resets'>('overview');
+  const [passwordResets, setPasswordResets] = useState<any[]>([]);
   const [coupons, setCoupons] = useState<any[]>([]);
   const [showAddCouponForm, setShowAddCouponForm] = useState(false);
   const [newCouponData, setNewCouponData] = useState({
@@ -177,7 +178,8 @@ export default function AdminDashboard() {
         auditRes,
         notifRes,
         couponRes,
-        retailersRes
+        retailersRes,
+        passwordResetsRes
       ] = await Promise.all([
         api.get('/admin/stats'),
         api.get('/admin/kyc-queue'),
@@ -187,7 +189,8 @@ export default function AdminDashboard() {
         api.get('/admin/audit-logs'),
         api.get('/admin/notif-logs'),
         api.get('/admin/coupons'),
-        api.get('/admin/retailers')
+        api.get('/admin/retailers'),
+        api.get('/admin/password-resets')
       ]);
 
       if (statsRes.success) {
@@ -204,6 +207,7 @@ export default function AdminDashboard() {
       if (notifRes.success) setNotifLogs(notifRes.logs);
       if (couponRes.success) setCoupons(couponRes.coupons);
       if (retailersRes.success) setRetailers(retailersRes.retailers);
+      if (passwordResetsRes.success) setPasswordResets(passwordResetsRes.requests);
 
     } catch (e) {
       console.error(e);
@@ -253,6 +257,36 @@ export default function AdminDashboard() {
       }
     } catch (e) {
       showFeedback('error', 'Server error during KYC rejection.');
+    }
+  };
+
+  // Password Reset Operations
+  const handleApprovePasswordReset = async (id: string) => {
+    try {
+      const res = await api.post(`/admin/password-resets/${id}/approve`, {});
+      if (res.success) {
+        showFeedback('success', 'Password reset approved! The customer can now log in with the new password.');
+        loadData();
+      } else {
+        showFeedback('error', res.message || 'Failed to approve password reset.');
+      }
+    } catch (e: any) {
+      showFeedback('error', e.message || 'Server error during approval.');
+    }
+  };
+
+  const handleRejectPasswordReset = async (id: string) => {
+    const reason = prompt('Enter rejection reason (optional):');
+    try {
+      const res = await api.post(`/admin/password-resets/${id}/reject`, { reason });
+      if (res.success) {
+        showFeedback('success', 'Password reset request rejected.');
+        loadData();
+      } else {
+        showFeedback('error', res.message || 'Failed to reject request.');
+      }
+    } catch (e: any) {
+      showFeedback('error', e.message || 'Server error during rejection.');
     }
   };
 
@@ -737,6 +771,18 @@ export default function AdminDashboard() {
             }`}
           >
             <FileText size={15} /> Coupon Management
+          </button>
+          <button
+            onClick={() => setActiveTab('resets')}
+            className={`py-3 px-3 text-xs font-bold transition border-b-2 flex items-center gap-1.5 ${
+              activeTab === 'resets' ? 'border-indigo-600 text-indigo-600 font-black' : 'border-transparent text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <KeyRound size={15} /> Password Resets {passwordResets.filter(r => r.status === 'pending').length > 0 && (
+              <span className="bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full">
+                {passwordResets.filter(r => r.status === 'pending').length}
+              </span>
+            )}
           </button>
         </div>
 
@@ -2018,6 +2064,107 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ========================================== */}
+            {/* TAB: PASSWORD RESETS APPROVAL             */}
+            {/* ========================================== */}
+            {activeTab === 'resets' && (
+              <div className="space-y-6 text-left">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-200">
+                  <div>
+                    <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                      <KeyRound className="text-indigo-600" size={20} /> Password Reset Approvals
+                    </h2>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Customers who forgot their password must be approved here before their new password is activated.
+                    </p>
+                  </div>
+                  <button
+                    onClick={loadData}
+                    className="flex items-center gap-1.5 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl transition"
+                  >
+                    <RefreshCw size={14} /> Refresh List
+                  </button>
+                </div>
+
+                {passwordResets.length === 0 ? (
+                  <div className="bg-slate-50 border border-slate-200 py-16 rounded-2xl text-center">
+                    <KeyRound size={36} className="mx-auto text-slate-300 mb-2" />
+                    <p className="text-sm font-bold text-slate-600">No Password Reset Requests</p>
+                    <p className="text-xs text-slate-400 mt-1">Whenever a retailer requests a password recovery, it will appear here for Admin Approval.</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto border border-slate-200 rounded-2xl">
+                    <table className="w-full text-xs text-left">
+                      <thead className="bg-slate-50 text-slate-600 uppercase font-black text-[10px] tracking-wider border-b border-slate-200">
+                        <tr>
+                          <th className="px-4 py-3">Retailer / Business</th>
+                          <th className="px-4 py-3">Mobile Number</th>
+                          <th className="px-4 py-3">Requested Time</th>
+                          <th className="px-4 py-3">Status</th>
+                          <th className="px-4 py-3 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 bg-white">
+                        {passwordResets.map((req) => (
+                          <tr key={req.id} className="hover:bg-slate-50/70 transition">
+                            <td className="px-4 py-3.5">
+                              <span className="font-bold text-slate-900 block">{req.businessName || 'Wholesale Buyer'}</span>
+                              <span className="text-[10px] text-slate-400">{req.email || 'No email provided'}</span>
+                            </td>
+                            <td className="px-4 py-3.5 font-mono font-bold text-slate-800">
+                              {req.mobile}
+                            </td>
+                            <td className="px-4 py-3.5 text-slate-500 text-[11px]">
+                              {req.createdAt ? new Date(req.createdAt).toLocaleString('en-IN') : 'N/A'}
+                            </td>
+                            <td className="px-4 py-3.5">
+                              <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase inline-flex items-center gap-1 ${
+                                req.status === 'approved'
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                  : req.status === 'rejected'
+                                  ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                                  : 'bg-amber-50 text-amber-700 border border-amber-200'
+                              }`}>
+                                <span className={`w-1.5 h-1.5 rounded-full ${
+                                  req.status === 'approved' ? 'bg-emerald-500' : req.status === 'rejected' ? 'bg-rose-500' : 'bg-amber-500 animate-pulse'
+                                }`} />
+                                {req.status}
+                              </span>
+                              {req.adminNotes && (
+                                <span className="block text-[10px] text-slate-400 mt-1 italic">Note: {req.adminNotes}</span>
+                              )}
+                            </td>
+                            <td className="px-4 py-3.5 text-right">
+                              {req.status === 'pending' ? (
+                                <div className="flex items-center justify-end gap-2">
+                                  <button
+                                    onClick={() => handleApprovePasswordReset(req.id)}
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold text-xs shadow-sm transition flex items-center gap-1"
+                                  >
+                                    <Check size={13} /> Approve
+                                  </button>
+                                  <button
+                                    onClick={() => handleRejectPasswordReset(req.id)}
+                                    className="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-lg font-bold text-xs transition flex items-center gap-1"
+                                  >
+                                    <X size={13} /> Reject
+                                  </button>
+                                </div>
+                              ) : (
+                                <span className="text-[11px] font-semibold text-slate-400">
+                                  Processed
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>

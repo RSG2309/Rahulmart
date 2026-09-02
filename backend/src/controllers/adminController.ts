@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { ProductModel, OrderModel, UserModel, AuditLogModel, TransactionModel } from '../models';
+import { ProductModel, OrderModel, UserModel, AuditLogModel, TransactionModel, PasswordResetModel } from '../models';
 import { AuthRequest } from '../middleware/auth';
 import { NotificationService } from '../services/notification';
 
@@ -236,3 +236,86 @@ export const rejectWalletRequest = async (req: AuthRequest, res: Response) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getPasswordResetRequests = async (req: AuthRequest, res: Response) => {
+  try {
+    const requests = await PasswordResetModel.find({});
+    return res.status(200).json({ success: true, requests });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const approvePasswordReset = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const request = await PasswordResetModel.findById(id);
+    if (!request) {
+      return res.status(404).json({ success: false, message: 'Password reset request not found' });
+    }
+
+    if (request.status !== 'pending') {
+      return res.status(400).json({ success: false, message: `Request has already been ${request.status}` });
+    }
+
+    const user = await UserModel.findById(request.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Associated retailer account not found' });
+    }
+
+    // Update user password to requested new password hash
+    await UserModel.findByIdAndUpdate(user.id, { password: request.newPasswordHash });
+
+    // Mark request as approved
+    await PasswordResetModel.findByIdAndUpdate(id, { status: 'approved' });
+
+    await AuditLogModel.create({
+      userId: req.user?.id || 'admin',
+      userEmail: req.user?.email || 'admin@b2b.com',
+      userRole: req.user?.role || 'admin',
+      action: 'ADMIN_APPROVE_PASSWORD_RESET',
+      details: `Admin approved password reset for mobile ${request.mobile} (${request.businessName || user.email})`
+    });
+
+    await NotificationService.sendSMS(request.mobile, 'Security Notice: Your password reset request has been APPROVED by Rahul Super Mart Admin. You can now login with your new password.');
+
+    return res.status(200).json({ success: true, message: 'Password reset approved successfully. The customer can now login with their new password.' });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const rejectPasswordReset = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { reason } = req.body;
+    const request = await PasswordResetModel.findById(id);
+    if (!request) {
+      return res.status(404).json({ success: false, message: 'Password reset request not found' });
+    }
+
+    if (request.status !== 'pending') {
+      return res.status(400).json({ success: false, message: `Request has already been ${request.status}` });
+    }
+
+    await PasswordResetModel.findByIdAndUpdate(id, { 
+      status: 'rejected',
+      adminNotes: reason || 'Rejected by Admin'
+    });
+
+    await AuditLogModel.create({
+      userId: req.user?.id || 'admin',
+      userEmail: req.user?.email || 'admin@b2b.com',
+      userRole: req.user?.role || 'admin',
+      action: 'ADMIN_REJECT_PASSWORD_RESET',
+      details: `Admin rejected password reset for mobile ${request.mobile} (${request.businessName || ''})`
+    });
+
+    await NotificationService.sendSMS(request.mobile, 'Security Notice: Your password reset request was REJECTED by Rahul Super Mart Admin. Please contact support.');
+
+    return res.status(200).json({ success: true, message: 'Password reset request rejected.' });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
