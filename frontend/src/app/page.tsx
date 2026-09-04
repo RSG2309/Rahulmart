@@ -298,14 +298,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2.5 Demo Alert Ticker Marquee */}
+      {/* 2.5 Running Announcement Marquee */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-2">
-        <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-2.5 overflow-hidden flex items-center">
-          <span className="bg-amber-600 text-white font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-sm flex-shrink-0 mr-3 animate-pulse">
-            Notice
+        <div className="bg-gradient-to-r from-red-50 via-amber-50 to-emerald-50 border border-amber-200/90 rounded-2xl p-2.5 overflow-hidden flex items-center shadow-sm">
+          <span className="bg-gradient-to-r from-red-600 to-amber-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-lg shadow-sm flex-shrink-0 mr-3 animate-pulse">
+            📢 Notice
           </span>
-          <Marquee behavior="scroll" direction="left" className="text-amber-800 font-bold text-xs tracking-wide cursor-default">
-            ⚠️ Rahul Super Mart की वेबसाइट वर्तमान में केवल Demo (Preview) Version में उपलब्ध है। अभी इस वेबसाइट के माध्यम से कोई ऑर्डर स्वीकार नहीं किया जा रहा है। ❌ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ⚠️ Notice: Rahul Super Mart website is currently in Demo (Preview) Version only. No orders are being accepted through the platform at this moment. ❌
+          <Marquee behavior="scroll" direction="left" className="text-slate-900 font-bold text-xs tracking-wide cursor-default">
+            🎉 RAHUL SUPER MART – GRAND OPENING SALE शुरू हो गई है! 🛒 &nbsp;अब आप ऑनलाइन ऑर्डर कर सकते हैं और अपने पसंदीदा सामान को सबसे कम दाम में खरीद सकते हैं। 🛍️💰 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🎉 RAHUL SUPER MART – GRAND OPENING SALE शुरू हो गई है! 🛒 &nbsp;अब आप ऑनलाइन ऑर्डर कर सकते हैं और अपने पसंदीदा सामान को सबसे कम दाम में खरीद सकते हैं। 🛍️💰
           </Marquee>
         </div>
       </section>
