@@ -23,29 +23,24 @@ export default function Home() {
   // Auto-scrolling slides list (only images and redirection links)
   const slides = [
     {
-      image: '/Demo1.jpeg.jpg',
+      image: '/Demo1.jpeg.jpg?v=20260904',
       title: 'Grocery Supplies',
       link: '/catalog?category=grocery'
     },
     {
-      image: '/demo2.jpg',
+      image: '/demo2.jpg?v=20260904',
       title: 'Cosmetics Care',
       link: '/catalog?category=cosmetic'
     },
     {
-      image: '/banner1.jpg',
+      image: '/banner1.jpg?v=20260904',
       title: 'Electronics',
       link: '/catalog?category=electronics'
     },
     {
-      image: '/banner2.jpg',
+      image: '/banner2.jpg?v=20260904',
       title: 'Wholesale Warehousing',
       link: '/catalog'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=1000&h=450&q=65&fm=webp',
-      title: 'Store Staples & Grains',
-      link: '/catalog?category=grocery'
     }
   ];
 
@@ -576,7 +571,7 @@ export default function Home() {
             {/* Aspect box containing notice image */}
             <div className="relative w-full aspect-square overflow-hidden rounded-2xl border border-slate-100/80 bg-slate-50 flex items-center justify-center">
               <img 
-                src="/demo-notice.jpg.jpg" 
+                src="/demo-notice.jpg.jpg?v=20260904" 
                 alt="Demo Notice" 
                 className="w-full h-full object-contain hover:scale-101 transition duration-300" 
               />
