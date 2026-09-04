@@ -199,8 +199,20 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* 2. Category List (Floating overlapping style like Amazon/Flipkart product grids) */}
-      <section className="relative z-20 mt-4 sm:-mt-8 lg:-mt-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-10">
+      {/* 2. Running Announcement Marquee (Above Browse Sourcing Categories) */}
+      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mt-3 mb-2">
+        <div className="bg-gradient-to-r from-red-50 via-amber-50 to-emerald-50 border border-amber-200/90 rounded-2xl p-2.5 overflow-hidden flex items-center shadow-sm">
+          <span className="bg-gradient-to-r from-red-600 to-amber-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-lg shadow-sm flex-shrink-0 mr-3 animate-pulse">
+            📢 Notice
+          </span>
+          <Marquee behavior="scroll" direction="left" className="text-slate-900 font-bold text-xs tracking-wide cursor-default">
+            🎉 RAHUL SUPER MART – GRAND OPENING SALE शुरू हो गई है! 🛒 &nbsp;अब आप ऑनलाइन ऑर्डर कर सकते हैं और अपने पसंदीदा सामान को सबसे कम दाम में खरीद सकते हैं। 🛍️💰 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🎉 RAHUL SUPER MART – GRAND OPENING SALE शुरू हो गई है! 🛒 &nbsp;अब आप ऑनलाइन ऑर्डर कर सकते हैं और अपने पसंदीदा सामान को सबसे कम दाम में खरीद सकते हैं। 🛍️💰
+          </Marquee>
+        </div>
+      </section>
+
+      {/* 2. Category List */}
+      <section className="relative z-20 mt-2 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-10">
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-md">
           <h2 className="text-sm font-bold uppercase tracking-wider text-slate-650 mb-6 text-left flex items-center gap-2">
             <Layers size={16} className="text-indigo-650" /> Browse Sourcing Categories
@@ -290,18 +302,6 @@ export default function Home() {
               })
             )}
           </div>
-        </div>
-      </section>
-
-      {/* 2.5 Running Announcement Marquee */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-2">
-        <div className="bg-gradient-to-r from-red-50 via-amber-50 to-emerald-50 border border-amber-200/90 rounded-2xl p-2.5 overflow-hidden flex items-center shadow-sm">
-          <span className="bg-gradient-to-r from-red-600 to-amber-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-lg shadow-sm flex-shrink-0 mr-3 animate-pulse">
-            📢 Notice
-          </span>
-          <Marquee behavior="scroll" direction="left" className="text-slate-900 font-bold text-xs tracking-wide cursor-default">
-            🎉 RAHUL SUPER MART – GRAND OPENING SALE शुरू हो गई है! 🛒 &nbsp;अब आप ऑनलाइन ऑर्डर कर सकते हैं और अपने पसंदीदा सामान को सबसे कम दाम में खरीद सकते हैं। 🛍️💰 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🎉 RAHUL SUPER MART – GRAND OPENING SALE शुरू हो गई है! 🛒 &nbsp;अब आप ऑनलाइन ऑर्डर कर सकते हैं और अपने पसंदीदा सामान को सबसे कम दाम में खरीद सकते हैं। 🛍️💰
-          </Marquee>
         </div>
       </section>
 
