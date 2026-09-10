@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { api, getImageUrl } from '@/services/api';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { ShoppingCart, AlertCircle, CheckCircle, ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Sparkles, Smartphone, Grid, Layers, X } from 'lucide-react';
+import { ShoppingCart, AlertCircle, CheckCircle, ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Sparkles, Smartphone, Grid, Layers, X, Flame } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Marquee = 'marquee' as any;
@@ -19,6 +19,15 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
   const [notifMessage, setNotifMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Today Deals horizontal scroll carousel ref and handler
+  const dealsScrollRef = useRef<HTMLDivElement>(null);
+  const scrollDeals = (direction: 'left' | 'right') => {
+    if (dealsScrollRef.current) {
+      const scrollAmount = direction === 'left' ? -320 : 320;
+      dealsScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   // Auto-scrolling slides list (only images and redirection links)
   const slides = [
@@ -304,6 +313,167 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 2.8 Today's Deals - Horizontal Scroll Carousel with Left/Right Cursors */}
+      {products.length > 0 && (
+        <section className="py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+          <div className="bg-gradient-to-r from-red-500/5 via-rose-500/5 to-amber-500/5 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-rose-200/80 shadow-sm relative">
+            {/* Header with Title and Left/Right Cursor Buttons */}
+            <div className="flex justify-between items-center mb-4 text-left">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-1.5">
+                    <Flame className="text-red-500 fill-red-500" size={20} />
+                    Today's Deals
+                  </h2>
+                  <span className="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse hidden sm:inline-block">
+                    Deal of the Day
+                  </span>
+                </div>
+                <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">Special wholesale rates refreshed daily • Swipe or use arrows</p>
+              </div>
+
+              {/* Cursor controls & View all link */}
+              <div className="flex items-center gap-2 sm:gap-3">
+                <Link href="/catalog" className="text-xs font-bold text-red-600 hover:text-red-700 hidden sm:inline-flex items-center gap-1">
+                  View All <ArrowRight size={13} />
+                </Link>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => scrollDeals('left')}
+                    className="w-8 h-8 rounded-full bg-white border border-slate-200 shadow-sm hover:bg-slate-100 hover:border-slate-300 flex items-center justify-center text-slate-700 transition active:scale-95 cursor-pointer"
+                    aria-label="Scroll deals left"
+                    title="Previous Deals"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button
+                    onClick={() => scrollDeals('right')}
+                    className="w-8 h-8 rounded-full bg-white border border-slate-200 shadow-sm hover:bg-slate-100 hover:border-slate-300 flex items-center justify-center text-slate-700 transition active:scale-95 cursor-pointer"
+                    aria-label="Scroll deals right"
+                    title="Next Deals"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Horizontal Scrollable Product Track */}
+            <div
+              ref={dealsScrollRef}
+              className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 pt-1 scroll-smooth snap-x snap-mandatory scrollbar-none"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {products.map((product) => {
+                const mrp = Number(product.mrp || 0);
+                const isVerifiedRetailer = user && user.kycStatus === 'verified';
+                const targetPrice = isVerifiedRetailer
+                  ? Number(product.wholesalePrice || 0)
+                  : Number(product.retailerPrice || 0);
+                const calculatedDiscount = mrp > 0 && targetPrice > 0 && targetPrice < mrp
+                  ? Math.round(((mrp - targetPrice) / mrp) * 100)
+                  : 0;
+
+                return (
+                  <div
+                    key={`today-deal-${product.id}`}
+                    className="w-[170px] sm:w-[205px] flex-shrink-0 snap-start bg-white rounded-2xl border border-slate-200/90 hover:border-red-300 hover:shadow-md transition-all duration-300 flex flex-col justify-between overflow-hidden text-left"
+                  >
+                    <Link href={`/products/${product.id}`} className="block">
+                      <div className="p-2 sm:p-3 relative bg-slate-50/50">
+                        {calculatedDiscount > 0 ? (
+                          <span className="absolute top-2 left-2 z-10 bg-red-600 text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
+                            {calculatedDiscount}% OFF
+                          </span>
+                        ) : (
+                          <span className="absolute top-2 left-2 z-10 bg-rose-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                            Deal
+                          </span>
+                        )}
+
+                        {product.stock <= 0 && (
+                          <span className="absolute top-2 right-2 z-10 bg-slate-900 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">
+                            Sold Out
+                          </span>
+                        )}
+
+                        <div className="overflow-hidden rounded-xl bg-white p-1.5 border border-slate-100 flex items-center justify-center h-28 sm:h-32">
+                          <img
+                            src={getImageUrl(product.images?.[0])}
+                            alt={product.name}
+                            className="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                    </Link>
+
+                    <div className="p-2.5 flex-grow flex flex-col justify-between">
+                      <div>
+                        <span className="text-[9px] text-red-600 font-extrabold uppercase tracking-wider block truncate">
+                          {product.brand || 'Today Deal'}
+                        </span>
+                        <Link
+                          href={`/products/${product.id}`}
+                          title={product.name}
+                          className="font-bold text-slate-800 text-xs mt-0.5 line-clamp-2 overflow-hidden text-ellipsis leading-tight min-h-[2rem] hover:text-red-600 transition-colors block"
+                        >
+                          {product.name}
+                        </Link>
+                        <p className="text-slate-400 text-[9px] mt-0.5 font-semibold">MOQ: {product.moq} {product.unit}s</p>
+
+                        <div className="mt-1.5 bg-slate-50 border border-slate-100/90 p-1.5 rounded-xl">
+                          <div className="flex items-baseline justify-between gap-1">
+                            <div>
+                              <span className="text-[8px] text-red-600 uppercase font-black block leading-none mb-0.5">Bulk Rate</span>
+                              {user ? (
+                                user.kycStatus === 'verified' ? (
+                                  <span className="font-black text-red-600 text-xs sm:text-sm">₹{product.wholesalePrice}</span>
+                                ) : (
+                                  <Link href="/profile" className="text-[8px] sm:text-[9px] font-bold text-amber-600 hover:underline block leading-tight">
+                                    🔒 KYC Req.
+                                  </Link>
+                                )
+                              ) : (
+                                <Link href="/auth/login" className="text-[8px] sm:text-[10px] font-bold text-[#fb641b] hover:underline block leading-tight">
+                                  🔒 Login
+                                </Link>
+                              )}
+                            </div>
+                            <div className="text-right leading-tight">
+                              <span className="text-[8px] text-slate-500 block">Retail: <strong className="text-slate-700 font-bold">₹{product.retailerPrice}</strong></span>
+                              {mrp > Number(product.retailerPrice || 0) && (
+                                <span className="text-[8px] text-slate-400 line-through block">M.R.P: ₹{mrp}</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {product.stock <= 0 ? (
+                        <button
+                          disabled
+                          className="w-full mt-2 bg-slate-100 text-slate-400 font-bold py-1.5 rounded-lg text-[11px] cursor-not-allowed"
+                        >
+                          Out of Stock
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleQuickAdd(product)}
+                          className="w-full mt-2 bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 rounded-lg text-[11px] transition shadow-sm flex items-center justify-center gap-1"
+                        >
+                          <ShoppingCart size={12} /> Add
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 2.9 Offer Zone */}
       {(loading || products.some(p => p.isOfferZone === true)) && (
