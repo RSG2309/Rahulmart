@@ -1820,12 +1820,13 @@ export default function AdminDashboard() {
                                 </button>
                               )}
                               <a
-                                  href={`${API_BASE_URL}/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
+                                href={`${API_BASE_URL}/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="bg-blue-50 hover:bg-blue-100 text-[#2874f0] border border-blue-200 font-extrabold px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1 shadow-sm transition hover:scale-102"
+                                className="bg-blue-50 hover:bg-blue-100 text-[#2874f0] border border-blue-200 font-extrabold px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1.5 shadow-sm transition hover:scale-102"
+                                title="Open & Download Tax Invoice PDF"
                               >
-                                <Eye size={10} /> Download Invoice PDF
+                                <Eye size={11} /> Open / Download Invoice PDF
                               </a>
                             </div>
                           </div>

@@ -19,7 +19,8 @@ import {
   Building,
   ArrowRight,
   ExternalLink,
-  KeyRound
+  KeyRound,
+  FileText
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -394,10 +395,12 @@ function Profile() {
                             href={`${API_BASE_URL}/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="bg-blue-50 hover:bg-blue-100 text-[#2874f0] border border-blue-200 hover:border-blue-300 font-extrabold px-3 py-1 rounded text-[10px] transition flex items-center gap-1 shadow-sm"
-                            title="Download Tax Invoice"
+                            className="bg-blue-50 hover:bg-blue-100 text-[#2874f0] border border-blue-200 hover:border-blue-300 font-extrabold px-3 py-1.5 rounded-lg text-[10px] transition flex items-center gap-1.5 shadow-sm"
+                            title="Open & Download Tax Invoice PDF"
                           >
-                            PDF Invoice
+                            <FileText size={12} />
+                            <span>Invoice PDF</span>
+                            <ExternalLink size={10} />
                           </a>
                         </div>
                       </div>

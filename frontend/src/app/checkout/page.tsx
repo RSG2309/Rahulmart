@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
-import { api } from '@/services/api';
+import { api, API_BASE_URL } from '@/services/api';
 import { MapPin, CreditCard, ShoppingBag, ShieldAlert, CheckCircle2, AlertTriangle, FileText, ArrowRight } from 'lucide-react';
 
 export default function Checkout() {
@@ -163,6 +163,15 @@ export default function Checkout() {
 
             {/* Invoicing Link */}
             <div className="flex flex-wrap gap-4 justify-center pt-2">
+              <a
+                href={`${API_BASE_URL}/orders/${confirmedOrder.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition text-xs shadow-md"
+                title="Open and download tax invoice PDF"
+              >
+                <FileText size={16} /> Open / Download Invoice
+              </a>
               <Link
                 href="/"
                 className="inline-flex items-center gap-1.5 bg-[#fb641b] hover:bg-[#e1530f] text-white px-8 py-3 rounded-xl font-bold transition text-xs shadow-md"

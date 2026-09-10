@@ -101,9 +101,9 @@ router.get('/orders/:id/invoice', authenticateJWT, async (req: any, res) => {
     const { generateInvoicePDF } = require('../services/invoice');
     const invoicePath = await generateInvoicePDF(order);
 
-    // Send PDF file
+    // Send PDF file (inline so it automatically opens in browser/viewer)
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=invoice_${order.id}.pdf`);
+    res.setHeader('Content-Disposition', `inline; filename="invoice_${order.id}.pdf"`);
     return res.sendFile(invoicePath);
   } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
@@ -489,6 +489,7 @@ router.get('/invoices/:filename', (req, res) => {
   
   if (fs.existsSync(filePath)) {
     res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
     return res.sendFile(filePath);
   } else {
     return res.status(404).json({ success: false, message: `Invoice PDF file not found at path: ${filePath}` });
