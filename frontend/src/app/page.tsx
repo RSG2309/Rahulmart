@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import { api, getImageUrl } from '@/services/api';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { ShoppingCart, AlertCircle, CheckCircle, ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Sparkles, Smartphone, Grid, Layers, X, Flame } from 'lucide-react';
+import { ShoppingCart, AlertCircle, CheckCircle, ArrowRight, ChevronLeft, ChevronRight, Sparkles, X, Flame } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Marquee = 'marquee' as any;
@@ -15,7 +15,6 @@ const Marquee = 'marquee' as any;
 export default function Home() {
   const { user } = useAuth();
   const [products, setProducts] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
   const [notifMessage, setNotifMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -69,12 +68,8 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [prodRes, catRes] = await Promise.all([
-          api.get('/products'),
-          api.get('/categories')
-        ]);
+        const prodRes = await api.get('/products');
         if (prodRes.success) setProducts(prodRes.products);
-        if (catRes.success) setCategories(catRes.categories);
       } catch (e) {
         console.error(e);
       } finally {
@@ -217,100 +212,6 @@ export default function Home() {
           <Marquee behavior="scroll" direction="left" className="text-slate-900 font-bold text-xs tracking-wide cursor-default">
             🎉 RAHUL SUPER MART – GRAND OPENING SALE शुरू हो गई है! 🛒 &nbsp;अब आप ऑनलाइन ऑर्डर कर सकते हैं और अपने पसंदीदा सामान को सबसे कम दाम में खरीद सकते हैं। 🛍️💰 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🎉 RAHUL SUPER MART – GRAND OPENING SALE शुरू हो गई है! 🛒 &nbsp;अब आप ऑनलाइन ऑर्डर कर सकते हैं और अपने पसंदीदा सामान को सबसे कम दाम में खरीद सकते हैं। 🛍️💰
           </Marquee>
-        </div>
-      </section>
-
-      {/* 2. Category List */}
-      <section className="relative z-20 mt-2 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-10">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-md">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-650 mb-6 text-left flex items-center gap-2">
-            <Layers size={16} className="text-indigo-650" /> Browse Sourcing Categories
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {loading ? (
-              [...Array(3)].map((_, i) => (
-                <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 animate-pulse h-24 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-slate-200"></div>
-                    <div className="space-y-2">
-                      <div className="h-4 w-20 bg-slate-200 rounded"></div>
-                      <div className="h-3 w-36 bg-slate-200 rounded"></div>
-                    </div>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-slate-200"></div>
-                </div>
-              ))
-            ) : (
-              categories.map((cat: any) => {
-                // Define professional icon based on slug
-                let CatIcon = Grid;
-                if (cat.slug === 'grocery') {
-                  CatIcon = ShoppingBag;
-                } else if (cat.slug === 'cosmetic') {
-                  CatIcon = Sparkles;
-                } else if (cat.slug === 'electronics') {
-                  CatIcon = Smartphone;
-                }
-
-                // Color themes matching the vertical
-                let theme = {
-                  bg: 'bg-gradient-to-br from-slate-50 to-slate-100/50 hover:from-slate-100 hover:to-slate-200/50 border-slate-200/60 hover:border-slate-350 hover:shadow-md',
-                  iconBg: 'bg-slate-150 text-slate-700',
-                  btnBg: 'bg-white text-slate-500 group-hover:bg-slate-900 group-hover:text-white',
-                  textColor: 'text-slate-900'
-                };
-
-                if (cat.slug === 'grocery') {
-                  theme = {
-                    bg: 'bg-gradient-to-br from-emerald-50/50 to-teal-50/10 hover:from-emerald-50 hover:to-teal-50 border-emerald-100/70 hover:border-emerald-250 hover:shadow-emerald-100/30 hover:shadow-lg',
-                    iconBg: 'bg-emerald-500 text-white shadow-sm shadow-emerald-550/20',
-                    btnBg: 'bg-white text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-emerald-100',
-                    textColor: 'text-emerald-950'
-                  };
-                } else if (cat.slug === 'cosmetic') {
-                  theme = {
-                    bg: 'bg-gradient-to-br from-rose-50/50 to-pink-50/10 hover:from-rose-50 hover:to-pink-50 border-rose-100/70 hover:border-rose-250 hover:shadow-rose-100/30 hover:shadow-lg',
-                    iconBg: 'bg-rose-500 text-white shadow-sm shadow-rose-550/20',
-                    btnBg: 'bg-white text-rose-600 group-hover:bg-rose-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-rose-100',
-                    textColor: 'text-rose-950'
-                  };
-                } else if (cat.slug === 'electronics') {
-                  theme = {
-                    bg: 'bg-gradient-to-br from-blue-50/50 to-indigo-50/10 hover:from-blue-50 hover:to-indigo-50 border-blue-100/70 hover:border-blue-250 hover:shadow-blue-100/30 hover:shadow-lg',
-                    iconBg: 'bg-blue-500 text-white shadow-sm shadow-blue-550/20',
-                    btnBg: 'bg-white text-blue-600 group-hover:bg-blue-500 group-hover:text-white group-hover:scale-105 shadow-sm border border-blue-100',
-                    textColor: 'text-blue-950'
-                  };
-                }
-
-                return (
-                  <Link
-                    key={cat.id}
-                    href={`/catalog?category=${cat.slug}`}
-                    className={`group p-6 rounded-2xl border transition-all duration-300 text-left flex items-center justify-between ${theme.bg}`}
-                  >
-                    <div className="flex items-center gap-4">
-                      {/* Visual icon badge */}
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold transition duration-300 ${theme.iconBg}`}>
-                        <CatIcon size={20} />
-                      </div>
-                      <div>
-                        <h4 className={`font-extrabold text-sm capitalize transition duration-300 ${theme.textColor}`}>
-                          {cat.name}
-                        </h4>
-                        <p className="text-[11px] text-slate-500 mt-1 leading-normal max-w-[200px]">
-                          {cat.description || 'Premium retail catalogue Slabs'}
-                        </p>
-                      </div>
-                    </div>
-                    <span className={`w-8 h-8 rounded-full flex items-center justify-center transition duration-300 font-bold ${theme.btnBg}`}>
-                      →
-                    </span>
-                  </Link>
-                );
-              })
-            )}
-          </div>
         </div>
       </section>
 
