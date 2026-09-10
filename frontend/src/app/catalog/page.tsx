@@ -287,14 +287,14 @@ function CatalogContent() {
                   const isLowStock = product.stock <= product.moq + 5;
 
                   return (
-                    <div key={product.id} className="group bg-white rounded-3xl border border-slate-200/85 hover:border-indigo-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
-                      <div className="p-4 relative bg-slate-50/50">
+                    <div key={product.id} className="group bg-white rounded-2xl sm:rounded-3xl border border-slate-200/85 hover:border-indigo-200 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
+                      <div className="p-2 sm:p-4 relative bg-slate-50/50">
                         {product.stock <= 0 ? (
-                          <span className="absolute top-4 left-4 z-10 bg-rose-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
+                          <span className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 bg-rose-600 text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
                             Out of Stock
                           </span>
                         ) : isLowStock ? (
-                          <span className="absolute top-4 left-4 z-10 bg-amber-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                          <span className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 bg-amber-500 text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2.5 rounded-full uppercase tracking-wider shadow-sm">
                             Low Stock
                           </span>
                         ) : (() => {
@@ -312,15 +312,15 @@ function CatalogContent() {
                           if (calculatedDiscount <= 0) return null;
                           
                           return (
-                            <span className="absolute top-4 left-4 z-10 bg-rose-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
+                            <span className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 bg-rose-500 text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
                               {calculatedDiscount}% OFF
                             </span>
                           );
                         })()}
-                        <span className="absolute top-4 right-4 z-10 bg-[#2874f0] text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                        <span className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 bg-[#2874f0] text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2.5 rounded-full uppercase tracking-wider shadow-sm">
                           {product.unit} Unit
                         </span>
-                        <Link href={`/products/${product.id}`} className="block overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-28 md:h-40">
+                        <Link href={`/products/${product.id}`} className="block overflow-hidden rounded-xl sm:rounded-2xl bg-white p-1.5 sm:p-3 border border-slate-100 flex items-center justify-center h-28 sm:h-36 md:h-40">
                           <img
                             src={getImageUrl(product.images?.[0])}
                             alt={product.name}
@@ -330,51 +330,56 @@ function CatalogContent() {
                         </Link>
                       </div>
                       
-                      <div className="p-5 flex-grow flex flex-col justify-between">
+                      <div className="p-2.5 sm:p-5 flex-grow flex flex-col justify-between">
                         <div>
-                          <span className="text-[10px] text-[#2874f0] font-extrabold uppercase tracking-widest block">{product.brand}</span>
-                          <Link href={`/products/${product.id}`} className="font-extrabold text-slate-800 text-sm mt-1 line-clamp-2 h-10 hover:text-[#2874f0] transition-colors block">
+                          <span className="text-[9px] sm:text-[10px] text-[#2874f0] font-extrabold uppercase tracking-widest block truncate">{product.brand}</span>
+                          <Link 
+                            href={`/products/${product.id}`} 
+                            title={product.name}
+                            className="font-bold text-slate-800 text-xs sm:text-sm mt-0.5 line-clamp-2 overflow-hidden text-ellipsis leading-tight sm:leading-snug min-h-[2rem] sm:min-h-[2.5rem] hover:text-[#2874f0] transition-colors block"
+                          >
                             {product.name}
                           </Link>
-                          <span className="text-[9px] text-slate-400 block font-mono mt-1">SKU: {product.sku}</span>
+                          <span className="text-[8px] sm:text-[9px] text-slate-400 block font-mono mt-0.5">SKU: {product.sku}</span>
                           
-                          <div className="mt-4 bg-slate-50 border border-slate-100 p-3 rounded-2xl space-y-1.5 text-xs">
-                            <div className="flex justify-between items-center text-slate-400">
-                              <span>MRP (inc. GST)</span>
-                              <span className="line-through font-medium">₹{product.mrp}</span>
-                            </div>
-                            <div className="flex justify-between items-center text-slate-600">
-                              <span>Retailer Rate</span>
-                              <span className="font-bold text-slate-800">₹{product.retailerPrice}</span>
-                            </div>
-                            <div className="flex justify-between items-center bg-blue-50/50 px-2 py-1 rounded-lg border border-blue-100/50">
-                              <span className="text-[#2874f0] font-extrabold text-[10px] uppercase">Bulk Rate</span>
-                              {user ? (
-                                user.kycStatus === 'verified' ? (
-                                  <span className="font-black text-[#2874f0] text-sm">₹{product.wholesalePrice}</span>
+                          {/* Amazon-Style Compact Price Box */}
+                          <div className="mt-2 bg-slate-50 border border-slate-100/90 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl">
+                            <div className="flex items-baseline justify-between gap-1">
+                              <div>
+                                <span className="text-[8px] sm:text-[9px] text-[#2874f0] uppercase font-black block leading-none mb-0.5">Bulk Rate</span>
+                                {user ? (
+                                  user.kycStatus === 'verified' ? (
+                                    <span className="font-black text-[#2874f0] text-xs sm:text-sm">₹{product.wholesalePrice}</span>
+                                  ) : (
+                                    <Link href="/profile" className="text-[8px] sm:text-[9px] font-bold text-amber-600 hover:underline block leading-tight">
+                                      🔒 KYC Req.
+                                    </Link>
+                                  )
                                 ) : (
-                                  <Link href="/profile" className="text-[9px] font-bold text-amber-600 hover:underline whitespace-nowrap leading-none">
-                                    🔒 KYC Pending
+                                  <Link href="/auth/login" className="text-[8px] sm:text-[10px] font-bold text-[#fb641b] hover:underline block leading-tight">
+                                    🔒 Login
                                   </Link>
-                                )
-                              ) : (
-                                <Link href="/auth/login" className="text-[10px] font-bold text-[#fb641b] hover:underline whitespace-nowrap">
-                                  🔒 Login to see
-                                </Link>
-                              )}
+                                )}
+                              </div>
+                              <div className="text-right leading-tight">
+                                <span className="text-[8px] sm:text-[9px] text-slate-500 block">Retail: <strong className="text-slate-700 font-bold">₹{product.retailerPrice}</strong></span>
+                                {Number(product.mrp || 0) > Number(product.retailerPrice || 0) && (
+                                  <span className="text-[8px] sm:text-[9px] text-slate-400 line-through block">M.R.P: ₹{product.mrp}</span>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
 
                         {/* Add to Cart Controls */}
-                        <div className="mt-4 pt-4 border-t border-slate-100 space-y-3">
-                          <div className="flex justify-between items-center text-xs">
-                            <span className="text-slate-500 font-bold">Quantity Slabs:</span>
-                            <div className="flex items-center border border-slate-200 rounded-xl p-0.5 bg-slate-50 shadow-inner">
+                        <div className="mt-2.5 pt-2 border-t border-slate-100 space-y-2">
+                          <div className="flex justify-between items-center text-[11px] sm:text-xs">
+                            <span className="text-slate-500 font-bold text-[10px] sm:text-xs">Qty:</span>
+                            <div className="flex items-center border border-slate-200 rounded-lg sm:rounded-xl p-0.5 bg-slate-50 shadow-inner">
                               <button
                                 disabled={product.stock <= 0}
                                 onClick={() => handleQtyChange(product.id, qty - 1, product.moq, product.stock)}
-                                className={`w-6 h-6 flex items-center justify-center font-bold text-slate-500 rounded-lg transition ${product.stock <= 0 ? 'cursor-not-allowed opacity-50' : 'hover:bg-white hover:shadow-sm'}`}
+                                className={`w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center font-bold text-slate-500 rounded transition ${product.stock <= 0 ? 'cursor-not-allowed opacity-50' : 'hover:bg-white hover:shadow-sm'}`}
                               >
                                 -
                               </button>
@@ -383,36 +388,36 @@ function CatalogContent() {
                                 disabled={product.stock <= 0}
                                 value={product.stock <= 0 ? 0 : qty}
                                 onChange={(e) => handleQtyChange(product.id, parseInt(e.target.value) || product.moq, product.moq, product.stock)}
-                                className="w-9 text-center bg-transparent border-none text-xs font-black text-slate-850 focus:outline-none disabled:opacity-50"
+                                className="w-7 sm:w-9 text-center bg-transparent border-none text-[11px] sm:text-xs font-black text-slate-800 focus:outline-none disabled:opacity-50"
                               />
                               <button
                                 disabled={product.stock <= 0}
                                 onClick={() => handleQtyChange(product.id, qty + 1, product.moq, product.stock)}
-                                className={`w-6 h-6 flex items-center justify-center font-bold text-slate-500 rounded-lg transition ${product.stock <= 0 ? 'cursor-not-allowed opacity-50' : 'hover:bg-white hover:shadow-sm'}`}
+                                className={`w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center font-bold text-slate-500 rounded transition ${product.stock <= 0 ? 'cursor-not-allowed opacity-50' : 'hover:bg-white hover:shadow-sm'}`}
                               >
                                 +
                               </button>
                             </div>
                           </div>
 
-                          <div className="flex justify-between items-center text-[10px] text-slate-405 font-semibold px-0.5">
-                            <span>MOQ: {product.moq} Units</span>
+                          <div className="flex justify-between items-center text-[9px] sm:text-[10px] text-slate-400 font-semibold px-0.5">
+                            <span>MOQ: {product.moq} {product.unit}s</span>
                             <span className="text-[#2874f0] font-bold">Total: ₹{(pricePerUnit * qty).toLocaleString('en-IN')}</span>
                           </div>
 
                           {product.stock <= 0 ? (
                             <button
                               disabled
-                              className="w-full bg-slate-100 border border-slate-350 text-slate-400 font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
+                              className="w-full bg-slate-100 border border-slate-300 text-slate-400 font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 cursor-not-allowed"
                             >
                               ⚠️ Out of Stock
                             </button>
                           ) : (
                             <button
                               onClick={() => handleAddToCart(product)}
-                              className="w-full bg-[#2874f0] hover:bg-[#1b5ec2] text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md shadow-blue-600/10 hover:shadow-blue-600/20 flex items-center justify-center gap-1.5"
+                              className="w-full bg-[#2874f0] hover:bg-[#1b5ec2] text-white font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs transition shadow-sm flex items-center justify-center gap-1"
                             >
-                              <ShoppingCart size={13} /> Add to Cart
+                              <ShoppingCart size={12} /> Add to Cart
                             </button>
                           )}
                         </div>

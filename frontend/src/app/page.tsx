@@ -329,11 +329,11 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
                 {products.filter(p => p.isOfferZone === true).slice(0, 4).map((product) => (
-                  <div key={product.id} className="group bg-white rounded-3xl border border-slate-200/85 hover:border-amber-300 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
+                  <div key={product.id} className="group bg-white rounded-2xl sm:rounded-3xl border border-slate-200/85 hover:border-amber-300 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
                     <Link href={`/products/${product.id}`} className="block">
-                      <div className="p-4 relative bg-slate-50/50">
+                      <div className="p-2 sm:p-4 relative bg-slate-50/50">
                         {(() => {
                           const mrp = Number(product.mrp || 0);
                           if (mrp <= 0) return null;
@@ -349,17 +349,17 @@ export default function Home() {
                           if (calculatedDiscount <= 0) return null;
                           
                           return (
-                            <span className="absolute top-4 left-4 z-10 bg-amber-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
+                            <span className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 bg-amber-500 text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
                               {calculatedDiscount}% OFF
                             </span>
                           );
                         })()}
                         {product.stock <= 0 && (
-                          <span className="absolute top-4 right-4 z-10 bg-rose-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                          <span className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 bg-rose-600 text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2.5 rounded-full uppercase tracking-wider shadow-sm">
                             Out of Stock
                           </span>
                         )}
-                        <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-28 md:h-40">
+                        <div className="overflow-hidden rounded-xl sm:rounded-2xl bg-white p-1.5 sm:p-3 border border-slate-100 flex items-center justify-center h-28 sm:h-36 md:h-40">
                           <img
                             src={getImageUrl(product.images?.[0])}
                             alt={product.name}
@@ -370,38 +370,43 @@ export default function Home() {
                       </div>
                     </Link>
                     
-                    <div className="p-5 flex-grow flex flex-col justify-between">
+                    <div className="p-2.5 sm:p-5 flex-grow flex flex-col justify-between">
                       <div>
-                        <span className="text-[10px] text-amber-600 font-extrabold uppercase tracking-widest block">{product.brand}</span>
-                        <Link href={`/products/${product.id}`} className="font-extrabold text-slate-800 text-sm mt-1 line-clamp-2 h-10 hover:text-amber-600 transition-colors block">
+                        <span className="text-[9px] sm:text-[10px] text-amber-600 font-extrabold uppercase tracking-widest block truncate">{product.brand}</span>
+                        <Link 
+                          href={`/products/${product.id}`} 
+                          title={product.name}
+                          className="font-bold text-slate-800 text-xs sm:text-sm mt-0.5 line-clamp-2 overflow-hidden text-ellipsis leading-tight sm:leading-snug min-h-[2rem] sm:min-h-[2.5rem] hover:text-amber-600 transition-colors block"
+                        >
                           {product.name}
                         </Link>
-                        <p className="text-slate-400 text-[10px] mt-1 font-semibold">MOQ: {product.moq} {product.unit}s</p>
+                        <p className="text-slate-400 text-[9px] sm:text-[10px] mt-0.5 font-semibold">MOQ: {product.moq} {product.unit}s</p>
                         
-                        <div className="mt-4 bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center justify-between text-[11px] gap-2 flex-wrap">
-                          <div className="text-left">
-                            <span className="text-[8px] text-slate-400 uppercase font-bold block">MRP</span>
-                            <span className="text-slate-400 line-through font-semibold">₹{product.mrp}</span>
-                          </div>
-                          <div className="text-left">
-                            <span className="text-[8px] text-slate-400 uppercase font-bold block">Retail</span>
-                            <span className="font-bold text-slate-700">₹{product.retailerPrice}</span>
-                          </div>
-                          <div className="text-right bg-amber-50/55 px-3 py-1.5 rounded-xl border border-amber-100/50">
-                            <span className="text-[9px] text-amber-600 uppercase font-black block">Bulk Rate</span>
-                            {user ? (
-                              user.kycStatus === 'verified' ? (
-                                <span className="font-black text-amber-600 text-sm">₹{product.wholesalePrice}</span>
+                        {/* Amazon-Style Compact Price Box */}
+                        <div className="mt-2 bg-slate-50 border border-slate-100/90 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl">
+                          <div className="flex items-baseline justify-between gap-1">
+                            <div>
+                              <span className="text-[8px] sm:text-[9px] text-amber-600 uppercase font-black block leading-none mb-0.5">Bulk Rate</span>
+                              {user ? (
+                                user.kycStatus === 'verified' ? (
+                                  <span className="font-black text-amber-600 text-xs sm:text-sm">₹{product.wholesalePrice}</span>
+                                ) : (
+                                  <Link href="/profile" className="text-[8px] sm:text-[9px] font-bold text-amber-600 hover:underline block leading-tight">
+                                    🔒 KYC Req.
+                                  </Link>
+                                )
                               ) : (
-                                <Link href="/profile" className="text-[9px] font-bold text-amber-600 hover:underline block mt-0.5 whitespace-nowrap leading-none">
-                                  🔒 KYC Pending
+                                <Link href="/auth/login" className="text-[8px] sm:text-[10px] font-bold text-[#fb641b] hover:underline block leading-tight">
+                                  🔒 Login
                                 </Link>
-                              )
-                            ) : (
-                              <Link href="/auth/login" className="text-[10px] font-bold text-[#fb641b] hover:underline block mt-0.5 whitespace-nowrap">
-                                🔒 Login to see
-                              </Link>
-                            )}
+                              )}
+                            </div>
+                            <div className="text-right leading-tight">
+                              <span className="text-[8px] sm:text-[9px] text-slate-500 block">Retail: <strong className="text-slate-700 font-bold">₹{product.retailerPrice}</strong></span>
+                              {Number(product.mrp || 0) > Number(product.retailerPrice || 0) && (
+                                <span className="text-[8px] sm:text-[9px] text-slate-400 line-through block">M.R.P: ₹{product.mrp}</span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -409,16 +414,16 @@ export default function Home() {
                       {product.stock <= 0 ? (
                         <button
                           disabled
-                          className="w-full mt-5 bg-slate-100 border border-slate-300 text-slate-400 font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
+                          className="w-full mt-2.5 sm:mt-4 bg-slate-100 border border-slate-300 text-slate-400 font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 cursor-not-allowed"
                         >
                           ⚠️ Out of Stock
                         </button>
                       ) : (
                         <button
                           onClick={() => handleQuickAdd(product)}
-                          className="w-full mt-5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md shadow-amber-500/10 hover:shadow-amber-500/20 flex items-center justify-center gap-1.5"
+                          className="w-full mt-2.5 sm:mt-4 bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs transition shadow-sm flex items-center justify-center gap-1"
                         >
-                          <ShoppingCart size={13} /> Add Product
+                          <ShoppingCart size={12} /> Add
                         </button>
                       )}
                     </div>
@@ -450,11 +455,11 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-6 gap-2.5 sm:gap-6">
               {products.slice(0, 6).map((product) => (
-                <div key={product.id} className="group bg-white rounded-3xl border border-slate-200/85 hover:border-blue-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
+                <div key={product.id} className="group bg-white rounded-2xl sm:rounded-3xl border border-slate-200/85 hover:border-blue-200 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col justify-between text-left">
                   <Link href={`/products/${product.id}`} className="block">
-                    <div className="p-4 relative bg-slate-50/50">
+                    <div className="p-2 sm:p-4 relative bg-slate-50/50">
                       {(() => {
                         const mrp = Number(product.mrp || 0);
                         if (mrp <= 0) return null;
@@ -470,17 +475,17 @@ export default function Home() {
                         if (calculatedDiscount <= 0) return null;
                         
                         return (
-                          <span className="absolute top-4 left-4 z-10 bg-rose-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
+                          <span className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 bg-rose-500 text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2.5 rounded-full uppercase tracking-wider shadow-sm animate-pulse">
                             {calculatedDiscount}% OFF
                           </span>
                         );
                       })()}
                       {product.stock <= 0 && (
-                        <span className="absolute top-4 right-4 z-10 bg-rose-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                        <span className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 bg-rose-600 text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2.5 rounded-full uppercase tracking-wider shadow-sm">
                           Out of Stock
                         </span>
                       )}
-                      <div className="overflow-hidden rounded-2xl bg-white p-3 border border-slate-100 flex items-center justify-center h-28 md:h-40">
+                      <div className="overflow-hidden rounded-xl sm:rounded-2xl bg-white p-1.5 sm:p-3 border border-slate-100 flex items-center justify-center h-28 sm:h-36 md:h-40">
                         <img
                           src={getImageUrl(product.images?.[0])}
                           alt={product.name}
@@ -491,38 +496,43 @@ export default function Home() {
                     </div>
                   </Link>
                   
-                  <div className="p-5 flex-grow flex flex-col justify-between">
+                  <div className="p-2.5 sm:p-5 flex-grow flex flex-col justify-between">
                     <div>
-                      <span className="text-[10px] text-[#2874f0] font-extrabold uppercase tracking-widest block">{product.brand}</span>
-                      <Link href={`/products/${product.id}`} className="font-extrabold text-slate-805 text-sm mt-1 line-clamp-2 h-10 hover:text-[#2874f0] transition-colors block">
+                      <span className="text-[9px] sm:text-[10px] text-[#2874f0] font-extrabold uppercase tracking-widest block truncate">{product.brand}</span>
+                      <Link 
+                        href={`/products/${product.id}`} 
+                        title={product.name}
+                        className="font-bold text-slate-805 text-xs sm:text-sm mt-0.5 line-clamp-2 overflow-hidden text-ellipsis leading-tight sm:leading-snug min-h-[2rem] sm:min-h-[2.5rem] hover:text-[#2874f0] transition-colors block"
+                      >
                         {product.name}
                       </Link>
-                      <p className="text-slate-400 text-[10px] mt-1 font-semibold">MOQ: {product.moq} {product.unit}s</p>
+                      <p className="text-slate-400 text-[9px] sm:text-[10px] mt-0.5 font-semibold">MOQ: {product.moq} {product.unit}s</p>
                       
-                      <div className="mt-4 bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center justify-between text-[11px] gap-2 flex-wrap">
-                        <div className="text-left">
-                          <span className="text-[8px] text-slate-400 uppercase font-bold block">MRP</span>
-                          <span className="text-slate-400 line-through font-semibold">₹{product.mrp}</span>
-                        </div>
-                        <div className="text-left">
-                          <span className="text-[8px] text-slate-400 uppercase font-bold block">Retail</span>
-                          <span className="font-bold text-slate-700">₹{product.retailerPrice}</span>
-                        </div>
-                        <div className="text-right bg-blue-50/50 px-3 py-1.5 rounded-xl border border-blue-100/50">
-                          <span className="text-[9px] text-[#2874f0] uppercase font-black block">Bulk Rate</span>
-                          {user ? (
-                            user.kycStatus === 'verified' ? (
-                              <span className="font-black text-[#2874f0] text-sm">₹{product.wholesalePrice}</span>
+                      {/* Amazon-Style Compact Price Box */}
+                      <div className="mt-2 bg-slate-50 border border-slate-100/90 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl">
+                        <div className="flex items-baseline justify-between gap-1">
+                          <div>
+                            <span className="text-[8px] sm:text-[9px] text-[#2874f0] uppercase font-black block leading-none mb-0.5">Bulk Rate</span>
+                            {user ? (
+                              user.kycStatus === 'verified' ? (
+                                <span className="font-black text-[#2874f0] text-xs sm:text-sm">₹{product.wholesalePrice}</span>
+                              ) : (
+                                <Link href="/profile" className="text-[8px] sm:text-[9px] font-bold text-amber-600 hover:underline block leading-tight">
+                                  🔒 KYC Req.
+                                </Link>
+                              )
                             ) : (
-                              <Link href="/profile" className="text-[9px] font-bold text-amber-600 hover:underline block mt-0.5 whitespace-nowrap leading-none">
-                                🔒 KYC Pending
+                              <Link href="/auth/login" className="text-[8px] sm:text-[10px] font-bold text-[#fb641b] hover:underline block leading-tight">
+                                🔒 Login
                               </Link>
-                            )
-                          ) : (
-                            <Link href="/auth/login" className="text-[10px] font-bold text-[#fb641b] hover:underline block mt-0.5 whitespace-nowrap">
-                              🔒 Login to see
-                            </Link>
-                          )}
+                            )}
+                          </div>
+                          <div className="text-right leading-tight">
+                            <span className="text-[8px] sm:text-[9px] text-slate-500 block">Retail: <strong className="text-slate-700 font-bold">₹{product.retailerPrice}</strong></span>
+                            {Number(product.mrp || 0) > Number(product.retailerPrice || 0) && (
+                              <span className="text-[8px] sm:text-[9px] text-slate-400 line-through block">M.R.P: ₹{product.mrp}</span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -530,16 +540,16 @@ export default function Home() {
                     {product.stock <= 0 ? (
                       <button
                         disabled
-                        className="w-full mt-5 bg-slate-100 border border-slate-300 text-slate-400 font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
+                        className="w-full mt-2.5 sm:mt-4 bg-slate-100 border border-slate-300 text-slate-400 font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 cursor-not-allowed"
                       >
                         ⚠️ Out of Stock
                       </button>
                     ) : (
                       <button
                         onClick={() => handleQuickAdd(product)}
-                        className="w-full mt-5 bg-[#2874f0] hover:bg-[#1b5ec2] text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md shadow-blue-600/10 hover:shadow-blue-600/20 flex items-center justify-center gap-1.5"
+                        className="w-full mt-2.5 sm:mt-4 bg-[#2874f0] hover:bg-[#1b5ec2] text-white font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs transition shadow-sm flex items-center justify-center gap-1"
                       >
-                        <ShoppingCart size={13} /> Add Product
+                        <ShoppingCart size={12} /> Add
                       </button>
                     )}
                   </div>
