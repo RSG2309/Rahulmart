@@ -327,16 +327,16 @@ export default function ProductDetails({ params }: PageProps) {
               {product.stock <= 0 ? (
                 <button
                   disabled
-                  className="w-full bg-slate-100 border border-slate-350 text-slate-400 font-extrabold text-xs py-3 rounded-xl flex items-center justify-center gap-2 cursor-not-allowed"
+                  className="w-full bg-slate-100 border border-slate-200 text-slate-400 font-extrabold text-xs py-3.5 rounded-xl flex items-center justify-center gap-2 cursor-not-allowed"
                 >
                   ⚠️ Out of Stock
                 </button>
               ) : (
                 <button
                   onClick={handleAddToCart}
-                  className="w-full bg-slate-950 hover:bg-indigo-650 text-white font-extrabold text-xs py-3 rounded-xl shadow-lg hover:shadow-indigo-500/20 transition flex items-center justify-center gap-2"
+                  className="w-full bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black text-sm py-3.5 rounded-xl shadow-md hover:shadow-red-500/25 transition-all flex items-center justify-center gap-2.5 cursor-pointer uppercase tracking-wider"
                 >
-                  <ShoppingCart size={15} /> Add to Cart
+                  <ShoppingCart size={18} /> Add to Cart
                 </button>
               )}
             </div>
