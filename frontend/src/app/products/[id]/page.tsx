@@ -188,9 +188,14 @@ export default function ProductDetails({ params }: PageProps) {
                   )}
                 </div>
                 <div className="flex items-center gap-1.5 text-[10px]">
-                  <span className="text-slate-500">Retail: <strong className="text-slate-700">₹{product.retailerPrice}</strong></span>
-                  {isKycVerified && (
-                    <span className="bg-indigo-50 text-indigo-700 font-bold px-1.5 py-0.5 rounded">Wholesale: ₹{product.wholesalePrice}</span>
+                  {isBulkSlab ? (
+                    <span className="bg-indigo-50 text-indigo-700 font-extrabold px-2 py-0.5 rounded-lg border border-indigo-200/80">
+                      Wholesale: ₹{product.wholesalePrice}
+                    </span>
+                  ) : (
+                    <span className="bg-blue-50 text-[#2874f0] font-extrabold px-2 py-0.5 rounded-lg border border-blue-200/80">
+                      Retail: ₹{product.retailerPrice}
+                    </span>
                   )}
                 </div>
               </div>
