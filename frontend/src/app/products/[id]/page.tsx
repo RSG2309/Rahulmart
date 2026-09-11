@@ -195,61 +195,65 @@ export default function ProductDetails({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Primary Buying Action Row: Quantity + Red Add to Cart Button (Visible immediately on opening without scroll!) */}
+              {/* Quantity Selector & Desktop Add to Cart */}
               <div className="space-y-1.5 pt-1">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  {/* Compact Quantity Selector */}
-                  <div className="flex items-center border border-slate-200 rounded-xl p-0.5 bg-slate-50 flex-shrink-0 shadow-sm">
-                    <button
-                      disabled={product.stock <= 0}
-                      onClick={() => handleQtyChange(quantity - 1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center font-black text-slate-600 rounded-lg transition ${
-                        product.stock <= 0 ? 'cursor-not-allowed opacity-50' : 'hover:bg-white active:scale-95'
-                      }`}
-                      aria-label="Decrease quantity"
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      disabled={product.stock <= 0}
-                      value={product.stock <= 0 ? 0 : quantity}
-                      onChange={(e) => handleQtyChange(parseInt(e.target.value) || product.moq)}
-                      className="w-10 sm:w-12 text-center bg-transparent border-none text-xs font-bold focus:outline-none"
-                    />
-                    <button
-                      disabled={product.stock <= 0}
-                      onClick={() => handleQtyChange(quantity + 1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center font-black text-slate-600 rounded-lg transition ${
-                        product.stock <= 0 ? 'cursor-not-allowed opacity-50' : 'hover:bg-white active:scale-95'
-                      }`}
-                      aria-label="Increase quantity"
-                    >
-                      +
-                    </button>
+                <div className="flex items-center justify-between md:justify-start gap-2 sm:gap-3">
+                  {/* Quantity Selector with Label */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-slate-700">Quantity:</span>
+                    <div className="flex items-center border border-slate-200 rounded-xl p-0.5 bg-slate-50 shadow-sm">
+                      <button
+                        disabled={product.stock <= 0}
+                        onClick={() => handleQtyChange(quantity - 1)}
+                        className={`w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center font-black text-slate-600 rounded-lg transition ${
+                          product.stock <= 0 ? 'cursor-not-allowed opacity-50' : 'hover:bg-white active:scale-95'
+                        }`}
+                        aria-label="Decrease quantity"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        disabled={product.stock <= 0}
+                        value={product.stock <= 0 ? 0 : quantity}
+                        onChange={(e) => handleQtyChange(parseInt(e.target.value) || product.moq)}
+                        className="w-10 sm:w-12 text-center bg-transparent border-none text-xs font-bold focus:outline-none"
+                      />
+                      <button
+                        disabled={product.stock <= 0}
+                        onClick={() => handleQtyChange(quantity + 1)}
+                        className={`w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center font-black text-slate-600 rounded-lg transition ${
+                          product.stock <= 0 ? 'cursor-not-allowed opacity-50' : 'hover:bg-white active:scale-95'
+                        }`}
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Add to Cart Button */}
+                  {/* Desktop Only Add to Cart Button (On Mobile, sticky bottom bar is used) */}
                   {product.stock <= 0 ? (
                     <button
                       disabled
-                      className="flex-1 bg-slate-100 border border-slate-200 text-slate-400 font-extrabold text-xs py-2.5 sm:py-3.5 rounded-xl flex items-center justify-center gap-1.5 cursor-not-allowed"
+                      className="hidden md:flex flex-1 bg-slate-100 border border-slate-200 text-slate-400 font-extrabold text-xs py-3.5 rounded-xl items-center justify-center gap-1.5 cursor-not-allowed"
                     >
                       ⚠️ Out of Stock
                     </button>
                   ) : (
                     <button
                       onClick={handleAddToCart}
-                      className="flex-1 bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white font-black text-xs sm:text-sm py-2.5 sm:py-3.5 rounded-xl shadow-md hover:shadow-red-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
+                      className="hidden md:flex flex-1 bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white font-black text-sm py-3.5 rounded-xl shadow-md hover:shadow-red-500/25 transition-all items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
                     >
-                      <ShoppingCart size={16} /> Add to Cart • ₹{(product.stock <= 0 ? 0 : totalAmount).toLocaleString('en-IN')}
+                      <ShoppingCart size={18} /> Add to Cart • ₹{(product.stock <= 0 ? 0 : totalAmount).toLocaleString('en-IN')}
                     </button>
                   )}
                 </div>
 
                 <div className="flex justify-between items-center text-[10px] text-slate-400 font-medium px-1">
                   <span>MOQ: {product.moq} {product.unit}s</span>
-                  <span>Total: ₹{(product.stock <= 0 ? 0 : totalAmount).toLocaleString('en-IN')}</span>
+                  <span className="md:hidden font-bold text-slate-700">Subtotal: ₹{(product.stock <= 0 ? 0 : totalAmount).toLocaleString('en-IN')}</span>
+                  <span className="hidden md:inline">Total: ₹{(product.stock <= 0 ? 0 : totalAmount).toLocaleString('en-IN')}</span>
                 </div>
               </div>
 
