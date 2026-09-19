@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { BarChart3, Package, ShoppingCart, ShieldCheck, FileText, Download, Upload, AlertCircle, RefreshCw, Eye, Users, KeyRound, Check, X } from 'lucide-react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { downloadInvoicePNG } from '@/utils/invoiceImage';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -1819,6 +1820,14 @@ export default function AdminDashboard() {
                                   Refund to Wallet
                                 </button>
                               )}
+                              <button
+                                type="button"
+                                onClick={() => downloadInvoicePNG(order)}
+                                className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-extrabold px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1.5 shadow-sm transition hover:scale-102 cursor-pointer"
+                                title="Download Tax Invoice as PNG Photo"
+                              >
+                                <Download size={11} /> Download Invoice (PNG)
+                              </button>
                               <a
                                 href={`${API_BASE_URL}/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
                                 target="_blank"

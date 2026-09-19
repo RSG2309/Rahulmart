@@ -20,9 +20,11 @@ import {
   ArrowRight,
   ExternalLink,
   KeyRound,
-  FileText
+  FileText,
+  Download
 } from 'lucide-react';
 import Link from 'next/link';
+import { downloadInvoicePNG } from '@/utils/invoiceImage';
 
 function Profile() {
   const router = useRouter();
@@ -391,6 +393,15 @@ function Profile() {
                           <span className="font-black text-slate-900 text-sm">
                             ₹{order.amounts.finalTotal.toLocaleString('en-IN')}
                           </span>
+                          <button
+                            type="button"
+                            onClick={() => downloadInvoicePNG(order)}
+                            className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 hover:border-emerald-300 font-extrabold px-3 py-1.5 rounded-lg text-[10px] transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                            title="Download Tax Invoice as PNG Photo"
+                          >
+                            <Download size={12} />
+                            <span>Invoice PNG</span>
+                          </button>
                           <a
                             href={`${API_BASE_URL}/orders/${order.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
                             target="_blank"

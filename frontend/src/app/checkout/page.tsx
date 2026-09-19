@@ -8,7 +8,8 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { api, API_BASE_URL } from '@/services/api';
-import { MapPin, CreditCard, ShoppingBag, ShieldAlert, CheckCircle2, AlertTriangle, FileText, ArrowRight } from 'lucide-react';
+import { MapPin, CreditCard, ShoppingBag, ShieldAlert, CheckCircle2, AlertTriangle, FileText, Download, ArrowRight } from 'lucide-react';
+import { downloadInvoicePNG } from '@/utils/invoiceImage';
 
 export default function Checkout() {
   const router = useRouter();
@@ -162,7 +163,15 @@ export default function Checkout() {
             </div>
 
             {/* Invoicing Link */}
-            <div className="flex flex-wrap gap-4 justify-center pt-2">
+            <div className="flex flex-wrap gap-3 justify-center pt-2">
+              <button
+                type="button"
+                onClick={() => downloadInvoicePNG(confirmedOrder)}
+                className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold transition text-xs shadow-md cursor-pointer active:scale-95"
+                title="Download Tax Invoice as PNG Photo"
+              >
+                <Download size={16} /> Download Invoice (PNG)
+              </button>
               <a
                 href={`${API_BASE_URL}/orders/${confirmedOrder.id}/invoice?token=${typeof window !== 'undefined' ? localStorage.getItem('b2b_token') : ''}`}
                 target="_blank"
@@ -170,7 +179,7 @@ export default function Checkout() {
                 className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition text-xs shadow-md"
                 title="Open and download tax invoice PDF"
               >
-                <FileText size={16} /> Open / Download Invoice
+                <FileText size={16} /> Open PDF Invoice
               </a>
               <Link
                 href="/"
