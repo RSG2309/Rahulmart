@@ -36,7 +36,7 @@ export default function Home() {
       link: '/catalog?category=grocery'
     },
     {
-      image: '/demo2.jpg?v=20260904',
+      image: '/demo2.jpg?v=20260919',
       title: 'Cosmetics Care',
       link: '/catalog?category=cosmetic'
     },
@@ -652,7 +652,7 @@ export default function Home() {
             {/* Aspect box containing notice image */}
             <div className="relative w-full aspect-square overflow-hidden rounded-2xl border border-slate-100/80 bg-slate-50 flex items-center justify-center">
               <img 
-                src="/demo-notice.jpg.jpg?v=20260904" 
+                src="/demo-notice.jpg.jpg?v=20260919" 
                 alt="Demo Notice" 
                 className="w-full h-full object-contain hover:scale-101 transition duration-300" 
               />
