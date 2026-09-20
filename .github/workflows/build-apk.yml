@@ -43,7 +43,14 @@ jobs:
         run: |
           cd android
           echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
-          gradle assembleRelease --no-daemon --stacktrace
+          gradle assembleRelease --no-daemon --stacktrace 2>&1 | tee ../gradle_output.log
+
+      - name: Upload Gradle Build Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-build-log
+          path: gradle_output.log
 
       - name: Align and Sign APK with Official Release Key (apksigner)
         run: |
