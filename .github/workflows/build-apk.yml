@@ -52,6 +52,16 @@ jobs:
           name: gradle-build-log
           path: gradle_output.log
 
+      - name: Publish Error Release if Failed
+        if: failure()
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-error
+          name: "Build Error Log"
+          body_path: gradle_output.log
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Align and Sign APK with Official Release Key (apksigner)
         run: |
           mkdir -p release-output
