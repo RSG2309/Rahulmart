@@ -37,6 +37,7 @@ jobs:
           ANDROID_HOME: /usr/local/lib/android/sdk
         run: |
           cd android
+          echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
           gradle assembleDebug --no-daemon --stacktrace
 
       - name: Prepare APK for Release
