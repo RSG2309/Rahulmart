@@ -59,7 +59,15 @@ jobs:
       - name: Prepare APK for Release
         run: |
           mkdir -p release-output
-          cp android/app/build/outputs/apk/release/app-release.apk release-output/RahulSuperMart.apk
+          echo "Listing all APK files generated:"
+          find android/app/build/outputs/ -name "*.apk"
+          APK_FILE=$(find android/app/build/outputs/ -name "*.apk" | head -n 1)
+          if [ -z "$APK_FILE" ]; then
+            echo "ERROR: No APK file found in android/app/build/outputs/"
+            exit 1
+          fi
+          echo "Selected APK: $APK_FILE"
+          cp "$APK_FILE" release-output/RahulSuperMart.apk
           ls -lh release-output/RahulSuperMart.apk
 
       - name: Upload APK Artifact
