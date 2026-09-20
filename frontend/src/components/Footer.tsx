@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Mail, Phone, MapPin, ShieldCheck, Truck, RotateCcw, Facebook, Twitter, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, ShieldCheck, Truck, RotateCcw, Facebook, Twitter, Instagram, Smartphone } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -133,6 +133,18 @@ export default function Footer() {
                   className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-4 py-2 rounded-xl text-xs transition shadow-md shadow-emerald-600/10"
                 >
                   Chat on WhatsApp
+                </a>
+              </div>
+              <div className="pt-2">
+                <a
+                  href="https://github.com/RSG2309/Rahulmart/releases/download/v1.0.0-apk/RahulSuperMart.apk"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-md cursor-pointer border border-blue-400/30"
+                  title="Download Official Android App APK"
+                >
+                  <Smartphone size={15} />
+                  <span>Download Android App (.apk)</span>
                 </a>
               </div>
               <div className="flex items-center gap-2.5 text-xs text-slate-400">

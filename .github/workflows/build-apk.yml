@@ -1,0 +1,79 @@
+name: Build Rahul Super Mart Android APK
+
+on:
+  push:
+    paths:
+      - 'android/**'
+      - '.github/workflows/build-apk.yml'
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
+
+      - name: Build Debug APK with Gradle
+        run: |
+          cd android
+          gradle assembleDebug --no-daemon --stacktrace
+
+      - name: Prepare APK for Release
+        run: |
+          mkdir -p release-output
+          cp android/app/build/outputs/apk/debug/app-debug.apk release-output/RahulSuperMart.apk
+          ls -la release-output/
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RahulSuperMart-APK
+          path: release-output/RahulSuperMart.apk
+          retention-days: 30
+
+      - name: Create or Update GitHub Release with APK
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: v1.0.0-apk
+          name: "Rahul Super Mart Official Android App v1.0.0"
+          body: |
+            ## Rahul Super Mart B2B Wholesale - Official Android App (.apk)
+            
+            Download and install the official Android App for **Rahul Super Mart**:
+            
+            - **App Name**: Rahul Super Mart
+            - **Package**: `com.rahulsupermart.app`
+            - **Platform**: Android 7.0 and higher (API 24+)
+            - **Store Website**: https://rahulmart.vercel.app
+            
+            ### Instructions to Install:
+            1. Tap the **RahulSuperMart.apk** link below to download.
+            2. When downloaded, open the file on your Android phone.
+            3. If prompted with *"Install unknown apps"*, tap **Settings** and turn on **"Allow from this source"**.
+            4. Tap **Install** to enjoy full wholesale shopping, Today's Deals, and 1-tap PNG Invoice downloads!
+          files: release-output/RahulSuperMart.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
