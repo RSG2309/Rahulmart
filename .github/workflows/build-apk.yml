@@ -42,6 +42,7 @@ jobs:
         env:
           ANDROID_HOME: /usr/local/lib/android/sdk
         run: |
+          set -o pipefail
           cd android
           echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
           gradle assembleRelease --no-daemon --stacktrace 2>&1 | tee ../gradle_output.log
