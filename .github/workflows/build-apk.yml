@@ -34,8 +34,8 @@ jobs:
 
       - name: Generate Official Release Keystore
         run: |
-          mkdir -p android/keystore
-          keytool -genkey -v -keystore android/keystore/rahul-release.jks -alias rahulkey -keyalg RSA -keysize 2048 -validity 10000 -storepass "RahulMart@2026" -keypass "RahulMart@2026" -dname "CN=Rahul Super Mart, OU=Wholesale, O=Vishal Telecom Pvt Ltd, L=Sikta, ST=Bihar, C=IN"
+          keytool -genkey -v -keystore android/app/rahul-release.jks -alias rahulkey -keyalg RSA -keysize 2048 -validity 10000 -storepass "RahulMart@2026" -keypass "RahulMart@2026" -dname "CN=Rahul Super Mart, OU=Wholesale, O=Vishal Telecom Pvt Ltd, L=Sikta, ST=Bihar, C=IN"
+          ls -la android/app/rahul-release.jks
 
       - name: Build Signed Release APK with Gradle
         env:
