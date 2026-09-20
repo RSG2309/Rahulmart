@@ -34,23 +34,17 @@ jobs:
 
       - name: Generate Official Release Keystore
         run: |
-          keytool -genkeypair -v -keystore rahul-release.jks -alias rahulkey -keyalg RSA -keysize 2048 -validity 10000 -storepass RahulMart2026 -keypass RahulMart2026 -dname "CN=Rahul Super Mart, OU=Wholesale, O=Vishal Telecom Pvt Ltd, L=Sikta, ST=Bihar, C=IN"
-          ls -la rahul-release.jks
+          rm -f android/app/rahul-release.jks
+          keytool -genkeypair -v -keystore android/app/rahul-release.jks -alias rahulkey -keyalg RSA -keysize 2048 -validity 10000 -storepass RahulMart2026 -keypass RahulMart2026 -dname "CN=Rahul Super Mart, OU=Wholesale, O=Vishal Telecom Pvt Ltd, L=Sikta, ST=Bihar, C=IN" -noprompt
+          ls -la android/app/rahul-release.jks
 
-      - name: Build Release APK with Gradle
+      - name: Build Signed Release APK with Gradle
         env:
           ANDROID_HOME: /usr/local/lib/android/sdk
         run: |
           cd android
           echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
           gradle assembleRelease --no-daemon --stacktrace 2>&1 | tee ../gradle_output.log
-
-      - name: Upload Gradle Build Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gradle-build-log
-          path: gradle_output.log
 
       - name: Publish Error Release if Failed
         if: failure()
@@ -62,49 +56,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Align and Sign APK with Official Release Key (apksigner)
+      - name: Prepare APK for Release
         run: |
-          set -x
           mkdir -p release-output
-          BUILD_TOOLS_DIR=$(ls -d /usr/local/lib/android/sdk/build-tools/* | sort -V | tail -n 1)
-          echo "Using Android build-tools: $BUILD_TOOLS_DIR"
-          
-          # Locate built unsigned release apk
-          RAW_APK=$(find android/app/build/outputs/apk/release/ -name "*.apk" | head -n 1)
-          echo "Found raw APK: $RAW_APK"
-
-          # Check if already 4-byte aligned
-          if $BUILD_TOOLS_DIR/zipalign -c 4 "$RAW_APK"; then
-            echo "APK is already aligned"
-            TARGET_IN="$RAW_APK"
-          else
-            echo "Aligning APK with zipalign"
-            $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$RAW_APK" release-output/RahulSuperMart-aligned.apk
-            TARGET_IN="release-output/RahulSuperMart-aligned.apk"
-          fi
-
-          # Sign with apksigner using PKCS12 keystore
-          $BUILD_TOOLS_DIR/apksigner sign \
-            --ks rahul-release.jks \
-            --ks-type PKCS12 \
-            --ks-pass pass:RahulMart2026 \
-            --ks-key-alias rahulkey \
-            --out release-output/RahulSuperMart.apk \
-            "$TARGET_IN"
-
-          # Verify signature integrity
-          $BUILD_TOOLS_DIR/apksigner verify --verbose release-output/RahulSuperMart.apk
+          cp android/app/build/outputs/apk/release/app-release.apk release-output/RahulSuperMart.apk
           ls -lh release-output/RahulSuperMart.apk
-
-      - name: Publish Signing Error if Failed
-        if: failure()
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: sign-error
-          name: "Signing Error Log"
-          body: "Signing step failed. Please check actions run."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
