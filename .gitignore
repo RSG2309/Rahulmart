@@ -8,3 +8,9 @@
 .pnp.js
 .data/
 .DS_Store
+*.apk
+*.aab
+*.jks
+.gradle/
+build/
+local.properties

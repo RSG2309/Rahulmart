@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -326,23 +328,35 @@ public class MainActivity extends AppCompatActivity {
                 String pureBase64 = base64Data.substring(base64Data.indexOf(",") + 1);
                 byte[] decodedBytes = Base64.decode(pureBase64, Base64.DEFAULT);
 
-                File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                if (!downloadDir.exists()) {
-                    downloadDir.mkdirs();
-                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+                    values.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+                    values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/RahulSuperMart");
 
-                File file = new File(downloadDir, fileName);
-                try (OutputStream os = new FileOutputStream(file)) {
-                    os.write(decodedBytes);
-                    os.flush();
+                    Uri uri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    if (uri != null) {
+                        try (OutputStream os = mContext.getContentResolver().openOutputStream(uri)) {
+                            if (os != null) {
+                                os.write(decodedBytes);
+                                os.flush();
+                            }
+                        }
+                    }
+                } else {
+                    File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    if (!downloadDir.exists()) {
+                        downloadDir.mkdirs();
+                    }
+                    File file = new File(downloadDir, fileName);
+                    try (OutputStream os = new FileOutputStream(file)) {
+                        os.write(decodedBytes);
+                        os.flush();
+                    }
                 }
 
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    Toast.makeText(mContext, "Invoice Photo Saved to Downloads: " + fileName, Toast.LENGTH_LONG).show();
-                    // Trigger media scan so it appears in photo gallery
-                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    mediaScanIntent.setData(Uri.fromFile(file));
-                    sendBroadcast(mediaScanIntent);
+                    Toast.makeText(mContext, "Invoice Photo Saved to Gallery: " + fileName, Toast.LENGTH_LONG).show();
                 });
             } catch (Exception e) {
                 new Handler(Looper.getMainLooper()).post(() -> {
