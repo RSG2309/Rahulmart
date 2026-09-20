@@ -64,6 +64,7 @@ jobs:
 
       - name: Align and Sign APK with Official Release Key (apksigner)
         run: |
+          set -x
           mkdir -p release-output
           BUILD_TOOLS_DIR=$(ls -d /usr/local/lib/android/sdk/build-tools/* | sort -V | tail -n 1)
           echo "Using Android build-tools: $BUILD_TOOLS_DIR"
@@ -72,15 +73,38 @@ jobs:
           RAW_APK=$(find android/app/build/outputs/apk/release/ -name "*.apk" | head -n 1)
           echo "Found raw APK: $RAW_APK"
 
-          # 4-byte Zipalign optimization
-          $BUILD_TOOLS_DIR/zipalign -v -p 4 "$RAW_APK" release-output/RahulSuperMart-aligned.apk
+          # Check if already 4-byte aligned
+          if $BUILD_TOOLS_DIR/zipalign -c 4 "$RAW_APK"; then
+            echo "APK is already aligned"
+            TARGET_IN="$RAW_APK"
+          else
+            echo "Aligning APK with zipalign"
+            $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$RAW_APK" release-output/RahulSuperMart-aligned.apk
+            TARGET_IN="release-output/RahulSuperMart-aligned.apk"
+          fi
 
-          # Sign with apksigner (v1, v2, v3 schemes)
-          $BUILD_TOOLS_DIR/apksigner sign --ks rahul-release.jks --ks-pass pass:RahulMart2026 --key-pass pass:RahulMart2026 --ks-key-alias rahulkey --out release-output/RahulSuperMart.apk release-output/RahulSuperMart-aligned.apk
+          # Sign with apksigner using PKCS12 keystore
+          $BUILD_TOOLS_DIR/apksigner sign \
+            --ks rahul-release.jks \
+            --ks-type PKCS12 \
+            --ks-pass pass:RahulMart2026 \
+            --ks-key-alias rahulkey \
+            --out release-output/RahulSuperMart.apk \
+            "$TARGET_IN"
 
           # Verify signature integrity
           $BUILD_TOOLS_DIR/apksigner verify --verbose release-output/RahulSuperMart.apk
           ls -lh release-output/RahulSuperMart.apk
+
+      - name: Publish Signing Error if Failed
+        if: failure()
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: sign-error
+          name: "Signing Error Log"
+          body: "Signing step failed. Please check actions run."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
