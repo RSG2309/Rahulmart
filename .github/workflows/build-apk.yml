@@ -47,15 +47,6 @@ jobs:
           echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
           gradle assembleRelease --no-daemon --stacktrace 2>&1 | tee ../gradle_output.log
 
-      - name: Publish Error Release if Failed
-        if: failure()
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: build-error
-          name: "Build Error Log"
-          body_path: gradle_output.log
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare APK for Release
         run: |
