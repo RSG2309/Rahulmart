@@ -109,9 +109,9 @@ export default function Footer() {
               <h4 className="font-bold text-white text-sm mb-4">Helpful Policies</h4>
               <ul className="space-y-2.5 text-xs text-slate-400">
                 <li><a href="/terms" className="hover:text-white transition">B2B Terms of Service</a></li>
+                <li><a href="/shipping-policy" className="hover:text-white transition font-medium text-blue-400">Shipping & Delivery Policy</a></li>
                 <li><a href="/refund-policy" className="hover:text-white transition font-medium text-emerald-400">Refund & Cancellation Policy</a></li>
                 <li><a href="/anti-pricing-manipulation" className="hover:text-white transition">Anti-Pricing Manipulation</a></li>
-                <li><a href="#" className="hover:text-white transition">KYC Validation Guidelines</a></li>
                 <li><a href="/payment-faq" className="hover:text-white transition">Payment & Wallet FAQs</a></li>
               </ul>
             </div>
@@ -162,6 +162,7 @@ export default function Footer() {
           <div className="flex flex-wrap gap-4 justify-center md:justify-end">
             <a href="#" className="hover:underline">Privacy Policy</a>
             <a href="/terms" className="hover:underline">B2B Terms of Service</a>
+            <a href="/shipping-policy" className="hover:underline text-slate-400">Shipping & Delivery Policy</a>
             <a href="/refund-policy" className="hover:underline text-slate-400">Refund & Cancellation Policy</a>
             <a href="/anti-pricing-manipulation" className="hover:underline">Anti-Pricing Manipulation Policy</a>
           </div>
