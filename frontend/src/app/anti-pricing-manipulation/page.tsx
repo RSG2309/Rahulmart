@@ -38,7 +38,7 @@ export default function AntiPricingManipulation() {
         <div className="bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-sm space-y-8 text-slate-700 leading-relaxed text-sm">
           
           <p className="text-slate-600">
-            This Anti-Pricing Manipulation Policy (&quot;Policy&quot;) applies to all retailers, distributors, wholesalers, and business customers purchasing products from <strong>Rahul Super Mart</strong>, operated by <strong>Vishal Telecom Pvt. Ltd.</strong> (Rahul Super Mart is a business unit of Vishal Telecom)
+            This Anti-Pricing Manipulation Policy (&quot;Policy&quot;) applies to all retailers, distributors, wholesalers, and business customers purchasing products from <strong>Rahul Super Mart</strong>, operated by <strong>Vishal Telecom</strong> (Proprietor: Rinki Devi) (Rahul Super Mart is a business unit of Vishal Telecom)
           </p>
 
           <p className="text-slate-600">
@@ -211,7 +211,7 @@ export default function AntiPricingManipulation() {
               <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">11</span>
               Policy Updates
             </h3>
-            <p>Vishal Telecom Pvt. Ltd. may update this Policy from time to time. The latest version will always be available on our website and will become effective upon publication.</p>
+            <p>Vishal Telecom (Proprietor: Rinki Devi) may update this Policy from time to time. The latest version will always be available on our website and will become effective upon publication.</p>
           </div>
 
           {/* Section 12 */}
@@ -222,7 +222,7 @@ export default function AntiPricingManipulation() {
             </h3>
             <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 space-y-2 text-xs text-slate-600">
               <p className="font-extrabold text-slate-900 text-sm">Rahul Super Mart (A Unit of Vishal Telecom)</p>
-              <p>Operated by <strong>Vishal Telecom Pvt. Ltd.</strong></p>
+              <p>Operated by <strong>Vishal Telecom (Proprietor: Rinki Devi)</strong></p>
               <p><strong>Address:</strong> Sikta Bazar, West Champaran, Bihar – 845307, India</p>
               <p><strong>Email:</strong> vishaltelecomskt@gmail.com</p>
               <p><strong>Phone:</strong> +91 8210302931</p>

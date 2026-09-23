@@ -38,7 +38,7 @@ export default function TermsOfService() {
         <div className="bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-sm space-y-8 text-slate-700 leading-relaxed text-sm">
           
           <p className="text-slate-600">
-            Welcome to <strong>Rahul Super Mart</strong>, operated by <strong>Vishal Telecom Pvt. Ltd.</strong> (Rahul Super Mart is a business division of Vishal Telecom). These Business-to-Business (B2B) Terms of Service (&quot;Terms&quot;) govern the use of our website, mobile application, and related services by retailers, wholesalers, distributors, and other business customers (&quot;Buyer&quot;, &quot;You&quot;, or &quot;Your&quot;).
+            Welcome to <strong>Rahul Super Mart</strong>, operated by <strong>Vishal Telecom</strong> (Proprietor: Rinki Devi) (Rahul Super Mart is a business division of Vishal Telecom). These Business-to-Business (B2B) Terms of Service (&quot;Terms&quot;) govern the use of our website, mobile application, and related services by retailers, wholesalers, distributors, and other business customers (&quot;Buyer&quot;, &quot;You&quot;, or &quot;Your&quot;).
           </p>
 
           <p className="text-slate-600">
@@ -55,7 +55,7 @@ export default function TermsOfService() {
             </h3>
             <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-1.5 text-xs text-slate-600">
               <p><strong>Business Name:</strong> Rahul Super Mart (A Unit of Vishal Telecom)</p>
-              <p><strong>Legal Entity:</strong> Vishal Telecom Pvt. Ltd.</p>
+              <p><strong>Legal Entity:</strong> Vishal Telecom (Proprietorship Firm - Proprietor: Rinki Devi)</p>
               <p><strong>Business Address:</strong> Sikta Bazar, West Champaran, Bihar – 845307, India</p>
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function TermsOfService() {
               <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">12</span>
               Intellectual Property
             </h3>
-            <p>All website content, including logos, product listings, graphics, software, text, and trademarks, belongs to Vishal Telecom Pvt. Ltd. or its licensors and is protected under applicable intellectual property laws.</p>
+            <p>All website content, including logos, product listings, graphics, software, text, and trademarks, belongs to Vishal Telecom (Proprietor: Rinki Devi) or its licensors and is protected under applicable intellectual property laws.</p>
           </div>
 
           {/* Section 13 */}
@@ -226,7 +226,7 @@ export default function TermsOfService() {
               <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">13</span>
               Limitation of Liability
             </h3>
-            <p>To the maximum extent permitted by law, Vishal Telecom Pvt. Ltd. shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use of our platform or products.</p>
+            <p>To the maximum extent permitted by law, Vishal Telecom (Proprietor: Rinki Devi) shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use of our platform or products.</p>
             <p>Our total liability shall not exceed the amount paid for the relevant order.</p>
           </div>
 
@@ -291,8 +291,8 @@ export default function TermsOfService() {
               Contact Us
             </h3>
             <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 space-y-2 text-xs text-slate-600">
-              <p className="font-extrabold text-slate-900 text-sm">Vishal Store</p>
-              <p>Operated by <strong>Vishal Telecom Pvt. Ltd.</strong></p>
+              <p className="font-extrabold text-slate-900 text-sm">Rahul Super Mart (Vishal Telecom)</p>
+              <p>Operated by <strong>Vishal Telecom (Proprietor: Rinki Devi)</strong></p>
               <p><strong>Address:</strong> Sikta Bazar, West Champaran, Bihar – 845307, India</p>
               <p><strong>Email:</strong> vishaltelecomskt@gmail.com</p>
               <p><strong>Phone:</strong> +91 8210302931</p>

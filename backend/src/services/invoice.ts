@@ -30,7 +30,7 @@ export const generateInvoicePDF = async (order: IOrder): Promise<string> => {
       doc.fontSize(18).fillColor('#1F2937').font('Helvetica-Bold').text('Rahul Super Mart');
       
       doc.fontSize(8.5).fillColor('#4B5563').font('Helvetica');
-      doc.text('Vishal Telecom Pvt LTD, Sikta Bazar, W. Champaran Bihar, 845307');
+      doc.text('Vishal Telecom (Prop. Rinki Devi), Sikta Bazar, W. Champaran Bihar, 845307');
       doc.text('Email: vishalstoresikta@gmail.com | BUSINESS PAN: AAUFV9462B');
 
       doc.moveDown(1.5);

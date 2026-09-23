@@ -38,7 +38,7 @@ export const downloadInvoicePNG = (order: any) => {
 
   ctx.fillStyle = '#475569';
   ctx.font = '500 11.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText('Vishal Telecom Pvt LTD, Sikta Bazar, W. Champaran, Bihar - 845307', 48, 76);
+  ctx.fillText('Vishal Telecom (Prop. Rinki Devi), Sikta Bazar, W. Champaran, Bihar - 845307', 48, 76);
   ctx.fillText('Email: vishalstoresikta@gmail.com   |   BUSINESS PAN: AAUFV9462B', 48, 93);
 
   // Header Right: Invoice Title & Badge
