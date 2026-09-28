@@ -8,16 +8,14 @@ import {
   RotateCcw, 
   Calendar, 
   ShieldCheck, 
-  XCircle, 
-  CreditCard, 
   AlertTriangle, 
-  Ban, 
-  RefreshCw, 
+  CheckCircle2, 
+  Clock, 
   Phone, 
   Mail, 
   Globe, 
-  CheckCircle2,
-  ArrowLeft
+  MapPin,
+  ArrowLeft 
 } from 'lucide-react';
 
 export default function RefundPolicy() {
@@ -32,7 +30,7 @@ export default function RefundPolicy() {
           <div className="flex items-center gap-2">
             <Link href="/" className="hover:text-blue-600 transition">Home</Link>
             <span>/</span>
-            <span className="text-blue-600">Refund & Cancellation Policy</span>
+            <span className="text-blue-600">Refund &amp; Cancellation policy</span>
           </div>
           <Link 
             href="/"
@@ -49,11 +47,11 @@ export default function RefundPolicy() {
               <span className="p-2 bg-blue-50 text-blue-600 rounded-xl">
                 <RotateCcw size={26} />
               </span>
-              Refund & Cancellation Policy
+              Refund and Cancellation policy
             </h1>
             <p className="text-xs text-slate-500 flex items-center gap-1.5 pt-1">
               <Calendar size={13} className="text-slate-400" />
-              <span><strong>Effective Date:</strong> 23 September 2026</span>
+              <span><strong>Effective Date:</strong> 28 September 2026</span>
             </p>
           </div>
           <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-xs">
@@ -62,87 +60,55 @@ export default function RefundPolicy() {
         </div>
 
         {/* Content Container */}
-        <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-sm space-y-8 text-slate-700 leading-relaxed text-sm">
+        <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-sm space-y-6 text-slate-700 leading-relaxed text-sm">
           
+          {/* Preamble */}
           <div className="p-5 bg-blue-50/70 border border-blue-100 rounded-2xl text-slate-700 text-xs sm:text-sm">
             <p className="font-medium leading-relaxed">
               This refund and cancellation policy outlines how you can cancel or seek a refund for a product / service that you have purchased through the Platform. Under this policy:
             </p>
           </div>
 
-          {/* Section 1 */}
-          <div className="space-y-3 pt-1">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
-                1
-              </span>
-              Order Cancellation Guidelines
-            </h2>
-            <div className="space-y-3 text-slate-600 pl-9 text-xs sm:text-sm">
+          {/* Point 1 */}
+          <div className="flex items-start gap-3">
+            <span className="font-bold text-slate-900 mt-0.5">1.</span>
+            <div className="space-y-2 flex-1">
               <p>
-                Cancellations will only be considered if the request is made <strong>5 days of placing the order</strong>.
-              </p>
-              <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-3.5 text-xs text-amber-900 flex items-start gap-2.5">
-                <AlertTriangle size={18} className="text-amber-600 flex-shrink-0 mt-0.5" />
-                <p>
-                  However, cancellation requests may not be entertained if the orders have been communicated to such sellers / merchant(s) listed on the Platform and they have initiated the process of shipping them, or the product is out for delivery. In such an event, you may choose to reject the product at the doorstep.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <hr className="border-slate-100" />
-
-          {/* Section 2 */}
-          <div className="space-y-3">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
-                2
-              </span>
-              Perishable Items Policy
-            </h2>
-            <div className="space-y-2 text-slate-600 pl-9 text-xs sm:text-sm">
-              <p>
-                <strong>9110176882</strong> does not accept cancellation requests for perishable items like flowers, eatables, etc.
-              </p>
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 flex items-start gap-2">
-                <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
-                <span>However, the refund / replacement can be made if the user establishes that the quality of the product delivered is not good.</span>
-              </div>
-            </div>
-          </div>
-
-          <hr className="border-slate-100" />
-
-          {/* Section 3 */}
-          <div className="space-y-3">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
-                3
-              </span>
-              Damaged, Defective or Mismatched Products
-            </h2>
-            <div className="space-y-3 text-slate-600 pl-9 text-xs sm:text-sm">
-              <p>
-                In case of receipt of damaged or defective items, please report to our customer service team. The request would be entertained once the seller/ merchant listed on the Platform, has checked and determined the same at its own end. This should be reported within <strong>5 days of receipt of products</strong>.
-              </p>
-              <p>
-                In case you feel that the product received is not as shown on the site or as per your expectations, you must bring it to the notice of our customer service within <strong>5 days of receiving the product</strong>. The customer service team after looking into your complaint will take an appropriate decision.
+                Cancellations will only be considered if the request is made <strong>5 days of placing the order</strong>. However, cancellation requests may not be entertained if the orders have been communicated to such sellers / merchant(s) listed on the Platform and they have initiated the process of shipping them, or the product is out for delivery. In such an event, you may choose to reject the product at the doorstep.
               </p>
             </div>
           </div>
 
           <hr className="border-slate-100" />
 
-          {/* Section 4 */}
-          <div className="space-y-3">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
-                4
-              </span>
-              Products with Manufacturer Warranty
-            </h2>
-            <div className="space-y-2 text-slate-600 pl-9 text-xs sm:text-sm">
+          {/* Point 2 */}
+          <div className="flex items-start gap-3">
+            <span className="font-bold text-slate-900 mt-0.5">2.</span>
+            <div className="space-y-2 flex-1">
+              <p>
+                <strong>9110176882</strong> does not accept cancellation requests for perishable items like flowers, eatables, etc. However, the refund / replacement can be made if the user establishes that the quality of the product delivered is not good.
+              </p>
+            </div>
+          </div>
+
+          <hr className="border-slate-100" />
+
+          {/* Point 3 */}
+          <div className="flex items-start gap-3">
+            <span className="font-bold text-slate-900 mt-0.5">3.</span>
+            <div className="space-y-2 flex-1">
+              <p>
+                In case of receipt of damaged or defective items, please report to our customer service team. The request would be entertained once the seller/ merchant listed on the Platform, has checked and determined the same at its own end. This should be reported within <strong>5 days of receipt of products</strong>. In case you feel that the product received is not as shown on the site or as per your expectations, you must bring it to the notice of our customer service within <strong>5 days of receiving the product</strong>. The customer service team after looking into your complaint will take an appropriate decision.
+              </p>
+            </div>
+          </div>
+
+          <hr className="border-slate-100" />
+
+          {/* Point 4 */}
+          <div className="flex items-start gap-3">
+            <span className="font-bold text-slate-900 mt-0.5">4.</span>
+            <div className="space-y-2 flex-1">
               <p>
                 In case of complaints regarding the products that come with a warranty from the manufacturers, please refer the issue to them.
               </p>
@@ -151,15 +117,10 @@ export default function RefundPolicy() {
 
           <hr className="border-slate-100" />
 
-          {/* Section 5 */}
-          <div className="space-y-3">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-black">
-                5
-              </span>
-              Refund Processing Timeline
-            </h2>
-            <div className="pl-9 text-xs sm:text-sm">
+          {/* Point 5 */}
+          <div className="flex items-start gap-3">
+            <span className="font-bold text-slate-900 mt-0.5">5.</span>
+            <div className="space-y-2 flex-1">
               <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-950">
                 <p className="font-semibold text-xs sm:text-sm">
                   In case of any refunds approved by <strong>9110176882</strong>, it will take <strong>1 days</strong> for the refund to be processed to you.
@@ -171,24 +132,17 @@ export default function RefundPolicy() {
           <hr className="border-slate-100" />
 
           {/* Contact Box */}
-          <div className="space-y-4 pt-2">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-black">
-                6
-              </span>
-              Contact Us for Refund &amp; Cancellation
+          <div className="space-y-3 pt-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+              Customer Support &amp; Contact Information
             </h2>
-            
-            <p className="text-slate-600 pl-9 text-xs sm:text-sm">
-              For any cancellation, refund, return, or order-related queries, please reach out to our customer service team:
-            </p>
-
-            <div className="ml-0 sm:ml-9 bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-3">
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-3">
               <div className="font-extrabold text-slate-900 text-base">
                 Rahul Super Mart / Vishal Telecom
               </div>
-              <div className="text-xs text-slate-600">
-                <strong>Registered Office:</strong> Sikta bazar, Near SBI Bank, West Champaran, Bihar – 845307, India
+              <div className="flex items-start gap-2.5 text-xs text-slate-600">
+                <MapPin size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                <span>Sikta bazar, Near SBI Bank, West Champaran, Bihar – 845307, India</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
                 <a 
@@ -213,17 +167,6 @@ export default function RefundPolicy() {
                 >
                   <Phone size={16} className="text-emerald-600 flex-shrink-0" />
                   <span>+91 8210302931 / 9110176882</span>
-                </a>
-              </div>
-
-              <div className="pt-2 text-left">
-                <a
-                  href="https://wa.me/918210302931?text=Hi%20Rahul%20Super%20Mart,%20I%20have%20a%20query%20regarding%20refund%20and%20cancellation"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-sm"
-                >
-                  WhatsApp Refund Helpdesk
                 </a>
               </div>
             </div>

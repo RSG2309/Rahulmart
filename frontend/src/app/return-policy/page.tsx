@@ -8,12 +8,10 @@ import {
   RotateCcw, 
   Calendar, 
   ShieldCheck, 
-  AlertTriangle, 
-  Package, 
-  CheckCircle2, 
   Phone, 
   Mail, 
   Globe, 
+  MapPin,
   ArrowLeft 
 } from 'lucide-react';
 
@@ -59,113 +57,32 @@ export default function ReturnPolicy() {
         </div>
 
         {/* Content Container */}
-        <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-sm space-y-8 text-slate-700 leading-relaxed text-sm">
+        <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-sm space-y-6 text-slate-700 leading-relaxed text-sm">
           
-          <div className="p-5 bg-blue-50/70 border border-blue-100 rounded-2xl text-slate-700 text-xs sm:text-sm">
-            <p className="font-medium leading-relaxed">
-              This Return Policy outlines the guidelines and conditions under which products purchased on the Platform can be returned, replaced, or reported.
+          <div className="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p>
+              We offer refund / exchange within first <strong>7 days</strong> from the date of your purchase. If 7 days have passed since your purchase, you will not be offered a return, exchange or refund of any kind. In order to become eligible for a return or an exchange, (i) the purchased item should be unused and in the same condition as you received it, (ii) the item must have original packaging, (iii) if the item that you purchased on a sale, then the item may not be eligible for a return / exchange. Further, only such items are replaced by us (based on an exchange request), if such items are found defective or damaged.
+            </p>
+
+            <p>
+              You agree that there may be a certain category of products / items that are exempted from returns or refunds. Such categories of the products would be identified to you at the item of purchase. For exchange / return accepted request(s) (as applicable), once your returned product / item is received and inspected by us, we will send you an email to notify you about receipt of the returned / exchanged product. Further. If the same has been approved after the quality check at our end, your request (i.e. return / exchange) will be processed in accordance with our policies.
             </p>
           </div>
 
-          {/* Section 1 */}
-          <div className="space-y-3 pt-1">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
-                1
-              </span>
-              Return &amp; Replacement Eligibility (5 Days)
-            </h2>
-            <div className="space-y-3 text-slate-600 pl-9 text-xs sm:text-sm">
-              <p>
-                In case of receipt of damaged, defective, or incorrect items, please report to our customer service team within <strong>5 days of receipt of products</strong>.
-              </p>
-              <p>
-                The return request will be entertained once the seller/merchant listed on the Platform has checked and determined the condition at its own end.
-              </p>
-              <p>
-                In case you feel that the product received is not as shown on the site or as per your expectations, you must bring it to the notice of our customer service within <strong>5 days of receiving the product</strong>. The customer service team after looking into your complaint will take an appropriate decision.
-              </p>
-            </div>
-          </div>
-
           <hr className="border-slate-100" />
 
-          {/* Section 2 */}
-          <div className="space-y-3">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
-                2
-              </span>
-              Perishable Goods
+          {/* Contact Box */}
+          <div className="space-y-3 pt-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+              Customer Support &amp; Contact Information
             </h2>
-            <div className="space-y-2 text-slate-600 pl-9 text-xs sm:text-sm">
-              <p>
-                <strong>9110176882</strong> does not accept returns or cancellations for perishable items like flowers, eatables, etc.
-              </p>
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 flex items-start gap-2">
-                <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
-                <span>However, refund or replacement can be made if the user establishes that the quality of the product delivered is not satisfactory upon arrival.</span>
-              </div>
-            </div>
-          </div>
-
-          <hr className="border-slate-100" />
-
-          {/* Section 3 */}
-          <div className="space-y-3">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
-                3
-              </span>
-              Manufacturer Warranty
-            </h2>
-            <div className="space-y-2 text-slate-600 pl-9 text-xs sm:text-sm">
-              <p>
-                In case of complaints regarding products that come with a warranty from the manufacturer, please refer the issue directly to the authorized manufacturer service center.
-              </p>
-            </div>
-          </div>
-
-          <hr className="border-slate-100" />
-
-          {/* Section 4 */}
-          <div className="space-y-3">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-black">
-                4
-              </span>
-              Refund Processing Following Return
-            </h2>
-            <div className="pl-9 text-xs sm:text-sm">
-              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-950">
-                <p className="font-semibold text-xs sm:text-sm">
-                  In case of any returns/refunds approved by <strong>9110176882</strong>, it will take <strong>1 days</strong> for the refund to be processed to you.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <hr className="border-slate-100" />
-
-          {/* Customer Service Contact */}
-          <div className="space-y-4 pt-2">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-black">
-                5
-              </span>
-              Contact Us for Return Requests
-            </h2>
-            
-            <p className="text-slate-600 pl-9 text-xs sm:text-sm">
-              To initiate a return or replacement request, please contact our support desk:
-            </p>
-
-            <div className="ml-0 sm:ml-9 bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-3">
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-3">
               <div className="font-extrabold text-slate-900 text-base">
                 Rahul Super Mart / Vishal Telecom
               </div>
-              <div className="text-xs text-slate-600">
-                <strong>Registered Office:</strong> Sikta bazar, Near SBI Bank, West Champaran, Bihar – 845307, India
+              <div className="flex items-start gap-2.5 text-xs text-slate-600">
+                <MapPin size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                <span>Sikta bazar, Near SBI Bank, West Champaran, Bihar – 845307, India</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
                 <a 
@@ -190,17 +107,6 @@ export default function ReturnPolicy() {
                 >
                   <Phone size={16} className="text-emerald-600 flex-shrink-0" />
                   <span>+91 8210302931 / 9110176882</span>
-                </a>
-              </div>
-
-              <div className="pt-2 text-left">
-                <a
-                  href="https://wa.me/918210302931?text=Hi%20Rahul%20Super%20Mart,%20I%20have%20a%20query%20regarding%20return%20request"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-sm"
-                >
-                  WhatsApp Return Assistance
                 </a>
               </div>
             </div>
