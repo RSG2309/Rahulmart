@@ -106,13 +106,13 @@ export default function Footer() {
             </div>
 
             <div>
-              <h4 className="font-bold text-white text-sm mb-4">Helpful Policies</h4>
+              <h4 className="font-bold text-white text-sm mb-4">Store Policies</h4>
               <ul className="space-y-2.5 text-xs text-slate-400">
-                <li><a href="/terms" className="hover:text-white transition">B2B Terms of Service</a></li>
-                <li><a href="/shipping-policy" className="hover:text-white transition font-medium text-blue-400">Shipping & Delivery Policy</a></li>
-                <li><a href="/refund-policy" className="hover:text-white transition font-medium text-emerald-400">Refund & Cancellation Policy</a></li>
-                <li><a href="/anti-pricing-manipulation" className="hover:text-white transition">Anti-Pricing Manipulation</a></li>
-                <li><a href="/payment-faq" className="hover:text-white transition">Payment & Wallet FAQs</a></li>
+                <li><a href="/terms" className="hover:text-white transition">Terms and Conditions</a></li>
+                <li><a href="/refund-policy" className="hover:text-white transition font-medium text-emerald-400">Refund Policy</a></li>
+                <li><a href="/return-policy" className="hover:text-white transition">Return Policy</a></li>
+                <li><a href="/shipping-policy" className="hover:text-white transition font-medium text-blue-400">Shipping Policy</a></li>
+                <li><a href="/privacy-policy" className="hover:text-white transition">Privacy Policy</a></li>
               </ul>
             </div>
 
@@ -160,11 +160,11 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800 py-6 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
           <p>© {new Date().getFullYear()} Rahul Super Mart. All rights reserved.</p>
           <div className="flex flex-wrap gap-4 justify-center md:justify-end">
-            <a href="#" className="hover:underline">Privacy Policy</a>
-            <a href="/terms" className="hover:underline">B2B Terms of Service</a>
-            <a href="/shipping-policy" className="hover:underline text-slate-400">Shipping & Delivery Policy</a>
-            <a href="/refund-policy" className="hover:underline text-slate-400">Refund & Cancellation Policy</a>
-            <a href="/anti-pricing-manipulation" className="hover:underline">Anti-Pricing Manipulation Policy</a>
+            <a href="/terms" className="hover:underline">Terms and Conditions</a>
+            <a href="/refund-policy" className="hover:underline text-slate-400">Refund Policy</a>
+            <a href="/return-policy" className="hover:underline text-slate-400">Return Policy</a>
+            <a href="/shipping-policy" className="hover:underline text-slate-400">Shipping Policy</a>
+            <a href="/privacy-policy" className="hover:underline">Privacy Policy</a>
           </div>
         </div>
 

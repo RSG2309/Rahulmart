@@ -5,22 +5,19 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { 
-  RotateCcw, 
-  Calendar, 
   ShieldCheck, 
-  XCircle, 
-  CreditCard, 
-  AlertTriangle, 
-  Ban, 
-  RefreshCw, 
+  Calendar, 
+  Lock, 
+  Eye, 
+  FileText, 
   Phone, 
   Mail, 
   Globe, 
-  CheckCircle2,
-  ArrowLeft
+  MapPin,
+  ArrowLeft 
 } from 'lucide-react';
 
-export default function RefundPolicy() {
+export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
@@ -32,7 +29,7 @@ export default function RefundPolicy() {
           <div className="flex items-center gap-2">
             <Link href="/" className="hover:text-blue-600 transition">Home</Link>
             <span>/</span>
-            <span className="text-blue-600">Refund & Cancellation Policy</span>
+            <span className="text-blue-600">Privacy Policy</span>
           </div>
           <Link 
             href="/"
@@ -47,17 +44,17 @@ export default function RefundPolicy() {
           <div className="space-y-1">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
               <span className="p-2 bg-blue-50 text-blue-600 rounded-xl">
-                <RotateCcw size={26} />
+                <Lock size={26} />
               </span>
-              Refund & Cancellation Policy
+              Privacy Policy
             </h1>
             <p className="text-xs text-slate-500 flex items-center gap-1.5 pt-1">
               <Calendar size={13} className="text-slate-400" />
-              <span><strong>Effective Date:</strong> 23 September 2026</span>
+              <span><strong>Effective Date:</strong> 28 September 2026</span>
             </p>
           </div>
           <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-xs">
-            <ShieldCheck size={14} className="text-emerald-600" /> Official Policy
+            <ShieldCheck size={14} className="text-emerald-600" /> Data Protection
           </span>
         </div>
 
@@ -66,7 +63,11 @@ export default function RefundPolicy() {
           
           <div className="p-5 bg-blue-50/70 border border-blue-100 rounded-2xl text-slate-700 text-xs sm:text-sm">
             <p className="font-medium leading-relaxed">
-              This refund and cancellation policy outlines how you can cancel or seek a refund for a product / service that you have purchased through the Platform. Under this policy:
+              This Privacy Policy describes how <strong>9110176882</strong> (Rahul Super Mart / Vishal Telecom) collects, uses, and protects your personal information when you visit or make a purchase from{' '}
+              <a href="https://rahulmart.vercel.app/" target="_blank" rel="noreferrer" className="text-blue-600 font-semibold hover:underline">
+                https://rahulmart.vercel.app/
+              </a>{' '}
+              (the &apos;Platform&apos;). We are committed to safeguarding the privacy and security of our users and business partners.
             </p>
           </div>
 
@@ -76,18 +77,16 @@ export default function RefundPolicy() {
               <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
                 1
               </span>
-              Order Cancellation Guidelines
+              Information We Collect
             </h2>
-            <div className="space-y-3 text-slate-600 pl-9 text-xs sm:text-sm">
-              <p>
-                Cancellations will only be considered if the request is made <strong>5 days of placing the order</strong>.
-              </p>
-              <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-3.5 text-xs text-amber-900 flex items-start gap-2.5">
-                <AlertTriangle size={18} className="text-amber-600 flex-shrink-0 mt-0.5" />
-                <p>
-                  However, cancellation requests may not be entertained if the orders have been communicated to such sellers / merchant(s) listed on the Platform and they have initiated the process of shipping them, or the product is out for delivery. In such an event, you may choose to reject the product at the doorstep.
-                </p>
-              </div>
+            <div className="space-y-2 text-slate-600 pl-9 text-xs sm:text-sm">
+              <p>When you register, browse, or place an order on our Platform, we may collect the following details:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li><strong>Contact Information:</strong> Full name, phone number, email address, shop name, and delivery address with pincode.</li>
+                <li><strong>Account Credentials:</strong> Login credentials, OTP verification logs, and order history.</li>
+                <li><strong>Transaction Details:</strong> Payment method, transaction ID, UTR number, and order billing data (we do NOT store complete debit/credit card numbers or CVVs).</li>
+                <li><strong>Device Information:</strong> IP address, browser type, and operating device details for fraud prevention.</li>
+              </ul>
             </div>
           </div>
 
@@ -99,16 +98,17 @@ export default function RefundPolicy() {
               <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
                 2
               </span>
-              Perishable Items Policy
+              How We Use Your Information
             </h2>
             <div className="space-y-2 text-slate-600 pl-9 text-xs sm:text-sm">
-              <p>
-                <strong>9110176882</strong> does not accept cancellation requests for perishable items like flowers, eatables, etc.
-              </p>
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 flex items-start gap-2">
-                <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
-                <span>However, the refund / replacement can be made if the user establishes that the quality of the product delivered is not good.</span>
-              </div>
+              <p>We use the collected information for legitimate business purposes including:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Processing, packing, and delivering your orders.</li>
+                <li>Communicating order status updates, dispatch tracking, and invoices.</li>
+                <li>Processing refunds, returns, or handling customer support queries.</li>
+                <li>Preventing unauthorized transactions, fraudulent activities, and ensuring platform security.</li>
+                <li>Complying with statutory tax and regulatory reporting requirements under Indian law.</li>
+              </ul>
             </div>
           </div>
 
@@ -120,15 +120,15 @@ export default function RefundPolicy() {
               <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
                 3
               </span>
-              Damaged, Defective or Mismatched Products
+              Information Sharing &amp; Disclosure
             </h2>
-            <div className="space-y-3 text-slate-600 pl-9 text-xs sm:text-sm">
-              <p>
-                In case of receipt of damaged or defective items, please report to our customer service team. The request would be entertained once the seller/ merchant listed on the Platform, has checked and determined the same at its own end. This should be reported within <strong>5 days of receipt of products</strong>.
-              </p>
-              <p>
-                In case you feel that the product received is not as shown on the site or as per your expectations, you must bring it to the notice of our customer service within <strong>5 days of receiving the product</strong>. The customer service team after looking into your complaint will take an appropriate decision.
-              </p>
+            <div className="space-y-2 text-slate-600 pl-9 text-xs sm:text-sm">
+              <p>We respect your privacy and do not sell, rent, or trade your personal data. We share information only with:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li><strong>Payment Processors:</strong> Secure authorized payment gateways (e.g. PhonePe) to process transactions.</li>
+                <li><strong>Logistics Partners:</strong> Delivery executives and transport carriers to fulfill consignments.</li>
+                <li><strong>Legal Authorities:</strong> Government or statutory enforcement agencies when strictly required by applicable Indian law.</li>
+              </ul>
             </div>
           </div>
 
@@ -140,47 +140,28 @@ export default function RefundPolicy() {
               <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">
                 4
               </span>
-              Products with Manufacturer Warranty
+              Data Security
             </h2>
             <div className="space-y-2 text-slate-600 pl-9 text-xs sm:text-sm">
               <p>
-                In case of complaints regarding the products that come with a warranty from the manufacturers, please refer the issue to them.
+                We implement industry-standard 256-bit SSL encryption, restricted administrative access, and secure cloud databases to safeguard your personal and business records against unauthorized access, loss, or disclosure.
               </p>
             </div>
           </div>
 
           <hr className="border-slate-100" />
 
-          {/* Section 5 */}
-          <div className="space-y-3">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-black">
-                5
-              </span>
-              Refund Processing Timeline
-            </h2>
-            <div className="pl-9 text-xs sm:text-sm">
-              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-950">
-                <p className="font-semibold text-xs sm:text-sm">
-                  In case of any refunds approved by <strong>9110176882</strong>, it will take <strong>1 days</strong> for the refund to be processed to you.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <hr className="border-slate-100" />
-
-          {/* Contact Box */}
+          {/* Section 5 - Grievance Officer & Contact */}
           <div className="space-y-4 pt-2">
             <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
               <span className="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-black">
-                6
+                5
               </span>
-              Contact Us for Refund &amp; Cancellation
+              Grievance Officer &amp; Contact Us
             </h2>
             
             <p className="text-slate-600 pl-9 text-xs sm:text-sm">
-              For any cancellation, refund, return, or order-related queries, please reach out to our customer service team:
+              In accordance with Information Technology Act, 2000 and rules made there under, if you have any questions, feedback, or grievances regarding this Privacy Policy, please contact our Grievance Officer:
             </p>
 
             <div className="ml-0 sm:ml-9 bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-3">
@@ -218,12 +199,12 @@ export default function RefundPolicy() {
 
               <div className="pt-2 text-left">
                 <a
-                  href="https://wa.me/918210302931?text=Hi%20Rahul%20Super%20Mart,%20I%20have%20a%20query%20regarding%20refund%20and%20cancellation"
+                  href="https://wa.me/918210302931?text=Hi%20Rahul%20Super%20Mart,%20I%20have%20a%20query%20regarding%20privacy%20policy"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-sm"
                 >
-                  WhatsApp Refund Helpdesk
+                  WhatsApp Privacy &amp; Support Helpdesk
                 </a>
               </div>
             </div>

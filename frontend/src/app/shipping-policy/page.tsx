@@ -248,7 +248,10 @@ export default function ShippingPolicy() {
 
             <div className="ml-0 sm:ml-9 bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-3">
               <div className="font-extrabold text-slate-900 text-base">
-                Rahul Super Mart
+                Rahul Super Mart / Vishal Telecom
+              </div>
+              <div className="text-xs text-slate-600">
+                <strong>Registered Office:</strong> Sikta bazar, Near SBI Bank, West Champaran, Bihar – 845307, India
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
                 <a 
@@ -272,7 +275,7 @@ export default function ShippingPolicy() {
                   className="flex items-center gap-2 p-3 bg-white border border-slate-200 rounded-xl hover:border-emerald-400 hover:text-emerald-700 transition"
                 >
                   <Phone size={16} className="text-emerald-600 flex-shrink-0" />
-                  <span>+91 8210302931</span>
+                  <span>+91 8210302931 / 9110176882</span>
                 </a>
               </div>
 
