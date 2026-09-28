@@ -1,303 +1,256 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { FileText, Calendar, Scale, Shield } from 'lucide-react';
+import { 
+  FileText, 
+  Calendar, 
+  Scale, 
+  ShieldCheck, 
+  AlertCircle, 
+  ArrowLeft, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Globe 
+} from 'lucide-react';
 
 export default function TermsOfService() {
+  const termsList = [
+    {
+      num: 1,
+      text: "To access and use the Services, you agree to provide true, accurate and complete information to us during and after registration, and you shall be responsible for all acts done through the use of your registered account on the Platform."
+    },
+    {
+      num: 2,
+      text: "Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and materials offered on this website or through the Services, for any specific purpose. You acknowledge that such information and materials may contain inaccuracies or errors and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law."
+    },
+    {
+      num: 3,
+      text: "Your use of our Services and the Platform is solely and entirely at your own risk and discretion for which we shall not be liable to you in any manner. You are required to independently assess and ensure that the Services meet your requirements."
+    },
+    {
+      num: 4,
+      text: "The contents of the Platform and the Services are proprietary to us and are licensed to us. You will not have any authority to claim any intellectual property rights, title, or interest in its contents. The contents includes and is not limited to the design, layout, look and graphics."
+    },
+    {
+      num: 5,
+      text: "You acknowledge that unauthorized use of the Platform and/or the Services may lead to action against you as per these Terms of Use and/or applicable laws."
+    },
+    {
+      num: 6,
+      text: "You agree to pay us the charges associated with availing the Services."
+    },
+    {
+      num: 7,
+      text: "You agree not to use the Platform and/ or Services for any purpose that is unlawful, illegal or forbidden by these Terms, or Indian or local laws that might apply to you."
+    },
+    {
+      num: 8,
+      text: "You agree and acknowledge that website and the Services may contain links to other third party websites. On accessing these links, you will be governed by the terms of use, privacy policy and such other policies of such third party websites. These links are provided for your convenience for provide further information."
+    },
+    {
+      num: 9,
+      text: "You understand that upon initiating a transaction for availing the Services you are entering into a legally binding and enforceable contract with the Platform Owner for the Services."
+    },
+    {
+      num: 10,
+      text: "You shall indemnify and hold harmless Platform Owner, its affiliates, group companies (as applicable) and their respective officers, directors, agents, and employees, from any claim or demand, or actions including reasonable attorney's fees, made by any third party or penalty imposed due to or arising out of Your breach of this Terms of Use, privacy Policy and other Policies, or Your violation of any law, rules or regulations or the rights (including infringement of intellectual property rights) of a third party."
+    },
+    {
+      num: 11,
+      text: "Notwithstanding anything contained in these Terms of Use, the parties shall not be liable for any failure to perform an obligation under these Terms if performance is prevented or delayed by a force majeure event."
+    },
+    {
+      num: 12,
+      text: "These Terms and any dispute or claim relating to it, or its enforceability, shall be governed by and construed in accordance with the laws of India."
+    },
+    {
+      num: 13,
+      text: "All disputes arising out of or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts in West Champaran, Bihar and India."
+    },
+    {
+      num: 14,
+      text: "All concerns or communications relating to these Terms must be communicated to us using the contact information provided on this website."
+    }
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
 
-      <main className="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full text-left">
+      <main className="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
         
         {/* Breadcrumb / Top Bar */}
-        <div className="mb-6 flex items-center gap-2 text-xs text-slate-500 font-semibold uppercase tracking-wider">
-          <span>Home</span>
-          <span>/</span>
-          <span className="text-indigo-600">Terms of Service</span>
+        <div className="mb-6 flex items-center justify-between text-xs text-slate-500 font-semibold uppercase tracking-wider">
+          <div className="flex items-center gap-2">
+            <Link href="/" className="hover:text-blue-600 transition">Home</Link>
+            <span>/</span>
+            <span className="text-blue-600">Terms and Conditions</span>
+          </div>
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-1 text-slate-600 hover:text-blue-600 transition normal-case font-bold"
+          >
+            <ArrowLeft size={14} /> Back to Store
+          </Link>
         </div>
 
         {/* Page Header */}
         <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-              <FileText className="text-indigo-600" size={28} /> B2B Terms of Service
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+              <span className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+                <FileText size={26} />
+              </span>
+              Terms and Conditions
             </h1>
             <p className="text-xs text-slate-500 flex items-center gap-1.5 pt-1">
-              <Calendar size={13} className="text-slate-400" /> **Effective Date:** July 16, 2026
+              <Calendar size={13} className="text-slate-400" />
+              <span><strong>Effective Date:</strong> 28 September 2026</span>
             </p>
           </div>
-          <span className="inline-flex items-center gap-1 bg-indigo-50 border border-indigo-100 text-indigo-700 text-[10px] uppercase tracking-wider font-extrabold px-3 py-1 rounded-full shadow-sm">
-            <Scale size={11} /> Business-to-Business
+          <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-xs">
+            <ShieldCheck size={14} className="text-emerald-600" /> Official Terms of Use
           </span>
         </div>
 
         {/* Content Container */}
-        <div className="bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-sm space-y-8 text-slate-700 leading-relaxed text-sm">
+        <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-sm space-y-8 text-slate-700 leading-relaxed text-sm">
           
-          <p className="text-slate-600">
-            Welcome to <strong>Rahul Super Mart</strong>, operated by <strong>Vishal Telecom</strong> (Proprietor: Rinki Devi) (Rahul Super Mart is a business division of Vishal Telecom). These Business-to-Business (B2B) Terms of Service (&quot;Terms&quot;) govern the use of our website, mobile application, and related services by retailers, wholesalers, distributors, and other business customers (&quot;Buyer&quot;, &quot;You&quot;, or &quot;Your&quot;).
-          </p>
-
-          <p className="text-slate-600">
-            By creating an account, placing an order, or using our platform, you agree to these Terms.
-          </p>
-
-          <hr className="border-slate-100" />
-
-          {/* Section 1 */}
-          <div className="space-y-3">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">1</span>
-              Company Information
-            </h3>
-            <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-1.5 text-xs text-slate-600">
-              <p><strong>Business Name:</strong> Rahul Super Mart (A Unit of Vishal Telecom)</p>
-              <p><strong>Legal Entity:</strong> Vishal Telecom (Proprietorship Firm - Proprietor: Rinki Devi)</p>
-              <p><strong>Business Address:</strong> Sikta Bazar, West Champaran, Bihar – 845307, India</p>
-            </div>
-          </div>
-
-          {/* Section 2 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">2</span>
-              Eligibility
-            </h3>
-            <p>Our platform is intended solely for businesses.</p>
-            <p>By using our platform, you confirm that:</p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>You are at least 18 years of age.</li>
-              <li>You are authorized to purchase on behalf of your business.</li>
-              <li>The information provided during registration is accurate and complete.</li>
-            </ul>
-          </div>
-
-          {/* Section 3 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">3</span>
-              Business Account
-            </h3>
-            <p>To place orders, you may be required to create a business account.</p>
-            <p>You agree to:</p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>Maintain accurate business information.</li>
-              <li>Keep your login credentials secure.</li>
-              <li>Notify us immediately if you suspect unauthorized access.</li>
-            </ul>
-            <p className="text-xs text-slate-500 italic pt-1">
-              We reserve the right to suspend or terminate accounts involved in fraud, misuse, or violations of these Terms.
+          {/* Statutory Electronic Record Notice */}
+          <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-5 sm:p-6 space-y-3 text-xs sm:text-sm text-slate-700">
+            <p>
+              This document is an electronic record in terms of <strong>Information Technology Act, 2000</strong> and rules there under as applicable and the amended provisions pertaining to electronic records in various statutes as amended by the Information Technology Act, 2000. This electronic record is generated by a computer system and does not require any physical or digital signatures.
+            </p>
+            <p>
+              This document is published in accordance with the provisions of <strong>Rule 3 (1) of the Information Technology (Intermediaries guidelines) Rules, 2011</strong> that require publishing the rules and regulations, privacy policy and Terms of Use for access or usage of domain name{' '}
+              <a href="https://rahulmart.vercel.app/" target="_blank" rel="noreferrer" className="text-blue-600 font-semibold hover:underline">
+                https://rahulmart.vercel.app/
+              </a>{' '}
+              (&apos;Website&apos;), including the related mobile site and mobile application (hereinafter referred to as &apos;Platform&apos;).
             </p>
           </div>
 
-          {/* Section 4 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">4</span>
-              Orders
-            </h3>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>All orders are subject to acceptance by Vishal Store.</li>
-              <li>We may cancel or reject any order due to stock unavailability, pricing errors, suspected fraud, or other legitimate business reasons.</li>
-              <li>Order confirmation does not guarantee shipment until processing is complete.</li>
-            </ul>
+          {/* Platform Ownership */}
+          <div className="border-l-4 border-blue-600 pl-4 py-1 text-xs sm:text-sm text-slate-800">
+            <p className="font-semibold text-slate-900 mb-1">Platform Ownership &amp; Registered Office:</p>
+            <p className="text-slate-600">
+              The Platform is owned by <strong>9110176882</strong>, a company incorporated under the Companies Act, 1956 with its registered office at{' '}
+              <strong>Sikta bazar, Near SBI Bank, West Champaran, Bihar 845307</strong> (hereinafter referred to as &lsquo;Platform Owner&rsquo;, &apos;we&apos;, &apos;us&apos;, &apos;our&apos;).
+            </p>
           </div>
 
-          {/* Section 5 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">5</span>
-              Pricing
-            </h3>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>Prices displayed are intended for registered business customers.</li>
-              <li>Prices may change without prior notice.</li>
-              <li>Applicable GST and other taxes will be charged as required under Indian law.</li>
-              <li>Promotional pricing may be available for limited periods.</li>
-            </ul>
+          {/* Scope & Binding Obligations */}
+          <div className="space-y-3 text-slate-600">
+            <p>
+              Your use of the Platform and services and tools are governed by the following terms and conditions (&ldquo;Terms of Use&rdquo;) as applicable to the Platform including the applicable policies which are incorporated herein by way of reference. If You transact on the Platform, You shall be subject to the policies that are applicable to the Platform for such transaction. By mere use of the Platform, You shall be contracting with the Platform Owner and these terms and conditions including the policies constitute Your binding obligations, with Platform Owner.
+            </p>
+            <p>
+              These Terms of Use relate to your use of our website, goods (as applicable) or services (as applicable) (collectively, &apos;Services&apos;). Any terms and conditions proposed by You which are in addition to or which conflict with these Terms of Use are expressly rejected by the Platform Owner and shall be of no force or effect. These Terms of Use can be modified at any time without assigning any reason. It is your responsibility to periodically review these Terms of Use to stay informed of updates.
+            </p>
+            <p>
+              For the purpose of these Terms of Use, wherever the context so requires &lsquo;you&rsquo;, &apos;your&apos; or &lsquo;user&rsquo; shall mean any natural or legal person who has agreed to become a user/buyer on the Platform.
+            </p>
           </div>
 
-          {/* Section 6 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">6</span>
-              Payment
-            </h3>
-            <p>We may accept payments through:</p>
-            <div className="flex flex-wrap gap-2 pt-1">
-              {['UPI', 'PhonePe', 'Razorpay', 'Bank Transfer', 'Cash on Collect Order'].map((m) => (
-                <span key={m} className="bg-slate-100 border border-slate-200 text-slate-800 text-xs px-3 py-1 rounded-lg font-semibold">
-                  {m}
-                </span>
+          {/* Acceptance Notice Box */}
+          <div className="bg-amber-50/70 border border-amber-200/90 rounded-2xl p-4 sm:p-5 flex items-start gap-3 text-amber-900">
+            <AlertCircle size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs sm:text-sm font-bold uppercase tracking-wide leading-relaxed">
+              ACCESSING, BROWSING OR OTHERWISE USING THE PLATFORM INDICATES YOUR AGREEMENT TO ALL THE TERMS AND CONDITIONS UNDER THESE TERMS OF USE, SO PLEASE READ THE TERMS OF USE CAREFULLY BEFORE PROCEEDING.
+            </p>
+          </div>
+
+          <hr className="border-slate-100" />
+
+          {/* Core Terms of Use Points */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Scale size={20} className="text-blue-600" />
+              <h2 className="text-base sm:text-lg font-black text-slate-900">
+                Terms of Use &amp; Service Conditions
+              </h2>
+            </div>
+            <p className="text-xs text-slate-500">
+              The use of Platform and/or availing of our Services is subject to the following Terms of Use:
+            </p>
+
+            <div className="space-y-3 pt-2">
+              {termsList.map((item) => (
+                <div 
+                  key={item.num}
+                  className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50/70 border border-slate-150 text-xs sm:text-sm text-slate-700 leading-relaxed hover:bg-slate-50 transition"
+                >
+                  <span className="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black flex-shrink-0 mt-0.5">
+                    {item.num}
+                  </span>
+                  <p className="flex-1">{item.text}</p>
+                </div>
               ))}
             </div>
-            <p className="pt-2">Orders may be processed only after successful payment unless Cash on Collect Order has been selected and approved.</p>
           </div>
 
-          {/* Section 7 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">7</span>
-              Shipping and Delivery
-            </h3>
-            <p>We offer:</p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>Home Delivery (where available)</li>
-              <li>Store Pickup (Self Pickup)</li>
-            </ul>
-            <p>Estimated delivery timelines are provided for convenience and may vary depending on logistics, location, holidays, or unforeseen circumstances.</p>
-          </div>
+          <hr className="border-slate-100" />
 
-          {/* Section 8 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">8</span>
-              Store Pickup
-            </h3>
-            <p>For Store Pickup (Self Pickup) orders:</p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>Buyers must collect the order within the specified pickup period.</li>
-              <li>A valid order confirmation may be required.</li>
-              <li>Failure to collect the order within the allowed period may result in cancellation.</li>
-            </ul>
-          </div>
-
-          {/* Section 9 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">9</span>
-              Product Availability
-            </h3>
-            <p>All products are subject to availability.</p>
-            <p>If any product becomes unavailable after an order is placed, we may:</p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>Cancel the affected item(s),</li>
-              <li>Offer an alternative product (subject to buyer approval), or</li>
-              <li>Issue a refund to your wallet for the unavailable item(s), where applicable.</li>
-            </ul>
-          </div>
-
-          {/* Section 10 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">10</span>
-              Returns and Refunds
-            </h3>
-            <p>Returns or replacements may be accepted only in accordance with our Return & Refund Policy.</p>
-            <p>Products may qualify for return if:</p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>The wrong product was delivered,</li>
-              <li>The product was damaged during transit,</li>
-              <li>The product has a manufacturing defect.</li>
-            </ul>
-            <p>Return requests should be submitted within the period specified in our Return Policy.</p>
-          </div>
-
-          {/* Section 11 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">11</span>
-              Buyer Responsibilities
-            </h3>
-            <p>The Buyer agrees:</p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>Not to misuse the platform.</li>
-              <li>Not to engage in fraudulent activities.</li>
-              <li>Not to attempt unauthorized access to our systems.</li>
-              <li>Not to reproduce, copy, or misuse our content without permission.</li>
-            </ul>
-          </div>
-
-          {/* Section 12 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">12</span>
-              Intellectual Property
-            </h3>
-            <p>All website content, including logos, product listings, graphics, software, text, and trademarks, belongs to Vishal Telecom (Proprietor: Rinki Devi) or its licensors and is protected under applicable intellectual property laws.</p>
-          </div>
-
-          {/* Section 13 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">13</span>
-              Limitation of Liability
-            </h3>
-            <p>To the maximum extent permitted by law, Vishal Telecom (Proprietor: Rinki Devi) shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use of our platform or products.</p>
-            <p>Our total liability shall not exceed the amount paid for the relevant order.</p>
-          </div>
-
-          {/* Section 14 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">14</span>
-              Account Suspension
-            </h3>
-            <p>We reserve the right to suspend or terminate accounts that:</p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-600">
-              <li>Violate these Terms,</li>
-              <li>Engage in fraudulent transactions,</li>
-              <li>Misrepresent business information,</li>
-              <li>Abuse promotional offers or payment systems.</li>
-            </ul>
-          </div>
-
-          {/* Section 15 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">15</span>
-              Force Majeure
-            </h3>
-            <p>We shall not be liable for delays or failures caused by events beyond our reasonable control, including natural disasters, strikes, government actions, internet outages, pandemics, or transportation disruptions.</p>
-          </div>
-
-          {/* Section 16 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">16</span>
-              Privacy
-            </h3>
-            <p>Your use of the platform is also governed by our Privacy Policy.</p>
-          </div>
-
-          {/* Section 17 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">17</span>
-              Governing Law
-            </h3>
-            <p>These Terms shall be governed by the laws of India.</p>
-            <p>Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the competent courts in <strong>West Champaran, Bihar</strong>, unless otherwise required by applicable law.</p>
-          </div>
-
-          {/* Section 18 */}
-          <div className="space-y-2">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">18</span>
-              Changes to These Terms
-            </h3>
-            <p>We may update these Terms from time to time.</p>
-            <p>Updated versions will become effective upon publication on our website.</p>
-            <p>Continued use of the platform after such updates constitutes acceptance of the revised Terms.</p>
-          </div>
-
-          {/* Section 19 */}
+          {/* Contact Information */}
           <div className="space-y-3">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black">19</span>
-              Contact Us
-            </h3>
-            <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 space-y-2 text-xs text-slate-600">
-              <p className="font-extrabold text-slate-900 text-sm">Rahul Super Mart (Vishal Telecom)</p>
-              <p>Operated by <strong>Vishal Telecom (Proprietor: Rinki Devi)</strong></p>
-              <p><strong>Address:</strong> Sikta Bazar, West Champaran, Bihar – 845307, India</p>
-              <p><strong>Email:</strong> vishaltelecomskt@gmail.com</p>
-              <p><strong>Phone:</strong> +91 8210302931</p>
+            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+              Contact Information
+            </h2>
+            <p className="text-xs text-slate-600">
+              All concerns or communications relating to these Terms must be communicated to us using the contact information provided on this website:
+            </p>
+
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4">
+              <div className="font-extrabold text-slate-900 text-base">
+                Rahul Super Mart / Vishal Telecom
+              </div>
+              
+              <div className="flex items-start gap-2.5 text-xs text-slate-600">
+                <MapPin size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                <span><strong>Registered Office:</strong> Sikta bazar, Near SBI Bank, West Champaran, Bihar – 845307, India</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
+                <a 
+                  href="https://rahulmart.vercel.app" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="flex items-center gap-2 p-3 bg-white border border-slate-200 rounded-xl hover:border-blue-400 hover:text-blue-600 transition"
+                >
+                  <Globe size={16} className="text-blue-600 flex-shrink-0" />
+                  <span className="truncate">rahulmart.vercel.app</span>
+                </a>
+                <a 
+                  href="mailto:vishaltelecomskt@gmail.com"
+                  className="flex items-center gap-2 p-3 bg-white border border-slate-200 rounded-xl hover:border-blue-400 hover:text-blue-600 transition"
+                >
+                  <Mail size={16} className="text-blue-600 flex-shrink-0" />
+                  <span className="truncate">vishaltelecomskt@gmail.com</span>
+                </a>
+                <a 
+                  href="tel:+918210302931"
+                  className="flex items-center gap-2 p-3 bg-white border border-slate-200 rounded-xl hover:border-emerald-400 hover:text-emerald-700 transition"
+                >
+                  <Phone size={16} className="text-emerald-600 flex-shrink-0" />
+                  <span>+91 8210302931 / 9110176882</span>
+                </a>
+              </div>
+
+              <div className="pt-2 text-left">
+                <a
+                  href="https://wa.me/918210302931?text=Hi%20Rahul%20Super%20Mart,%20I%20have%20a%20question%20regarding%20Terms%20of%20Use"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-sm"
+                >
+                  WhatsApp Legal &amp; Support Helpline
+                </a>
+              </div>
             </div>
-            <p className="pt-2 text-xs text-slate-500">If you have any questions regarding these Terms, please contact us using the details above.</p>
           </div>
 
         </div>
