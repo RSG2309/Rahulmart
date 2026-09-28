@@ -1,46 +1,12 @@
 'use client';
 
 import React from 'react';
-import { Mail, Phone, MapPin, ShieldCheck, Truck, RotateCcw, Facebook, Twitter, Instagram, Smartphone } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Smartphone } from 'lucide-react';
 
 export default function Footer() {
   return (
     <>
       <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
-        
-        {/* Badges / Value Prop */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-b border-slate-800">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center gap-3">
-              <div className="p-3 bg-slate-800 text-indigo-400 rounded-xl">
-                <ShieldCheck size={24} />
-              </div>
-              <div>
-                <h4 className="font-bold text-white text-sm">Priority Sourcing Slabs</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Bulk ordering rates and discount slabs on all items.</p>
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row items-center gap-3">
-              <div className="p-3 bg-slate-800 text-indigo-400 rounded-xl">
-                <Truck size={24} />
-              </div>
-              <div>
-                <h4 className="font-bold text-white text-sm">Priority Bulk Logistics</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Prompt delivery across select industrial and retail zip codes.</p>
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row items-center gap-3">
-              <div className="p-3 bg-slate-800 text-indigo-400 rounded-xl">
-                <RotateCcw size={24} />
-              </div>
-              <div>
-                <h4 className="font-bold text-white text-sm">Easy Returns & Refund</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Refund directly to your B2B wallet upon audit verification.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Main Footer Links */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
